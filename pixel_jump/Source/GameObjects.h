@@ -17,6 +17,7 @@
 
 // Object Type
 enum TYPE_OBJECT {
+	TYPE_OBJECT_NONE,	// used to indicate no object
 	TYPE_OBJECT_EMPTY,	// used in the map grid to indicate no object
 	TYPE_OBJECT_WALL,	// used in the map grid to indicate a wall or floor
 	TYPE_OBJECT_PLAYER, // used to indicate the player object
@@ -45,15 +46,16 @@ enum INNER_STATE {
 	INNER_STATE_MAX
 };
 
-class GameObject {
-public:
-	u32 u_Type;		// object type
-	AEGfxVertexList* p_Mesh;	// mesh used to draw the object
+struct GameObject {
+	// game object's type
+	u32 u_Type;
+	// pointer to the mesh that represents the object
+	AEGfxVertexList* p_Mesh;
 };
 
 class GameObjectInstance {
 public:
-	// pointer to the game object
+	// pointer to the game object that this instance is based on
 	GameObject* p_GameObject;
 
 	// determines if the object is active or not
@@ -86,6 +88,15 @@ public:
 
 	// general purpose counter (This variable can be used for the enemy state machine later)
 	f64 f_Counter;
+
+	// contructor
+	GameObjectInstance();
+
+	// factory function to create a game object instance
+	static GameObjectInstance* gameObjectInstanceCreate(u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, enum STATE startState);
+
+	// function to destroy a game object instance
+	static void gameObjectInstanceDestroy(GameObjectInstance* pInst);
 };
 
 #endif // GAMEOBJECT_HEADER
