@@ -16,7 +16,11 @@ extern GameObject* p_GameObjectList;
 extern GameObjectInstance* p_GameObjectInstanceList;
 //------------------------------------------------------------------------------
 
-// constructor for the game object instance class
+/******************************************************************************/
+/*!
+	Constructor of the game object instance
+*/
+/******************************************************************************/
 GameObjectInstance::GameObjectInstance() {
 	// initialize the game object instance
 	p_GameObject = nullptr;
@@ -35,7 +39,31 @@ GameObjectInstance::GameObjectInstance() {
 	f_Counter = 0.0;
 }
 
-// factory function to create a game object instance
+/******************************************************************************/
+/*!
+	Factory function to create a game object instance
+
+	\param type
+		the type of the game object to create an instance
+	\param scale
+		the scale of the game object instance
+	\param position
+		the position of the game object instance
+	\param velocity
+		the velocity of the game object instance
+	\param direction
+		the direction of the game object instance
+	\param startState
+		the state of the game object instance
+
+	\return
+		the pointer to the game object instance
+
+	\assumptions
+		the caller will need to be responsible in making sure that there is a valid array for
+		the game object instance. Namely, p_GameObjectInstanceList and p_GameObjectList.
+*/
+/******************************************************************************/
 GameObjectInstance* GameObjectInstance::gameObjectInstanceCreate(u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState) {
 	AEVec2 zero;
 	AEVec2Zero(&zero);
