@@ -105,16 +105,16 @@ void Mesh::RenderCircleMesh() {
 
 	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
 
-	for (int i = 0; i < ARRAY_COUNT(squareTransforms); ++i) {
+	for (int i = 0; i < ARRAY_COUNT(circleTransforms); ++i) {
 
 		if (i == 0) {
 			AEGfxSetColorToAdd(0.3f, 1.0f, 0.3f, 0.0f);
 		}
 
 		// Transform - Rendering
-		AEGfxSetTransform(squareTransforms[i].m);
+		AEGfxSetTransform(circleTransforms[i].m);
 
 		// Draw Mesh
-		AEGfxMeshDraw(squareMesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(circleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 }
