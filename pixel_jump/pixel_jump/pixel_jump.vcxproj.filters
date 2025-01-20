@@ -38,6 +38,9 @@
     <ClCompile Include="..\Source\GameStateWinScreenPlatform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\MeshCreation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\GameStateLevel1Platform.h">
@@ -68,6 +71,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\GameStateLoseScreenPlatform.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\MeshCreation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
