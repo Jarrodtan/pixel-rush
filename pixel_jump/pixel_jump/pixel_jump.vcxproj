@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Collision.cpp" />
+    <ClCompile Include="..\Source\GameObjects.cpp" />
     <ClCompile Include="..\Source\GameStateLevel2Platform.cpp" />
     <ClCompile Include="..\Source\GameStateLoseScreenPlatform.cpp" />
     <ClCompile Include="..\Source\GameStateMgr.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\Source\main.h" />
     <ClInclude Include="..\Source\MeshCreation.h" />
     <ClInclude Include="..\Source\Particle.h" />
+    <ClInclude Include="..\Source\GameObjects.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

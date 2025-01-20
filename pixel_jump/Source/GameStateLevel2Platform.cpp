@@ -1,9 +1,14 @@
 /******************************************************************************/
 /*!
-	Include Files
+	Include Files and external variables
 */
 /******************************************************************************/
 #include "main.h"
+
+static GameObject* p_GameObjectList = nullptr;
+static GameObjectInstance* p_GameObjectInstanceList = nullptr;
+
+//-----------------------------------------------------------------------------/
 
 /******************************************************************************/
 /*!
@@ -11,7 +16,12 @@
 */
 /******************************************************************************/
 void GameStateLevel2PlatformLoad(void) {
+	// allocate memory for the object type and mesh
+	p_GameObjectList = (GameObject*)calloc(GAME_OBJECT_NUM_MAX, sizeof(GameObject));
+	// allocate memory for the object instance
+	p_GameObjectInstanceList = (GameObjectInstance*)calloc(GAME_OBJECT_INST_NUM_MAX, sizeof(GameObjectInstance));
 
+	AE_ASSERT_MESG(p_GameObjectList, "Faile to calloc");
 }
 
 /******************************************************************************/
