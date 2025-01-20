@@ -5,16 +5,18 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\GameState_Platform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GameStateMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -27,34 +29,28 @@
     <ClCompile Include="..\Source\GameState_MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameState_Platform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\GameStateMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Header\main.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\GameState_Platform.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\GameStateMgr.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\GameStateList.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Particle.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\GameStateMgr.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\GameStateList.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\main.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\GameState_MainMenu.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\Particle.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\GameState_Platform.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\Collision.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Collision.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\Source\GameState_MainMenu.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

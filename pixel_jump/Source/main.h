@@ -17,7 +17,8 @@
 #include "math.h"
 
 #include "GameStateMgr.h"
-#include "GameState_Platform.h"
+#include "GameStateLevel1Platform.h"
+#include "GameStateLevel2Platform.h"
 #include "Collision.h"
 #include "Particle.h"
 #include "GameState_MainMenu.h"

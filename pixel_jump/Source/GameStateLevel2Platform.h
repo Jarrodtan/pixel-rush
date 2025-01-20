@@ -1,42 +1,42 @@
-#ifndef GAME_STATE_PLATFORM_H
-#define GAME_STATE_PLATFORM_H
+#ifndef GAME_STATE_PLATFORM_LEVEL2_H
+#define GAME_STATE_PLATFORM_LEVEL2_H
 
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object
 */
 /******************************************************************************/
-void GameStatePlatformLoad(void);
+void GameStateLevel2PlatformLoad(void);
 /******************************************************************************/
 /*!
 	Initialize all varaibles and funtions
 */
 /******************************************************************************/
-void GameStatePlatformInit(void);
+void GameStateLevel2PlatformInit(void);
 /******************************************************************************/
 /*!
 	Update function of the state, calculate position and logics for the objects
 */
 /******************************************************************************/
-void GameStatePlatformUpdate(void);
+void GameStateLevel2PlatformUpdate(void);
 /******************************************************************************/
 /*!
 	Draws all the objects, particle and text for the game
 */
 /******************************************************************************/
-void GameStatePlatformDraw(void);
+void GameStateLevel2PlatformDraw(void);
 /******************************************************************************/
 /*!
 	Destroy all objects when function is called
 */
 /******************************************************************************/
-void GameStatePlatformFree(void);
+void GameStateLevel2PlatformFree(void);
 /******************************************************************************/
 /*!
 	Free all memory when function is called
 */
 /******************************************************************************/
-void GameStatePlatformUnload(void);
+void GameStateLevel2PlatformUnload(void);
 
 // ---------------------------------------------------------------------------
 

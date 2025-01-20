@@ -7,6 +7,8 @@ enum
 	GS_PLATFORM_LVL1 = 0,
 	GS_PLATFORM_LVL2,
 	GS_MAINMENU,
+	GS_WIN,
+	GS_LOSE,
 
 	// special game state. Do not change
 	GS_RESTART,
