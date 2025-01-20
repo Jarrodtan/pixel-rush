@@ -25,6 +25,7 @@
 #include "Particle.h"
 #include "GameState_MainMenu.h"
 #include "MeshCreation.h"
+#include "GameObjects.h"
 
 /**************************************************************************/
 
