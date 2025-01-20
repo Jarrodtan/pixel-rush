@@ -1,1 +1,95 @@
 #include "main.h"
+
+void Mesh::CreateSquareMesh() {
+	AEGfxMeshStart();
+
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0x00000000, 0.0f, 1.0f,
+		0.5f, -0.5f, 0x00000000, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0x00000000, 0.0f, 0.0f);
+
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0x00000000, 1.0f, 1.0f,
+		0.5f, 0.5f, 0x00000000, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0x00000000, 0.0f, 0.0f);
+
+	Mesh::squareMesh = AEGfxMeshEnd();
+}
+
+void Mesh::CreateCircleMesh() {
+	AEGfxMeshStart();
+
+	int slices = 32; // Set the number of slices for the circle approximation
+	for (int i = 0; i < slices; ++i) {
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0x00000000, 0.5f, 0.5f,
+			(float)cosf((float)i / slices * 2.0f * PI), (float)sinf((float)i / slices * 2.0f * PI), 0x00000000, 0.5f + 0.5f * (float)cosf((float)i / slices * 2.0f * PI), 0.5f + 0.5f * (float)sinf((float)i / slices * 2.0f * PI),
+			(float)cosf((float)(i + 1) / slices * 2.0f * PI), (float)sinf((float)(i + 1) / slices * 2.0f * PI), 0x00000000, 0.5f + 0.5f * (float)cosf((float)(i + 1) / slices * 2.0f * PI), 0.5f + 0.5f * (float)sinf((float)(i + 1) / slices * 2.0f * PI)
+		);
+
+	}
+
+	Mesh::circleMesh = AEGfxMeshEnd();
+}
+
+void Mesh::RenderSquareMesh() {
+	AEMtx33 squareTransforms[1] {0};
+
+	// Scale: Size
+	AEMtx33Scale(&squareScale, 100.0f, 100.0f);
+
+	// Translate: Position
+	AEMtx33Trans(&squareTranslate, 0.0f, 0.0f);
+
+	// Concatenate: Merge
+	AEMtx33Concat(&squareTransforms[0], &squareScale, &squareTranslate);
+
+	// Begin Rendering
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
+	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
+
+	for (int i = 0; i < ARRAY_COUNT(squareTransforms); ++i) {
+
+		if (i == 0) {
+			AEGfxSetColorToAdd(0.3f, 1.0f, 0.3f, 0.0f);
+		}
+
+		// Transform - Rendering
+		AEGfxSetTransform(squareTransforms[i].m);
+
+		// Draw Mesh
+		AEGfxMeshDraw(squareMesh, AE_GFX_MDM_TRIANGLES);
+	}
+}
+
+void Mesh::RenderCircleMesh() {
+	AEMtx33 circleTransforms[1]{ 0 };
+
+	// Scale: Size
+	AEMtx33Scale(&circleScale, 100.0f, 100.0f);
+
+	// Translate: Position
+	AEMtx33Trans(&circleTranslate, 0.0f, 0.0f);
+
+	// Concatenate: Merge
+	AEMtx33Concat(&circleTransforms[0], &circleScale, &circleTranslate);
+
+	// Begin Rendering
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
+	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.5f);
+
+	for (int i = 0; i < ARRAY_COUNT(squareTransforms); ++i) {
+
+		if (i == 0) {
+			AEGfxSetColorToAdd(0.3f, 1.0f, 0.3f, 0.0f);
+		}
+
+		// Transform - Rendering
+		AEGfxSetTransform(squareTransforms[i].m);
+
+		// Draw Mesh
+		AEGfxMeshDraw(squareMesh, AE_GFX_MDM_TRIANGLES);
+	}
+}

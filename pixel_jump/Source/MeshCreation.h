@@ -1,15 +1,19 @@
 #ifndef MESHCREATION_HEADER
 #define MESHCREATION_HEADER
 
-// AABB Struct
-//class AABB {
-//public:
-//	AEVec2 min;
-//	AEVec2 max;
-//};
+#define ARRAY_COUNT(a) (sizeof(a)/sizeof(*a))
 
-// Collision Functions
-//s32 StaticCollision(const AABB& aabb1, const AABB& aabb2);
-//bool CollisionAABB(const AABB& aabb1, const AEVec2& vel1, const AABB& aabb2, const AEVec2& vel2, f32& firstTimeOfCollision);
+class Mesh {
+private:
+	AEGfxVertexList* squareMesh = 0;
+	AEGfxVertexList* circleMesh = 0;
+	AEMtx33 squareScale, circleScale;
+	AEMtx33 squareTranslate, circleTranslate;
+public:
+	void CreateSquareMesh();
+	void CreateCircleMesh();
+	void RenderSquareMesh();
+	void RenderCircleMesh();
+};
 
 #endif // MESHCREATION_HEADER
