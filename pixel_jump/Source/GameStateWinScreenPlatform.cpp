@@ -29,8 +29,20 @@ void GameStateWinInit(void) {
 */
 /******************************************************************************/
 void GameStateWinUpdate(void) {
-	if (AEInputCheckTriggered(VK_ESCAPE)) {
-		g_GameStateNext = GS_QUIT;
+	if (AEInputCheckTriggered(AEVK_Q)) {
+		g_GameStateNext = GS_MAINMENU;
+	}
+	else if (AEInputCheckTriggered(AEVK_1)) {
+		g_GameStateNext = GS_PLATFORM_LVL1;
+	}
+	else if (AEInputCheckTriggered(AEVK_2)) {
+		g_GameStateNext = GS_PLATFORM_LVL2;
+	}
+	else if (AEInputCheckTriggered(AEVK_3)) {
+		g_GameStateNext = GS_WIN;
+	}
+	else if (AEInputCheckTriggered(AEVK_4)) {
+		g_GameStateNext = GS_LOSE;
 	}
 }
 
