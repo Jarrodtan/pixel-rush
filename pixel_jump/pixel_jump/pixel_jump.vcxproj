@@ -19,6 +19,7 @@
     <ClCompile Include="..\Source\GameState_MainMenu.cpp" />
     <ClCompile Include="..\Source\GameStateLevel1Platform.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
+    <ClCompile Include="..\Source\MeshCreation.cpp" />
     <ClCompile Include="..\Source\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +32,7 @@
     <ClInclude Include="..\Source\GameState_MainMenu.h" />
     <ClInclude Include="..\Source\GameStateLevel1Platform.h" />
     <ClInclude Include="..\Source\main.h" />
+    <ClInclude Include="..\Source\MeshCreation.h" />
     <ClInclude Include="..\Source\Particle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
