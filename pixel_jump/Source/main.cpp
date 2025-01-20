@@ -34,28 +34,28 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AESysInit(instanceH, show, 800, 600, 1, 60, false, NULL);
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	//Create your font here, and use it for all your levels
-	g_Font = AEGfxCreateFont("../Resources/Fonts/Arial Italic.ttf", 30);// load font 
+	g_Font = AEGfxCreateFont("../Assets/Fonts/Arial Italic.ttf", 30);// load font 
 
 	GameStateMgrInit(GS_MAINMENU);
 
-	while (gGameStateCurr != GS_QUIT)
+	while (g_GameStateCurr != GS_QUIT)
 	{
 		// reset the system modules
 		AESysReset();
 
 		// If not restarting, load the gamestate
-		if (gGameStateCurr != GS_RESTART)
+		if (g_GameStateCurr != GS_RESTART)
 		{
 			GameStateMgrUpdate();
 			GameStateLoad();
 		}
 		else
-			gGameStateNext = gGameStateCurr = gGameStatePrev;
+			g_GameStateNext = g_GameStateCurr = g_GameStatePrev;
 
 		// Initialize the gamestate
 		GameStateInit();
 
-		while (gGameStateCurr == gGameStateNext)
+		while (g_GameStateCurr == g_GameStateNext)
 		{
 			AESysFrameStart();
 
@@ -67,7 +67,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
 			// check if forcing the application to quit
 			if (AESysDoesWindowExist() == false) //((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
-				gGameStateNext = GS_QUIT;
+				g_GameStateNext = GS_QUIT;
 
 			g_dt = (f32)AEFrameRateControllerGetFrameTime();
 
@@ -80,11 +80,11 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
 		GameStateFree();
 
-		if (gGameStateNext != GS_RESTART)
+		if (g_GameStateNext != GS_RESTART)
 			GameStateUnload();
 
-		gGameStatePrev = gGameStateCurr;
-		gGameStateCurr = gGameStateNext;
+		g_GameStatePrev = g_GameStateCurr;
+		g_GameStateCurr = g_GameStateNext;
 	}
 
 	//free you font here

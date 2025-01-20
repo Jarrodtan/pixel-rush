@@ -5,7 +5,7 @@
 	This function check for static collision between 2 rectangles.
 */
 /**************************************************************************/
-s32 static_collision(const AABB& aabb1, const AABB& aabb2) {
+s32 StaticCollision(const AABB& aabb1, const AABB& aabb2) {
 	if (aabb2.max.x < aabb1.min.x)return 0;
 	if (aabb2.min.x > aabb1.max.x)return 0;
 	if (aabb2.max.y < aabb1.min.y)return 0;

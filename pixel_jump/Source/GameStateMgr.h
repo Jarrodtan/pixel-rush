@@ -14,10 +14,10 @@
 	External Variables
 */
 /******************************************************************************/
-extern u32 gGameStateInit;
-extern u32 gGameStateCurr;
-extern u32 gGameStatePrev;
-extern u32 gGameStateNext;
+extern u32 g_GameStateInit;
+extern u32 g_GameStateCurr;
+extern u32 g_GameStatePrev;
+extern u32 g_GameStateNext;
 
 extern void (*GameStateLoad)();
 extern void (*GameStateInit)();

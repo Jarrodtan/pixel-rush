@@ -19,6 +19,8 @@
 #include "GameStateMgr.h"
 #include "GameStateLevel1Platform.h"
 #include "GameStateLevel2Platform.h"
+#include "GameStateWinScreenPlatform.h"
+#include "GameStateLoseScreenPlatform.h"
 #include "Collision.h"
 #include "Particle.h"
 #include "GameState_MainMenu.h"

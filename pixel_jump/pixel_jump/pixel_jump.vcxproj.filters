@@ -11,7 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\GameState_Platform.cpp">
+    <ClCompile Include="..\Source\GameStateLevel1Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\GameStateMgr.cpp">
@@ -29,9 +29,18 @@
     <ClCompile Include="..\Source\GameState_MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\GameStateLevel2Platform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GameStateLoseScreenPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GameStateWinScreenPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\GameState_Platform.h">
+    <ClInclude Include="..\Source\GameStateLevel1Platform.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\GameStateList.h">
@@ -50,6 +59,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\GameState_MainMenu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\GameStateLevel2Platform.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\GameStateWinScreenPlatform.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\GameStateLoseScreenPlatform.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

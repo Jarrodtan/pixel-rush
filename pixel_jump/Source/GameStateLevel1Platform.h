@@ -42,4 +42,4 @@ void GameStateLevel1PlatformUnload(void);
 
 
 
-#endif // GAME_STATE_PLATFORM_H
+#endif // GAME_STATE_PLATFORM_LEVEL1_H
