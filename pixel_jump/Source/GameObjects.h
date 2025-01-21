@@ -89,14 +89,14 @@ public:
 	// general purpose counter (This variable can be used for the enemy state machine later)
 	f64 f_Counter;
 
-	// contructor
-	GameObjectInstance();
-
-	// factory function to create a game object instance
-	static GameObjectInstance* gameObjectInstanceCreate(u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, enum STATE startState);
-
-	// function to destroy a game object instance
-	static void gameObjectInstanceDestroy(GameObjectInstance* pInst);
 };
+/******************************************************************************/
+/*!
+	Non-member functions for GameObjectInstance
+*/
+/******************************************************************************/
+GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, GameObjectInstance* p_GameObjectInstanceList, u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState);
+void gameObjectInstanceDestroy(GameObjectInstance* p_Instance);
+
 
 #endif // GAMEOBJECT_HEADER

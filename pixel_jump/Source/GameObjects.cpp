@@ -1,37 +1,11 @@
 /******************************************************************************/
 /*!
-	Include Files and external variables
+	Include Files
 */
 /******************************************************************************/
 #include "main.h"
 
-GameObject* p_GameObjectList = nullptr;
-GameObjectInstance* p_GameObjectInstanceList = nullptr;
-
 //------------------------------------------------------------------------------
-
-/******************************************************************************/
-/*!
-	Constructor of the game object instance
-*/
-/******************************************************************************/
-GameObjectInstance::GameObjectInstance() {
-	// initialize the game object instance
-	p_GameObject = nullptr;
-	u_Flag = 0;
-	AEVec2Zero(&scale);
-	AEVec2Zero(&currPosition);
-	AEVec2Zero(&prevPosition);
-	AEVec2Zero(&currVelocity);
-	f_currDirection = 0.f;
-	transform = AEMtx33();
-	boundingBox = AABB();
-	i_gridCollisionFlag = 0;
-	p_userData = nullptr;
-	state = STATE_NONE;
-	innerState = INNER_STATE_ON_ENTER;
-	f_Counter = 0.0;
-}
 
 /******************************************************************************/
 /*!
@@ -58,7 +32,7 @@ GameObjectInstance::GameObjectInstance() {
 		the game object instance. Namely, p_GameObjectInstanceList and p_GameObjectList.
 */
 /******************************************************************************/
-GameObjectInstance* GameObjectInstance::gameObjectInstanceCreate(u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState) {
+GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, GameObjectInstance* p_GameObjectInstanceList, u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState) {
 	AEVec2 zero;
 	AEVec2Zero(&zero);
 
@@ -86,4 +60,12 @@ GameObjectInstance* GameObjectInstance::gameObjectInstanceCreate(u32 type, AEVec
 		}
 	}
 	return 0;
+}
+
+void gameObjectInstanceDestroy(GameObjectInstance* p_Instance) {
+	if (p_Instance->u_Flag == 0) {
+		return;
+	}
+
+	p_Instance->u_Flag = 0;
 }

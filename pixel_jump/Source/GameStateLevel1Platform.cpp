@@ -6,9 +6,32 @@
 #include "main.h"
 
 namespace {
+	s32 i_PlayerLives;
+	s32 i_PlayerInitialX;
+	s32 i_PlayerInitialY;
+	s32 i_TotalCoins;
+
+	// List of original objects
 	GameObject* p_GameObjectList = nullptr;
+	u32 u_GameObjectNum;
+
+	// List of object instances
 	GameObjectInstance* p_GameObjectInstanceList = nullptr;
+	u32 u_GameObjectInstanceNum;
+
+	// Binary map data
+	s32** p_MapData;
+	s32** p_BinaryCollisionArray;
+	s32 i_BINARY_MAP_WIDTH;
+	s32 i_BINARY_MAP_HEIGHT;
+
 	GameObjectInstance* p_BlackCell;
+	GameObjectInstance* p_WhiteCell;
+	AEMtx33 MapTransform;
+
+	// Pointer to player object
+	GameObjectInstance* p_Player;
+
 }
 
 /******************************************************************************/
@@ -22,7 +45,7 @@ void GameStateLevel1PlatformLoad(void) {
 	// allocate memory for the object instance
 	::p_GameObjectInstanceList = (GameObjectInstance*)calloc(GAME_OBJECT_INST_NUM_MAX, sizeof(GameObjectInstance));
 
-	AE_ASSERT_MESG(::p_GameObjectList, "Faile to calloc");
+	AE_ASSERT_MESG(::p_GameObjectList, "Fail to calloc");
 }
 
 /******************************************************************************/
@@ -37,7 +60,7 @@ void GameStateLevel1PlatformInit(void) {
 	//This object instance should not be visible. When rendering the grid cells, each time we have
 	//a non collision cell, we position this instance in the correct location and then we render it
 	AEVec2 scale = { 1.0f, 1.0f };
-	p_BlackCell = GameObjectInstance::gameObjectInstanceCreate(TYPE_OBJECT_EMPTY, &scale, 0, 0, 0.0f, STATE_NONE); // create empty object instance
+	p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_EMPTY, &scale, 0, 0, 0.0f, STATE_NONE); // create empty object instance
 	p_BlackCell->u_Flag ^= FLAG_VISIBLE;
 	p_BlackCell->u_Flag |= FLAG_NON_COLLIDABLE;
 }
@@ -80,7 +103,10 @@ void GameStateLevel1PlatformDraw(void) {
 */
 /******************************************************************************/
 void GameStateLevel1PlatformFree(void) {
-
+	// kill all objects in the list
+	for (u32 i{}; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
+		gameObjectInstanceDestroy(::p_GameObjectInstanceList + i);
+	}
 }
 
 /******************************************************************************/
@@ -89,6 +115,14 @@ void GameStateLevel1PlatformFree(void) {
 */
 /******************************************************************************/
 void GameStateLevel1PlatformUnload(void) {
+	// free all created mesh
+	for (u32 i{}; i < ::u_GameObjectNum; ++i) {
+		AEGfxMeshFree(::p_GameObjectList[i].p_Mesh);
+	}
 
+	delete[] ::p_GameObjectList;
+	delete[] ::p_GameObjectInstanceList;
+
+	FreeMapData(::i_BINARY_MAP_WIDTH, ::p_MapData, ::p_BinaryCollisionArray);
 }
 

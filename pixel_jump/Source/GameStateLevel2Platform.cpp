@@ -21,7 +21,7 @@ void GameStateLevel2PlatformLoad(void) {
 	// allocate memory for the object instance
 	p_GameObjectInstanceList = (GameObjectInstance*)calloc(GAME_OBJECT_INST_NUM_MAX, sizeof(GameObjectInstance));
 
-	AE_ASSERT_MESG(p_GameObjectList, "Faile to calloc");
+	AE_ASSERT_MESG(p_GameObjectList, "Fail to calloc");
 }
 
 /******************************************************************************/

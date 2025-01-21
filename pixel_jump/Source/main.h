@@ -26,6 +26,7 @@
 #include "GameState_MainMenu.h"
 #include "MeshCreation.h"
 #include "GameObjects.h"
+#include "FileReader.h"
 //-------------------------------------------------------------------------/
 
 /**************************************************************************/
@@ -38,15 +39,6 @@ extern f64 g_appTime;
 extern s8 g_Font;
 //-------------------------------------------------------------------------/
 
-/******************************************************************************/
-/*!
-	External Variables
-*/
-/******************************************************************************/
-extern GameObject* p_GameObjectList;
-extern GameObjectInstance* p_GameObjectInstanceList;
-//------------------------------------------------------------------------------
-
 /**************************************************************************/
 /*!
 	Defines (TODO: Read the variables of this section ideally from a file)
@@ -54,6 +46,18 @@ extern GameObjectInstance* p_GameObjectInstanceList;
 /**************************************************************************/
 const u32 GAME_OBJECT_NUM_MAX = 32;
 const u32 GAME_OBJECT_INST_NUM_MAX = 256;
+
+// set width and heigh
+const f32 RECTANGLE_WIDTH = 40.f;
+const f32 RECTANGLE_HEIGHT = 30.f;
+
+// gameplay related variables and values
+const f32 GRAVITY = -20.f;
+const f32 JUMP_VELOCITY = 11.f;
+const f32 PLAYER_MOVE_VELOCITY = 4.f;
+const f32 ENEMY_MOVE_VELOCITY = 7.5f;
+const f64 ENEMY_IDLE_TIME = 2.0;
+const s32 PLAYER_LIVES = 3;
 
 // flags
 const u32 FLAG_ACTIVE = 0x00000001;
