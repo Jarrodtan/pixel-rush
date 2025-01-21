@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-	Include Files and external variables
+	Include Files and static variables
 */
 /******************************************************************************/
 #include "main.h"
@@ -56,9 +56,6 @@ void GameStateLevel1PlatformLoad(void) {
 void GameStateLevel1PlatformInit(void) {
 	AESysSetWindowTitle("Level 1");
 
-	//Create an object instance representing the black cell.
-	//This object instance should not be visible. When rendering the grid cells, each time we have
-	//a non collision cell, we position this instance in the correct location and then we render it
 	AEVec2 scale = { 1.0f, 1.0f };
 	p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_EMPTY, &scale, 0, 0, 0.0f, STATE_NONE); // create empty object instance
 	p_BlackCell->u_Flag ^= FLAG_VISIBLE;

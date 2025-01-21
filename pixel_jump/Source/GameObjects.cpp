@@ -32,7 +32,13 @@
 		the game object instance. Namely, p_GameObjectInstanceList and p_GameObjectList.
 */
 /******************************************************************************/
-GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, GameObjectInstance* p_GameObjectInstanceList, u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState) {
+GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, 
+											 GameObjectInstance* p_GameObjectInstanceList, 
+											 u32 type,
+											 AEVec2* scale,
+											 AEVec2* position,
+											 AEVec2* velocity,
+											 f32 direction, STATE startState) {
 	AEVec2 zero;
 	AEVec2Zero(&zero);
 

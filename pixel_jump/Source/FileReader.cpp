@@ -7,7 +7,11 @@
 
 //-----------------------------------------------------------------------------/
 
-s32 ImportMapDataFromFile(const char* p_FileName, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT, s32**& r_MapData, s32**& r_BinaryCollisionArray) {
+s32 ImportMapDataFromFile(const char* p_FileName, 
+						  s32& r_BINARY_MAP_WIDTH, 
+						  s32& r_BINARY_MAP_HEIGHT, 
+						  s32**& r_MapData, 
+						  s32**& r_BinaryCollisionArray) {
 	std::fstream file;
 	file.open(p_FileName);
 
