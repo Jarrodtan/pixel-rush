@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Collision.cpp" />
+    <ClCompile Include="..\Source\FileReader.cpp" />
     <ClCompile Include="..\Source\GameObjects.cpp" />
     <ClCompile Include="..\Source\GameStateLevel2Platform.cpp" />
     <ClCompile Include="..\Source\GameStateLoseScreenPlatform.cpp" />
@@ -25,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Collision.h" />
+    <ClInclude Include="..\Source\FileReader.h" />
     <ClInclude Include="..\Source\GameStateLevel2Platform.h" />
     <ClInclude Include="..\Source\GameStateList.h" />
     <ClInclude Include="..\Source\GameStateLoseScreenPlatform.h" />
