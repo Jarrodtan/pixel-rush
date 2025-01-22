@@ -222,8 +222,6 @@ void GameStateLevel1PlatformInit(void) {
 		}
 	}
 
-	AEVec2 scale = { 1.0f, 1.0f };
-	p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_EMPTY, &scale, 0, 0, 0.0f, STATE_NONE); // create empty object instance
 }
 
 /******************************************************************************/
