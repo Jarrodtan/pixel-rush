@@ -7,13 +7,13 @@
 
 //-----------------------------------------------------------------------------/
 
-s32 ImportMapDataFromFile(const char* p_FileName, 
+s32 ImportMapDataFromFile(std::string s_FileName, 
 						  s32& r_BINARY_MAP_WIDTH, 
 						  s32& r_BINARY_MAP_HEIGHT, 
 						  s32**& r_MapData, 
 						  s32**& r_BinaryCollisionArray) {
 	std::fstream file;
-	file.open(p_FileName);
+	file.open(s_FileName);
 
 	if (!file.is_open()) {
 		AE_ASSERT_MESG(0, "Failed to open file");
@@ -21,7 +21,9 @@ s32 ImportMapDataFromFile(const char* p_FileName,
 	}
 
 	// get the width and height of the map
-	file >> r_BINARY_MAP_WIDTH >> r_BINARY_MAP_HEIGHT;
+	std::string s_Temp;
+	file >> s_Temp >> r_BINARY_MAP_WIDTH;
+	file >> s_Temp >> r_BINARY_MAP_HEIGHT;
 
 	// allocate memory for the map data
 	r_MapData = new s32 * [r_BINARY_MAP_WIDTH];

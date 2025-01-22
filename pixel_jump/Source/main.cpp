@@ -31,12 +31,12 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 #endif
 
 	// Initialize the system
-	AESysInit(instanceH, show, 800, 600, 1, 60, false, NULL);
+	AESysInit(instanceH, show, 1600, 900, 1, 60, false, NULL);
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	//Create your font here, and use it for all your levels
-	g_Font = AEGfxCreateFont("../Assets/Fonts/Arial Italic.ttf", 30);// load font 
+	g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);// load font 
 
-	GameStateMgrInit(GS_MAINMENU);
+	GameStateMgrInit(GS_PLATFORM_LVL1);
 
 	while (g_GameStateCurr != GS_QUIT)
 	{

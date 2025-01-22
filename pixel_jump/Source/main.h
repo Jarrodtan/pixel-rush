@@ -47,9 +47,9 @@ extern s8 g_Font;
 const u32 GAME_OBJECT_NUM_MAX = 32;
 const u32 GAME_OBJECT_INST_NUM_MAX = 256;
 
-// set width and heigh
-const f32 RECTANGLE_WIDTH = 40.f;
-const f32 RECTANGLE_HEIGHT = 30.f;
+// set width and heigh (TODO: Needa change this to read depending on the resolution and not magic numbers)
+const f32 RECTANGLE_WIDTH = 1600.f / 20.f;
+const f32 RECTANGLE_HEIGHT = 900.f / 20.f;
 
 // gameplay related variables and values
 const f32 GRAVITY = -20.f;

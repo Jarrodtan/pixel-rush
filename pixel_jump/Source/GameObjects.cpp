@@ -50,7 +50,7 @@ GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList,
 		if (p_Instance->u_Flag == 0) {
 			// use it to create the new instance
 			p_Instance->p_GameObject = p_GameObjectList + type;
-			p_Instance->i_gridCollisionFlag = FLAG_ACTIVE | FLAG_VISIBLE;
+			p_Instance->u_Flag = FLAG_ACTIVE | FLAG_VISIBLE;
 			p_Instance->scale = *scale;
 			p_Instance->currPosition = position ? *position : zero;
 			p_Instance->currVelocity = velocity ? *velocity : zero;
@@ -59,7 +59,7 @@ GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList,
 			p_Instance->i_gridCollisionFlag = 0;
 			p_Instance->state = startState;
 			p_Instance->innerState = INNER_STATE_ON_ENTER;
-			p_Instance->f_Counter = 0.0;
+			p_Instance->f_Counter = 0;
 
 			// return the new instance
 			return p_Instance;

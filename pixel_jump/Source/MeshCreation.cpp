@@ -38,8 +38,8 @@ void Mesh::CreateCircleMesh() {
 	for (int i = 0; i < slices; ++i) {
 		AEGfxTriAdd(
 			0.0f, 0.0f, 0x00000000, 0.5f, 0.5f,
-			(float)cosf((float)i / slices * 2.0f * PI), (float)sinf((float)i / slices * 2.0f * PI), 0x00000000, 0.5f + 0.5f * (float)cosf((float)i / slices * 2.0f * PI), 0.5f + 0.5f * (float)sinf((float)i / slices * 2.0f * PI),
-			(float)cosf((float)(i + 1) / slices * 2.0f * PI), (float)sinf((float)(i + 1) / slices * 2.0f * PI), 0x00000000, 0.5f + 0.5f * (float)cosf((float)(i + 1) / slices * 2.0f * PI), 0.5f + 0.5f * (float)sinf((float)(i + 1) / slices * 2.0f * PI)
+			(f32)cosf((f32)i / slices * 2.0f * PI), (f32)sinf((f32)i / slices * 2.0f * PI), 0x00000000, 0.5f + 0.5f * (f32)cosf((f32)i / slices * 2.0f * PI), 0.5f + 0.5f * (f32)sinf((f32)i / slices * 2.0f * PI),
+			(f32)cosf((f32)(i + 1) / slices * 2.0f * PI), (f32)sinf((f32)(i + 1) / slices * 2.0f * PI), 0x00000000, 0.5f + 0.5f * (f32)cosf((f32)(i + 1) / slices * 2.0f * PI), 0.5f + 0.5f * (f32)sinf((f32)(i + 1) / slices * 2.0f * PI)
 		);
 
 	}
