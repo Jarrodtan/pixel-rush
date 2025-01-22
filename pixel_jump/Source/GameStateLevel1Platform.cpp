@@ -263,21 +263,25 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Player->currVelocity.y == 0) {
 			p_Player->currVelocity.y = JUMP_VELOCITY;
 		}
-		else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
+
+
+		// small bug/feature(?) that allows player to jump infinitely when colliding the wall
+		// I just want to keep this to test the grid collision for now
+		//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
 	}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
