@@ -4,6 +4,8 @@
 */
 /******************************************************************************/
 #include "main.h"
+#include "Camera.h"
+
 
 namespace {
 	s32 i_PlayerLives;
@@ -32,6 +34,11 @@ namespace {
 	// Pointer to player object
 	GameObjectInstance* p_Player;
 	s32 i_Jump;
+
+	s32 deltaWheel{};
+	s32 currentDeltaWheel{};
+	Camera camera;
+
 }
 
 /******************************************************************************/
@@ -168,6 +175,7 @@ void GameStateLevel1PlatformLoad(void) {
 	AEMtx33Trans(&Translate, static_cast<f32>(-i_BINARY_MAP_WIDTH / 2.0), static_cast<f32>(-i_BINARY_MAP_HEIGHT / 2.0));
 	AEMtx33Scale(&Scale, RECTANGLE_WIDTH, RECTANGLE_HEIGHT);
 	AEMtx33Concat(&::MapTransform, &Scale, &Translate);
+	camera.changeLevelSettings(static_cast<f32>(i_BINARY_MAP_WIDTH), static_cast<f32>(i_BINARY_MAP_HEIGHT));
 }
 
 /******************************************************************************/
@@ -244,6 +252,13 @@ void GameStateLevel1PlatformUpdate(void) {
 	}
 	else if (AEInputCheckTriggered(AEVK_4)) {
 		g_GameStateNext = GS_LOSE;
+	}
+
+	AEInputMouseWheelDelta(&currentDeltaWheel);
+	if (currentDeltaWheel != deltaWheel) {
+		deltaWheel = currentDeltaWheel;
+		camera.changeZoomVal(deltaWheel);
+
 	}
 
 	s32 i{}, j{};
@@ -401,7 +416,7 @@ void GameStateLevel1PlatformUpdate(void) {
 		AEMtx33Concat(&p_Instance->transform, &Translate, &p_Instance->transform);
 	}
 
-	AEGfxSetCamPosition(0, 0);
+	//AEGfxSetCamPosition(1, 1);
 }
 
 /******************************************************************************/
@@ -421,8 +436,8 @@ void GameStateLevel1PlatformDraw(void) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
 			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
 			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
+			camera.applyCameraTransform(FinalCellTransform, p_Player->currPosition.x, p_Player->currPosition.y);
 			AEGfxSetTransform(FinalCellTransform.m);
-
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case TYPE_OBJECT_EMPTY:
 				AEGfxMeshDraw(::p_BlackCell->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
@@ -447,7 +462,9 @@ void GameStateLevel1PlatformDraw(void) {
 
 		AEMtx33 FinalTransform{};
 		AEMtx33Concat(&FinalTransform, &::MapTransform, &p_Instance->transform);
+		camera.applyCameraTransform(FinalTransform, p_Player->currPosition.x, p_Player->currPosition.y);
 		AEGfxSetTransform(FinalTransform.m);
+
 
 		AEGfxMeshDraw(p_Instance->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 	}

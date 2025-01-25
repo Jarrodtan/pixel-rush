@@ -17,7 +17,6 @@
 
 // Object Type
 enum TYPE_OBJECT {
-	TYPE_OBJECT_NONE,	// used to indicate no object
 	TYPE_OBJECT_EMPTY,	// used in the map grid to indicate no object
 	TYPE_OBJECT_WALL,	// used in the map grid to indicate a wall or floor
 	TYPE_OBJECT_PLAYER, // used to indicate the player object

@@ -16,6 +16,7 @@
 #include "AEEngine.h"
 #include "math.h"
 
+#include "Camera.h"
 #include "GameStateMgr.h"
 #include "GameStateLevel1Platform.h"
 #include "GameStateLevel2Platform.h"

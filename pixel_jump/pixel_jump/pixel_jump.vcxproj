@@ -23,6 +23,7 @@
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\MeshCreation.cpp" />
     <ClCompile Include="..\Source\Particle.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Collision.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="..\Source\MeshCreation.h" />
     <ClInclude Include="..\Source\Particle.h" />
     <ClInclude Include="..\Source\GameObjects.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
