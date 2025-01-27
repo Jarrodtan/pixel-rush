@@ -3,8 +3,12 @@
 #include <iostream>
 
 void Camera::applyCameraTransform(AEMtx33& concatTo, f32 anchorX, f32 anchorY) {
+
+	//THE X AND Y COORDINATES TO ANCHOR TO
 	f32 snapToX{ this->levelWidth - anchorX };
 	f32 snapToY{ this->levelHeight - anchorY };
+
+
 	AEMtx33 camTrans{ 0 }, zoom{ 0 };
 	AEMtx33Scale(&zoom, this->zoomValue, this->zoomValue);
 	AEMtx33Trans(&camTrans, snapToX, snapToY);
