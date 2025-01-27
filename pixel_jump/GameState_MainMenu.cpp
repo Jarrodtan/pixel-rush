@@ -29,20 +29,20 @@ void GameStateMainMenuInit(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuUpdate(void) {
-	if (AEInputCheckTriggered(VK_ESCAPE)) {
-		g_GameStateNext = GS_QUIT;
+	if (AEInputCheckTriggered(AEVK_Q)) {
+		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 	else if (AEInputCheckTriggered(AEVK_1)) {
-		g_GameStateNext = GS_PLATFORM_LVL1;
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
 	}
 	else if (AEInputCheckTriggered(AEVK_2)) {
-		g_GameStateNext = GS_PLATFORM_LVL2;
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 	}
 	else if (AEInputCheckTriggered(AEVK_3)) {
-		g_GameStateNext = GS_WIN;
+		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 	else if (AEInputCheckTriggered(AEVK_4)) {
-		g_GameStateNext = GS_LOSE;
+		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 }
 

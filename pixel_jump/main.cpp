@@ -36,38 +36,38 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	//Create your font here, and use it for all your levels
 	g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);// load font 
 
-	GameStateMgrInit(GS_PLATFORM_LVL1);
+	GameStateManager::GameStateMgrInit(States::GS_PLATFORM_LVL1);
 
-	while (g_GameStateCurr != GS_QUIT)
+	while (GameStateManager::g_GameStateCurr != States::GS_QUIT)
 	{
 		// reset the system modules
 		AESysReset();
 
 		// If not restarting, load the gamestate
-		if (g_GameStateCurr != GS_RESTART)
+		if (GameStateManager::g_GameStateCurr != States::GS_RESTART)
 		{
-			GameStateMgrUpdate();
-			GameStateLoad();
+			GameStateManager::GameStateMgrUpdate();
+			GameStateManager::GameStateLoad();
 		}
 		else
-			g_GameStateNext = g_GameStateCurr = g_GameStatePrev;
+			GameStateManager::g_GameStateNext = GameStateManager::g_GameStateCurr = GameStateManager::g_GameStatePrev;
 
 		// Initialize the gamestate
-		GameStateInit();
+		GameStateManager::GameStateInit();
 
-		while (g_GameStateCurr == g_GameStateNext)
+		while (GameStateManager::g_GameStateCurr == GameStateManager::g_GameStateNext)
 		{
 			AESysFrameStart();
 
-			GameStateUpdate();
+			GameStateManager::GameStateUpdate();
 
-			GameStateDraw();
+			GameStateManager::GameStateDraw();
 
 			AESysFrameEnd();
 
 			// check if forcing the application to quit
 			if (AESysDoesWindowExist() == false) //((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
-				g_GameStateNext = GS_QUIT;
+				GameStateManager::g_GameStateNext = States::GS_QUIT;
 
 			g_dt = (f32)AEFrameRateControllerGetFrameTime();
 
@@ -78,13 +78,13 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 			g_appTime += g_dt;
 		}
 
-		GameStateFree();
+		GameStateManager::GameStateFree();
 
-		if (g_GameStateNext != GS_RESTART)
-			GameStateUnload();
+		if (GameStateManager::g_GameStateNext != States::GS_RESTART)
+			GameStateManager::GameStateUnload();
 
-		g_GameStatePrev = g_GameStateCurr;
-		g_GameStateCurr = g_GameStateNext;
+		GameStateManager::g_GameStatePrev = GameStateManager::g_GameStateCurr;
+		GameStateManager::g_GameStateCurr = GameStateManager::g_GameStateNext;
 	}
 
 	//free you font here
