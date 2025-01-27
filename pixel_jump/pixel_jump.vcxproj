@@ -23,6 +23,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="RenderHelper.cpp" />
+    <ClCompile Include="RenderHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
