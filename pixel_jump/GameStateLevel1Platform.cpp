@@ -14,11 +14,11 @@ namespace {
 	s32 i_TotalCoins;
 
 	// List of original objects
-	GameObject* p_GameObjectList = nullptr;
+	Objects::GameObject* p_GameObjectList = nullptr;
 	u32 u_GameObjectNum;
 
 	// List of object instances
-	GameObjectInstance* p_GameObjectInstanceList = nullptr;
+	Objects::GameObjectInstance* p_GameObjectInstanceList = nullptr;
 	u32 u_GameObjectInstanceNum;
 
 	// Binary map data
@@ -27,12 +27,12 @@ namespace {
 	s32 i_BINARY_MAP_WIDTH;
 	s32 i_BINARY_MAP_HEIGHT;
 
-	GameObjectInstance* p_BlackCell;
-	GameObjectInstance* p_WhiteCell;
+	Objects::GameObjectInstance* p_BlackCell;
+	Objects::GameObjectInstance* p_WhiteCell;
 	AEMtx33 MapTransform;
 
 	// Pointer to player object
-	GameObjectInstance* p_Player;
+	Objects::GameObjectInstance* p_Player;
 	s32 i_Jump;
 
 	s32 deltaWheel{};
@@ -48,18 +48,18 @@ namespace {
 /******************************************************************************/
 void GameStateLevel1PlatformLoad(void) {
 	// allocate memory for the object type and mesh
-	::p_GameObjectList = (GameObject*)calloc(GAME_OBJECT_NUM_MAX, sizeof(GameObject));
+	::p_GameObjectList = (Objects::GameObject*)calloc(GAME_OBJECT_NUM_MAX, sizeof(Objects::GameObject));
 	// allocate memory for the object instance
-	::p_GameObjectInstanceList = (GameObjectInstance*)calloc(GAME_OBJECT_INST_NUM_MAX, sizeof(GameObjectInstance));
+	::p_GameObjectInstanceList = (Objects::GameObjectInstance*)calloc(GAME_OBJECT_INST_NUM_MAX, sizeof(Objects::GameObjectInstance));
 
 	AE_ASSERT_MESG(::p_GameObjectList, "Fail to calloc");
 	::u_GameObjectNum = 0;
 
-	GameObject* p_Object{};
+	Objects::GameObject* p_Object{};
 
 	// create the black cell
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = TYPE_OBJECT_EMPTY;
+	p_Object->u_Type = Objects::TYPE_OBJECT_EMPTY;
 	{
 		AEGfxMeshStart();
 		AEGfxTriAdd(
@@ -78,7 +78,7 @@ void GameStateLevel1PlatformLoad(void) {
 
 	// create the white cell
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = TYPE_OBJECT_WALL;
+	p_Object->u_Type = Objects::TYPE_OBJECT_WALL;
 	{
 		AEGfxMeshStart();
 		AEGfxTriAdd(
@@ -98,7 +98,7 @@ void GameStateLevel1PlatformLoad(void) {
 	// create the player object
 	
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = TYPE_OBJECT_PLAYER;
+	p_Object->u_Type = Objects::TYPE_OBJECT_PLAYER;
 	{
 		AEGfxMeshStart();
 		AEGfxTriAdd(
@@ -118,7 +118,7 @@ void GameStateLevel1PlatformLoad(void) {
 
 	// create the enemy object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = TYPE_OBJECT_ENEMY;
+	p_Object->u_Type = Objects::TYPE_OBJECT_ENEMY;
 	{
 		AEGfxMeshStart();
 		AEGfxTriAdd(
@@ -138,7 +138,7 @@ void GameStateLevel1PlatformLoad(void) {
 
 	// create the coin object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = TYPE_OBJECT_COIN;
+	p_Object->u_Type = Objects::TYPE_OBJECT_COIN;
 	{
 		AEGfxMeshStart();
 		u32 u_Slices = 36;
@@ -164,9 +164,9 @@ void GameStateLevel1PlatformLoad(void) {
 	::i_BINARY_MAP_HEIGHT = 0;
 
 	std::string s_FilePath = "Assets/Maps/Test1.txt";
-	if (!ImportMapDataFromFile(s_FilePath, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_MapData, ::p_BinaryCollisionArray)) {
+	if (!FileReader::ImportMapDataFromFile(s_FilePath, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_MapData, ::p_BinaryCollisionArray)) {
 		AE_ASSERT_MESG(0, "Failed to import map data");
-		g_GameStateNext = GS_QUIT;
+		GameStateManager::g_GameStateNext = States::GS_QUIT;
 		return;
 	}
 
@@ -192,11 +192,11 @@ void GameStateLevel1PlatformInit(void) {
 	::i_TotalCoins = 0;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
-	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, STATE_NONE); 
+	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
 	::p_BlackCell->u_Flag ^= FLAG_VISIBLE;
 	::p_BlackCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
-	::p_WhiteCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_WALL, &Scale, 0, 0, 0.f, STATE_NONE);
+	::p_WhiteCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_WALL, &Scale, 0, 0, 0.f, Objects::STATE_NONE);
 	::p_WhiteCell->u_Flag ^= FLAG_VISIBLE;
 	::p_WhiteCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
@@ -212,19 +212,19 @@ void GameStateLevel1PlatformInit(void) {
 			AEVec2Set(&Velocity, static_cast<f32>(0), static_cast<f32>(0));
 
 			switch (::p_MapData[i][j]) {
-			case TYPE_OBJECT_PLAYER:
-				::p_Player = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_PLAYER, &Scale, &Position, &Velocity, 0.f, STATE_NONE);
+			case Objects::TYPE_OBJECT_PLAYER:
+				::p_Player = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PLAYER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				::i_PlayerInitialX = i;
 				::i_PlayerInitialY = j;
 				break;
 
-			case TYPE_OBJECT_COIN:
-				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_COIN, &Scale, &Position, &Velocity, 0.f, STATE_NONE);
+			case Objects::TYPE_OBJECT_COIN:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_COIN, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				++::i_TotalCoins;
 				break;
 
-			case TYPE_OBJECT_ENEMY:
-				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, TYPE_OBJECT_ENEMY, &Scale, &Position, &Velocity, 0.f, STATE_GOING_LEFT);
+			case Objects::TYPE_OBJECT_ENEMY:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_ENEMY, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
 				break;
 			}
 		}
@@ -239,19 +239,19 @@ void GameStateLevel1PlatformInit(void) {
 /******************************************************************************/
 void GameStateLevel1PlatformUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
-		g_GameStateNext = GS_QUIT;
+		GameStateManager::g_GameStateNext = States::GS_QUIT;
 	}
 	else if (AEInputCheckTriggered(AEVK_1)) {
-		g_GameStateNext = GS_PLATFORM_LVL1;
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
 	}
 	else if (AEInputCheckTriggered(AEVK_2)) {
-		g_GameStateNext = GS_PLATFORM_LVL2;
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 	}
 	else if (AEInputCheckTriggered(AEVK_3)) {
-		g_GameStateNext = GS_WIN;
+		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 	else if (AEInputCheckTriggered(AEVK_4)) {
-		g_GameStateNext = GS_LOSE;
+		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 
 	AEInputMouseWheelDelta(&currentDeltaWheel);
@@ -262,7 +262,7 @@ void GameStateLevel1PlatformUpdate(void) {
 	}
 
 	s32 i{}, j{};
-	GameObjectInstance* p_Instance{};
+	Objects::GameObjectInstance* p_Instance{};
 
 	if (AEInputCheckCurr(AEVK_D)) {
 		::p_Player->currVelocity.x = PLAYER_MOVE_VELOCITY;
@@ -278,25 +278,21 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Player->currVelocity.y == 0) {
 			p_Player->currVelocity.y = JUMP_VELOCITY;
 		}
-
-
-		// small bug/feature(?) that allows player to jump infinitely when colliding the wall
-		// I just want to keep this to test the grid collision for now
-		//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
+		else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
+			p_Player->currVelocity.y = JUMP_VELOCITY;
+		}
+		else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+			p_Player->currVelocity.y = JUMP_VELOCITY;
+		}
+		else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+			p_Player->currVelocity.y = JUMP_VELOCITY;
+		}
+		else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+			p_Player->currVelocity.y = JUMP_VELOCITY;
+		}
+		else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+			p_Player->currVelocity.y = JUMP_VELOCITY;
+		}
 	}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
@@ -304,10 +300,10 @@ void GameStateLevel1PlatformUpdate(void) {
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
-		if (p_Instance->p_GameObject->u_Type == TYPE_OBJECT_PLAYER) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_PLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 		}
-		else if (p_Instance->p_GameObject->u_Type == TYPE_OBJECT_ENEMY) {
+		else if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			// TODO: Call the enemy state machine
 		}
@@ -343,33 +339,33 @@ void GameStateLevel1PlatformUpdate(void) {
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
-		p_Instance->i_gridCollisionFlag = CheckInstanceBinaryMapCollision(::p_BinaryCollisionArray, p_Instance->currPosition.x, p_Instance->currPosition.y, p_Instance->scale.x, p_Instance->scale.y);
+		p_Instance->i_gridCollisionFlag = Collision::CheckInstanceBinaryMapCollision(::p_BinaryCollisionArray, p_Instance->currPosition.x, p_Instance->currPosition.y, p_Instance->scale.x, p_Instance->scale.y);
 
 		if (p_Instance->i_gridCollisionFlag & COLLISION_BOTTOM) { 
-			SnapToCell(&p_Instance->currPosition.y);
+			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
 		}
 		if (p_Instance->i_gridCollisionFlag & COLLISION_TOP) {
-			SnapToCell(&p_Instance->currPosition.y);
+			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
 		}
-		if (p_Instance->p_GameObject->u_Type == TYPE_OBJECT_ENEMY) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) { 
-				SnapToCell(&p_Instance->currPosition.x);
+				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
 			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT && p_Instance->currVelocity.x > 0) { 
-				SnapToCell(&p_Instance->currPosition.x);
+				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
 		}
 		else {
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT) { 
-				SnapToCell(&p_Instance->currPosition.x);
+				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
 			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) { 
-				SnapToCell(&p_Instance->currPosition.x);
+				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
 		}
@@ -382,8 +378,8 @@ void GameStateLevel1PlatformUpdate(void) {
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0 || (p_Instance->u_Flag & FLAG_VISIBLE) == 0) continue;
 
 		switch (p_Instance->p_GameObject->u_Type) {
-		case TYPE_OBJECT_COIN:
-			if (CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+		case Objects::TYPE_OBJECT_COIN:
+			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalCoins;
 				if (::i_TotalCoins == 0) {
@@ -392,8 +388,8 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 			break;
 
-			case TYPE_OBJECT_ENEMY:
-			if (CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+		case Objects::TYPE_OBJECT_ENEMY:
+			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--::i_PlayerLives;
 				if (::i_PlayerLives == 0) {
 					// TODO: Go to lose state
@@ -439,11 +435,11 @@ void GameStateLevel1PlatformDraw(void) {
 			camera.applyCameraTransform(FinalCellTransform, p_Player->currPosition.x, p_Player->currPosition.y);
 			AEGfxSetTransform(FinalCellTransform.m);
 			switch (::p_BinaryCollisionArray[i][j]) {
-			case TYPE_OBJECT_EMPTY:
+			case Objects::TYPE_OBJECT_EMPTY:
 				AEGfxMeshDraw(::p_BlackCell->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 				break;
 
-			case TYPE_OBJECT_WALL:
+			case Objects::TYPE_OBJECT_WALL:
 				AEGfxMeshDraw(::p_WhiteCell->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 				break;
 
@@ -454,7 +450,7 @@ void GameStateLevel1PlatformDraw(void) {
 	}
 
 	for (s32 i{}; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
-		GameObjectInstance* p_Instance = ::p_GameObjectInstanceList + i;
+		Objects::GameObjectInstance* p_Instance = ::p_GameObjectInstanceList + i;
 
 		if (0 == (p_Instance->u_Flag & FLAG_ACTIVE) || 0 == (p_Instance->u_Flag & FLAG_VISIBLE)) {
 			continue;
@@ -496,6 +492,6 @@ void GameStateLevel1PlatformUnload(void) {
 	delete[] ::p_GameObjectList;
 	delete[] ::p_GameObjectInstanceList;
 
-	FreeMapData(::i_BINARY_MAP_WIDTH, ::p_MapData, ::p_BinaryCollisionArray);
+	FileReader::FreeMapData(::i_BINARY_MAP_WIDTH, ::p_MapData, ::p_BinaryCollisionArray);
 }
 
