@@ -9,84 +9,92 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4c229b54-2c37-4868-aa57-bb9a5860f78b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\GameStateLevel1Platform.cpp">
+    <ClCompile Include="GameState_MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameStateMgr.cpp">
+    <ClCompile Include="GameStateLevel1Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\main.cpp">
+    <ClCompile Include="GameStateLevel2Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Particle.cpp">
+    <ClCompile Include="GameStateLoseScreenPlatform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Collision.cpp">
+    <ClCompile Include="GameStateMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameState_MainMenu.cpp">
+    <ClCompile Include="GameStateWinScreenPlatform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameStateLevel2Platform.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameStateLoseScreenPlatform.cpp">
+    <ClCompile Include="MeshCreation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameStateWinScreenPlatform.cpp">
+    <ClCompile Include="Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\MeshCreation.cpp">
+    <ClCompile Include="Collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\GameObjects.cpp">
+    <ClCompile Include="FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\FileReader.cpp">
+    <ClCompile Include="GameObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\GameStateLevel1Platform.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameStateLevel1Platform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameStateList.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameStateLevel2Platform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameStateMgr.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameStateList.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\main.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameStateLoseScreenPlatform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Particle.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameStateMgr.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Collision.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameStateWinScreenPlatform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameState_MainMenu.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameStateLevel2Platform.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="MeshCreation.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameStateWinScreenPlatform.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameStateLoseScreenPlatform.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\MeshCreation.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="FileReader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\GameObjects.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameObjects.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\FileReader.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GameState_MainMenu.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Assets\Maps\Test1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

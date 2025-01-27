@@ -11,33 +11,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Collision.cpp" />
-    <ClCompile Include="..\Source\FileReader.cpp" />
-    <ClCompile Include="..\Source\GameObjects.cpp" />
-    <ClCompile Include="..\Source\GameStateLevel2Platform.cpp" />
-    <ClCompile Include="..\Source\GameStateLoseScreenPlatform.cpp" />
-    <ClCompile Include="..\Source\GameStateMgr.cpp" />
-    <ClCompile Include="..\Source\GameStateWinScreenPlatform.cpp" />
-    <ClCompile Include="..\Source\GameState_MainMenu.cpp" />
-    <ClCompile Include="..\Source\GameStateLevel1Platform.cpp" />
-    <ClCompile Include="..\Source\main.cpp" />
-    <ClCompile Include="..\Source\MeshCreation.cpp" />
-    <ClCompile Include="..\Source\Particle.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="GameObjects.cpp" />
+    <ClCompile Include="GameStateLevel1Platform.cpp" />
+    <ClCompile Include="GameStateLevel2Platform.cpp" />
+    <ClCompile Include="GameStateLoseScreenPlatform.cpp" />
+    <ClCompile Include="GameStateMgr.cpp" />
+    <ClCompile Include="GameStateWinScreenPlatform.cpp" />
+    <ClCompile Include="GameState_MainMenu.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MeshCreation.cpp" />
+    <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Collision.h" />
-    <ClInclude Include="..\Source\FileReader.h" />
-    <ClInclude Include="..\Source\GameStateLevel2Platform.h" />
-    <ClInclude Include="..\Source\GameStateList.h" />
-    <ClInclude Include="..\Source\GameStateLoseScreenPlatform.h" />
-    <ClInclude Include="..\Source\GameStateMgr.h" />
-    <ClInclude Include="..\Source\GameStateWinScreenPlatform.h" />
-    <ClInclude Include="..\Source\GameState_MainMenu.h" />
-    <ClInclude Include="..\Source\GameStateLevel1Platform.h" />
-    <ClInclude Include="..\Source\main.h" />
-    <ClInclude Include="..\Source\MeshCreation.h" />
-    <ClInclude Include="..\Source\Particle.h" />
-    <ClInclude Include="..\Source\GameObjects.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="FileReader.h" />
+    <ClInclude Include="GameObjects.h" />
+    <ClInclude Include="GameStateLevel1Platform.h" />
+    <ClInclude Include="GameStateLevel2Platform.h" />
+    <ClInclude Include="GameStateList.h" />
+    <ClInclude Include="GameStateLoseScreenPlatform.h" />
+    <ClInclude Include="GameStateMgr.h" />
+    <ClInclude Include="GameStateWinScreenPlatform.h" />
+    <ClInclude Include="GameState_MainMenu.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="MeshCreation.h" />
+    <ClInclude Include="Particle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Assets\Maps\Test1.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
