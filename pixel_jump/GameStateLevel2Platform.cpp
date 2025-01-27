@@ -5,8 +5,6 @@
 /******************************************************************************/
 #include "main.h"
 
-static GameObject* p_GameObjectList = nullptr;
-static GameObjectInstance* p_GameObjectInstanceList = nullptr;
 
 //-----------------------------------------------------------------------------/
 
@@ -16,12 +14,7 @@ static GameObjectInstance* p_GameObjectInstanceList = nullptr;
 */
 /******************************************************************************/
 void GameStateLevel2PlatformLoad(void) {
-	// allocate memory for the object type and mesh
-	p_GameObjectList = (GameObject*)calloc(GAME_OBJECT_NUM_MAX, sizeof(GameObject));
-	// allocate memory for the object instance
-	p_GameObjectInstanceList = (GameObjectInstance*)calloc(GAME_OBJECT_INST_NUM_MAX, sizeof(GameObjectInstance));
 
-	AE_ASSERT_MESG(p_GameObjectList, "Fail to calloc");
 }
 
 /******************************************************************************/
@@ -40,19 +33,19 @@ void GameStateLevel2PlatformInit(void) {
 /******************************************************************************/
 void GameStateLevel2PlatformUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_Q)) {
-		g_GameStateNext = GS_MAINMENU;
+		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 	else if (AEInputCheckTriggered(AEVK_1)) {
-		g_GameStateNext = GS_PLATFORM_LVL1;
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
 	}
 	else if (AEInputCheckTriggered(AEVK_2)) {
-		g_GameStateNext = GS_PLATFORM_LVL2;
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 	}
 	else if (AEInputCheckTriggered(AEVK_3)) {
-		g_GameStateNext = GS_WIN;
+		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 	else if (AEInputCheckTriggered(AEVK_4)) {
-		g_GameStateNext = GS_LOSE;
+		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 }
 
