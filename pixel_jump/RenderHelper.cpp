@@ -38,7 +38,7 @@ namespace Render {
 			AEGfxMeshStart();
 			s32 numSlices = 32;
 			AEVec2 vertex[3]{ 0.f,0.5f,0.f,0.5f,0.f,0.5f };
-			for (s32 i = 1; i < numSlices; ++i) {
+			for (s32 i = 1; i < numSlices + 1; ++i) {
 				AEMtx33 ts{};
 				AEMtx33Rot(&ts, 2 * PI / numSlices * i);
 				AEMtx33MultVec(&vertex[1], &ts, &vertex[2]);
