@@ -373,6 +373,7 @@ void GameStateLevel1PlatformDraw(void) {
 
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}
+
 }
 
 /******************************************************************************/
@@ -393,11 +394,6 @@ void GameStateLevel1PlatformFree(void) {
 */
 /******************************************************************************/
 void GameStateLevel1PlatformUnload(void) {
-	// free all created mesh
-	for (u32 i{}; i < ::u_GameObjectNum; ++i) {
-		AEGfxMeshFree(::p_GameObjectList[i].p_Mesh);
-	}
-
 	delete[] ::p_GameObjectList;
 	delete[] ::p_GameObjectInstanceList;
 

@@ -5,10 +5,50 @@
 #include <AEEngine.h>
 
 namespace Render {
+	enum FONT_ALIGN {
+		LEFT = 0,
+		RIGHT,
+		CENTER,
+		MAX_FONT_ALIGN
+	};
 
+	enum COLOUR {
+		WHITE = 0,
+		RED,
+		LIGHT_BLUE,
+		BLUE,
+		YELLOW,
+		BLACK,
+
+		MAX_COLOUR
+	};
+
+	enum SHAPES {
+		TRIANGLE = 0,
+		SQUARE,
+		CIRCLE,
+
+		MAX_SHAPES
+	};
+
+	enum TEXTURE {
+		PLAYER = 0,
+		TILE_FLOOR,
+		COIN,
+		ENEMY,
+
+		MAX_TEXTURE
+	};
+
+	void Load();
 	void InitRender(Objects::GameObject*& p_ObjectList, u32 max);
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform);
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, f32 r, f32 g, f32 b, f32 a);
+	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, TEXTURE tex, f32 r = 0.f, f32 g = 0.f, f32 b = 0.f, f32 a = 1.f);
+	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, COLOUR colour, FONT_ALIGN alignment = LEFT);
+	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, f32 r, f32 g, f32 b, f32 a, FONT_ALIGN alignment = CENTER);
+	void Exit();
+
 }
 
 #endif // RENDER_HELPER_HEADER

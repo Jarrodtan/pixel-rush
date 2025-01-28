@@ -14,6 +14,8 @@
 f32 g_dt;
 f64 g_appTime;
 s8 g_Font;
+AEGfxTexture** g_Texture;
+AEGfxVertexList** g_Shapes;
 
 /******************************************************************************/
 /*!
@@ -33,9 +35,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	// Initialize the system
 	AESysInit(instanceH, show, 1600, 900, 1, 60, false, NULL);
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
-	//Create your font here, and use it for all your levels
-	g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);// load font 
-
+	Render::Load();
 	GameStateManager::GameStateMgrInit(States::GS_PLATFORM_LVL1);
 
 	while (GameStateManager::g_GameStateCurr != States::GS_QUIT)
@@ -87,8 +87,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		GameStateManager::g_GameStateCurr = GameStateManager::g_GameStateNext;
 	}
 
-	//free you font here
-	AEGfxDestroyFont(g_Font);// free font
+	Render::Exit();
 
 	// free the system
 	AESysExit();
