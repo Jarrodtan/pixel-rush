@@ -85,6 +85,8 @@ namespace Render {
 			case Objects::TYPE_OBJECT_WALL:
 			case Objects::TYPE_OBJECT_PLAYER:
 			case Objects::TYPE_OBJECT_ENEMY:
+			case Objects::TYPE_OBJECT_POWERUP:
+			case Objects::TYPE_OBJECT_POWERUPEFFECT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 

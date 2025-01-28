@@ -86,46 +86,16 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_COIN;
 
-	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
-
 	// create the powerup object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_POWERUP;
-	{
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFF00FF00, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF00FF00, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFF00FF00, 0.0f, 0.0f);
-
-		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFF00FF00, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF00FF00, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFF0FF000, 0.0f, 0.0f);
-
-
-		p_Object->p_Mesh = AEGfxMeshEnd();
-	}
 
 	// create the powerup effect
 	p_Effect = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Effect->u_Type = Objects::TYPE_OBJECT_POWERUPEFFECT;
-	{
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFF00FFFF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF00FFFF, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFF00FFFF, 0.0f, 0.0f);
-
-		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFF00FFFF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF00FFFF, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFF00FFFF, 0.0f, 0.0f);
 
 
-		p_Effect->p_Mesh = AEGfxMeshEnd();
-	}
-
+	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
 	::p_MapData = 0;
