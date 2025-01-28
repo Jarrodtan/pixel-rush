@@ -17,6 +17,7 @@
 #include "math.h"
 
 #include "Camera.h"
+#include "PowerUpManager.h"
 #include "GameStateMgr.h"
 #include "GameStateLevel1Platform.h"
 #include "GameStateLevel2Platform.h"

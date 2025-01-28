@@ -4,7 +4,7 @@
 */
 /******************************************************************************/
 #include "main.h"
-#include "Camera.h"
+#include <random>
 
 
 namespace {
@@ -35,9 +35,15 @@ namespace {
 	Objects::GameObjectInstance* p_Player;
 	s32 i_Jump;
 
+	//CAMERA VARIABLES
 	s32 deltaWheel{};
 	s32 currentDeltaWheel{};
 	Camera camera;
+
+	//POWERUP VARIABLES - TODO, PUT IN AGGREGATE DATA TYPE
+	int numOfPowerUps{};
+	u32 powerUpFlag{};
+	Objects::GameObject* p_Effect;
 
 }
 
@@ -54,6 +60,9 @@ void GameStateLevel1PlatformLoad(void) {
 
 	AE_ASSERT_MESG(::p_GameObjectList, "Fail to calloc");
 	::u_GameObjectNum = 0;
+
+	numOfPowerUps = 1;
+	powerUpFlag = 0;
 
 	Objects::GameObject* p_Object{};
 
@@ -157,6 +166,45 @@ void GameStateLevel1PlatformLoad(void) {
 		p_Object->p_Mesh = AEGfxMeshEnd();
 	}
 
+	// create the powerup object
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_POWERUP;
+	{
+		AEGfxMeshStart();
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFF00FF00, 0.0f, 0.0f,
+			0.5f, -0.5f, 0xFF00FF00, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0xFF00FF00, 0.0f, 0.0f);
+
+		AEGfxTriAdd(
+			-0.5f, 0.5f, 0xFF00FF00, 0.0f, 0.0f,
+			0.5f, -0.5f, 0xFF00FF00, 0.0f, 0.0f,
+			0.5f, 0.5f, 0xFF0FF000, 0.0f, 0.0f);
+
+
+		p_Object->p_Mesh = AEGfxMeshEnd();
+	}
+
+	// create the powerup effect
+	p_Effect = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Effect->u_Type = Objects::TYPE_OBJECT_POWERUPEFFECT;
+	{
+		AEGfxMeshStart();
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFF00FFFF, 0.0f, 0.0f,
+			0.5f, -0.5f, 0xFF00FFFF, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0xFF00FFFF, 0.0f, 0.0f);
+
+		AEGfxTriAdd(
+			-0.5f, 0.5f, 0xFF00FFFF, 0.0f, 0.0f,
+			0.5f, -0.5f, 0xFF00FFFF, 0.0f, 0.0f,
+			0.5f, 0.5f, 0xFF00FFFF, 0.0f, 0.0f);
+
+
+		p_Effect->p_Mesh = AEGfxMeshEnd();
+	}
+
+
 	// setting initial binary map values
 	::p_MapData = 0;
 	::p_BinaryCollisionArray = 0;
@@ -204,6 +252,10 @@ void GameStateLevel1PlatformInit(void) {
 
 	AEVec2 Position{}, Velocity{};
 
+	
+
+	
+
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < ::i_BINARY_MAP_HEIGHT; ++j) {
 			if (::p_MapData[i][j] == 0 || ::p_MapData[i][j] == 1) continue;
@@ -229,6 +281,31 @@ void GameStateLevel1PlatformInit(void) {
 			}
 		}
 	}
+
+	//TODO REFACTOR -- RNG POWERUP SPAWNER-----------------
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> randX(1, i_BINARY_MAP_WIDTH-1);
+	std::uniform_int_distribution<std::mt19937::result_type> randY(3, i_BINARY_MAP_HEIGHT - 15);
+
+	u32 u_powerUpXLoc = randX(rng);
+	u32 u_powerUpYLoc = randY(rng);
+	for (int i{}; i < numOfPowerUps; ++i) {
+		while (p_MapData[u_powerUpXLoc][u_powerUpYLoc] != Objects::TYPE_OBJECT_EMPTY ||
+			(
+				(u_powerUpXLoc == i_PlayerInitialX) ? true : ((p_MapData[u_powerUpXLoc][u_powerUpYLoc - 1] == Objects::TYPE_OBJECT_WALL ? 0 : 1))
+			)
+		) {
+			u_powerUpXLoc = randX(rng);
+			u_powerUpYLoc = randY(rng);
+
+		}
+		AEVec2Set(&Position, static_cast<f32>(u_powerUpXLoc + 0.5f), static_cast<f32>(u_powerUpYLoc + 0.5f));
+		gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_POWERUP, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+		u_powerUpXLoc = randX(rng);
+		u_powerUpYLoc = randY(rng);
+	}
+	//------------------------------------------------------
 
 }
 
@@ -265,13 +342,21 @@ void GameStateLevel1PlatformUpdate(void) {
 	Objects::GameObjectInstance* p_Instance{};
 
 	if (AEInputCheckCurr(AEVK_D)) {
-		::p_Player->currVelocity.x = PLAYER_MOVE_VELOCITY;
+		::p_Player->currVelocity.x = (powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY;
 	}
 	else if (AEInputCheckCurr(AEVK_A)) {
-		::p_Player->currVelocity.x = -PLAYER_MOVE_VELOCITY;
+		::p_Player->currVelocity.x = -((powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY);
 	}
 	else {
 		::p_Player->currVelocity.x = 0;
+	}
+
+	if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
+		powerUpFlag ^= POWER_ACTIVE;
+		AEGfxVertexList* staging = p_Player->p_GameObject->p_Mesh;
+		p_Player->p_GameObject->p_Mesh = p_Effect->p_Mesh;
+		p_Effect->p_Mesh = staging;
+
 	}
 
 	if (AEInputCheckTriggered(AEVK_SPACE)) {
@@ -396,8 +481,16 @@ void GameStateLevel1PlatformUpdate(void) {
 				}
 			}
 			break;
+
+		case Objects::TYPE_OBJECT_POWERUP:
+			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				gameObjectInstanceDestroy(p_Instance);
+				powerUpFlag |= POWER_PICKEDUP;
+			}
+			break;
 		}
 	}
+
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		AEMtx33 Scale{}, Rotate{}, Translate{};
@@ -460,7 +553,6 @@ void GameStateLevel1PlatformDraw(void) {
 		AEMtx33Concat(&FinalTransform, &::MapTransform, &p_Instance->transform);
 		camera.applyCameraTransform(FinalTransform, p_Player->currPosition.x, p_Player->currPosition.y);
 		AEGfxSetTransform(FinalTransform.m);
-
 
 		AEGfxMeshDraw(p_Instance->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 	}
