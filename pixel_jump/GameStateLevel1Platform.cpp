@@ -66,105 +66,27 @@ void GameStateLevel1PlatformLoad(void) {
 
 	Objects::GameObject* p_Object{};
 
-	// create the black cell
+	// create the back cell
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_EMPTY;
-	{
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
-
-		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
-
-		p_Object->p_Mesh = AEGfxMeshEnd();
-		AE_ASSERT_MESG(p_Object->p_Mesh, "Fail to create mesh");
-	}
 
 	// create the white cell
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_WALL;
-	{
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-
-		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-
-		p_Object->p_Mesh = AEGfxMeshEnd();
-		AE_ASSERT_MESG(p_Object->p_Mesh, "Fail to create mesh");
-	}
 
 	// create the player object
-	
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_PLAYER;
-	{
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFF0000FF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF0000FF, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFF0000FF, 0.0f, 0.0f);
-
-		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFF0000FF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF0000FF, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFF0000FF, 0.0f, 0.0f);
-
-
-		p_Object->p_Mesh = AEGfxMeshEnd();
-		AE_ASSERT_MESG(p_Object->p_Mesh, "Fail to create mesh");
-	}
 
 	// create the enemy object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_ENEMY;
-	{
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFFFF0000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFFFF0000, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f);
-
-		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFFFF0000, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f);
-
-
-		p_Object->p_Mesh = AEGfxMeshEnd();
-		AE_ASSERT_MESG(p_Object->p_Mesh, "Fail to create mesh");
-	}
 
 	// create the coin object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_COIN;
-	{
-		AEGfxMeshStart();
-		u32 u_Slices = 36;
-		AEVec2 vertex[3]{ 0.f, 0.5f, 0.f, 0.5f, 0.f, 0.5f };
-		for (u32 i = 1; i < u_Slices + 1; ++i)
-		{
-			AEMtx33 ts{};
-			AEMtx33Rot(&ts, 2 * PI / u_Slices * i);
-			AEMtx33MultVec(&vertex[1], &ts, &vertex[2]);
-			AEGfxTriAdd(
-				0.0f, 0.0f, 0xFFFFFF00, 0.5f, 0.5f,
-				vertex[0].x, vertex[0].y, 0xFFFFFF00, vertex[0].x + 0.5f, vertex[0].y + 0.5f,
-				vertex[1].x, vertex[1].y, 0xFFFFFF00, vertex[1].x + 0.5f, vertex[1].y + 0.5f);
-			memcpy(&vertex[0], &vertex[1], sizeof(vertex[0]));
-		}
-		p_Object->p_Mesh = AEGfxMeshEnd();
-	}
+
+	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// create the powerup object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
@@ -363,21 +285,24 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Player->currVelocity.y == 0) {
 			p_Player->currVelocity.y = JUMP_VELOCITY;
 		}
-		else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
-		else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-			p_Player->currVelocity.y = JUMP_VELOCITY;
-		}
+
+
+
+		//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
+		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+		//	p_Player->currVelocity.y = JUMP_VELOCITY;
+		//}
 	}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
@@ -514,6 +439,7 @@ void GameStateLevel1PlatformUpdate(void) {
 */
 /******************************************************************************/
 void GameStateLevel1PlatformDraw(void) {
+
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -529,11 +455,11 @@ void GameStateLevel1PlatformDraw(void) {
 			AEGfxSetTransform(FinalCellTransform.m);
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
-				AEGfxMeshDraw(::p_BlackCell->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
+				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.f, 0.f, 0.f, 1.f);
 				break;
 
 			case Objects::TYPE_OBJECT_WALL:
-				AEGfxMeshDraw(::p_WhiteCell->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 1.f, 1.f, 1.f, 1.f);
 				break;
 
 			default:
@@ -554,7 +480,7 @@ void GameStateLevel1PlatformDraw(void) {
 		camera.applyCameraTransform(FinalTransform, p_Player->currPosition.x, p_Player->currPosition.y);
 		AEGfxSetTransform(FinalTransform.m);
 
-		AEGfxMeshDraw(p_Instance->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
+		Render::RenderShapes(p_Instance, FinalTransform);
 	}
 }
 
