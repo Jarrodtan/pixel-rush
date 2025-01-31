@@ -286,6 +286,16 @@ void GameStateLevel1PlatformUpdate(void) {
 		else if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			// TODO: Call the enemy state machine
+
+			if (p_Instance->currPosition.x < 10)
+			{
+				p_Instance->currVelocity.x += 0.01f;
+			}
+			else
+			{
+				p_Instance->currVelocity.x -= 0.01f;
+			}
+
 		}
 	}
 
@@ -363,6 +373,7 @@ void GameStateLevel1PlatformUpdate(void) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalCoins;
 				if (::i_TotalCoins == 0) {
+					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 					// TODO: Go to the next level or something else
 				}
 			}
@@ -370,8 +381,10 @@ void GameStateLevel1PlatformUpdate(void) {
 
 		case Objects::TYPE_OBJECT_ENEMY:
 			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				gameObjectInstanceDestroy(p_Instance);
 				--::i_PlayerLives;
 				if (::i_PlayerLives == 0) {
+					GameStateManager::g_GameStateNext = States::GS_LOSE;
 					// TODO: Go to lose state
 				}
 			}
