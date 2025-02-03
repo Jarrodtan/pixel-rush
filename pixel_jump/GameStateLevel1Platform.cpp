@@ -66,7 +66,7 @@ void GameStateLevel1PlatformLoad(void) {
 
 	Objects::GameObject* p_Object{};
 
-	// create the back cell
+	// create the black cell
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_EMPTY;
 

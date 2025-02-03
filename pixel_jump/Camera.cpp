@@ -3,16 +3,21 @@
 #include <iostream>
 
 void Camera::applyCameraTransform(AEMtx33& concatTo, f32 anchorX, f32 anchorY) {
+
+	//THE X AND Y COORDINATES TO ANCHOR TO
 	f32 snapToX{ this->levelWidth - anchorX };
 	f32 snapToY{ this->levelHeight - anchorY };
+
+
 	AEMtx33 camTrans{ 0 }, zoom{ 0 };
 	AEMtx33Scale(&zoom, this->zoomValue, this->zoomValue);
 	AEMtx33Trans(&camTrans, snapToX, snapToY);
 	AEMtx33Concat(&concatTo, &concatTo, &camTrans);
 	AEMtx33Concat(&concatTo, &zoom, &concatTo);
+
 }
 
-void Camera::changeZoomVal(s32 zoom) {
+void Camera::changeZoomVal(s32 zoom){
 
 	if (this->zoomValue > 2.0f) {
 		this->zoomValue = 2.0f;
@@ -20,7 +25,7 @@ void Camera::changeZoomVal(s32 zoom) {
 		this->zoomValue = 0.5f;
 	}
 	if (this->zoomValue <= 2.0f && this->zoomValue >= 0.5f) {
-		this->zoomValue += zoom * 0.03f;
+		this->zoomValue += zoom * 0.05f;
 	}
 }
 
@@ -34,4 +39,3 @@ Camera::Camera(f32 levelWidth, f32 levelHeight) : levelWidth{ levelWidth / 2 }, 
 Camera::Camera() : zoomValue{ 1.0f }, levelWidth{ 0.0f }, levelHeight{ 0.0f } { }
 
 Camera::~Camera() {}
-
