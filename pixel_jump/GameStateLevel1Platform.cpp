@@ -45,6 +45,13 @@ namespace {
 	u32 powerUpFlag{};
 	Objects::GameObject* p_Effect;
 
+	//CAMERA ZOOM IN/OUT - BASED ON DISTANCE BETWEEN PLAYER 1 & PLAYER 2
+	f32 zoomOffset;  // Calculate the distance for camera zoom-in and zoom-out, also to define min/max distances for zoom control.
+	// Define a constant for inverse scaling
+	f32 k = 400.0f;  // Adjust this to control the rate of decrease
+	f32 c = 1.0f;    // Small constant to avoid division by zero
+	f32 inverseValue; // Value to inverse zoomOffset when it increases, this value decreases
+	s32 zoomRangeMultiplier = 32; // To lock the range to zoom in/out
 }
 
 /******************************************************************************/
@@ -223,12 +230,12 @@ void GameStateLevel1PlatformUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 
-	AEInputMouseWheelDelta(&currentDeltaWheel);
+	/*AEInputMouseWheelDelta(&currentDeltaWheel);
 	if (currentDeltaWheel != deltaWheel) {
 		deltaWheel = currentDeltaWheel;
 		camera.changeZoomVal(deltaWheel);
 
-	}
+	}*/
 
 	s32 i{}, j{};
 	Objects::GameObjectInstance* p_Instance{};
@@ -287,15 +294,35 @@ void GameStateLevel1PlatformUpdate(void) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			// TODO: Call the enemy state machine
 
-			if (p_Instance->currPosition.x < 10)
+			/*if (p_Instance->currPosition.x < 10)
 			{
 				p_Instance->currVelocity.x += 0.01f;
 			}
 			else
 			{
 				p_Instance->currVelocity.x -= 0.01f;
+			}*/
+			
+			
+			// Calculate zoomOffset (distance between player and enemy)
+			::zoomOffset = sqrt(pow(::p_Player->currPosition.x - p_Instance->currPosition.x, 2) +
+				pow(::p_Player->currPosition.y - p_Instance->currPosition.y, 2));
+
+			// Make another variable decrease when zoomOffset increases
+			::inverseValue = ::k / (::zoomOffset + ::c);
+
+			camera.changeZoomVal(::inverseValue);
+	
+			// Apply zoom change
+			if (::inverseValue > 0)
+			{
+				::inverseValue* ::zoomRangeMultiplier;
+			}
+			else if (::inverseValue <= 0) {
+				::inverseValue = 0;
 			}
 
+		
 		}
 	}
 
