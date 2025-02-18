@@ -57,6 +57,8 @@ namespace Render {
 		}
 
 		// TODO: Load all textures here
+		g_Texture[TEXTURE::COIN] = AEGfxTextureLoad("Assets/Art/Coin.png");
+
 	}
 
 	void Exit() {
@@ -134,7 +136,6 @@ namespace Render {
 		AEGfxSetTransform(transform.m);
 		AEGfxMeshDraw(p_Object->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 		AEGfxTextureSet(NULL, 0, 0);
-
 	}
 
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, COLOUR colour, FONT_ALIGN alignment) {

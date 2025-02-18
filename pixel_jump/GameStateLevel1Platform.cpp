@@ -490,6 +490,11 @@ void GameStateLevel1PlatformDraw(void) {
 		camera.applyCameraTransform(FinalTransform, p_Player->currPosition.x, p_Player->currPosition.y);
 		AEGfxSetTransform(FinalTransform.m);
 
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_COIN || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::COIN);
+			continue;
+		}
+
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}
 

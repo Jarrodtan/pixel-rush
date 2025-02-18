@@ -25,6 +25,7 @@ namespace Objects {
 		TYPE_OBJECT_COIN,	// used to indicate the coin object
 		TYPE_OBJECT_POWERUP,
 		TYPE_OBJECT_POWERUPEFFECT,
+
 		TYPE_MAX_OBJECT
 	};
 
