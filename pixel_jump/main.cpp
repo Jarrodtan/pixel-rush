@@ -36,6 +36,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AESysInit(instanceH, show, 1600, 900, 1, 60, false, NULL);
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	Render::Load();
+	AudioManager::Init();
 	GameStateManager::GameStateMgrInit(States::GS_PLATFORM_LVL1);
 
 	while (GameStateManager::g_GameStateCurr != States::GS_QUIT)
@@ -58,6 +59,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		while (GameStateManager::g_GameStateCurr == GameStateManager::g_GameStateNext)
 		{
 			AESysFrameStart();
+
+			AudioManager::Update();
 
 			GameStateManager::GameStateUpdate();
 
@@ -88,6 +91,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	}
 
 	Render::Exit();
+	AudioManager::Exit();
 
 	// free the system
 	AESysExit();

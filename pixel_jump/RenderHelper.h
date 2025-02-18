@@ -37,6 +37,8 @@ namespace Render {
 		COIN,
 		ENEMY,
 
+		// TODO: Add more textures here as needed
+
 		MAX_TEXTURE
 	};
 

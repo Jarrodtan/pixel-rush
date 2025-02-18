@@ -51,11 +51,12 @@ namespace Render {
 			g_Shapes[SHAPES::CIRCLE] = AEGfxMeshEnd();
 		}
 
-		// load the texture (if any)
 		g_Texture = new AEGfxTexture * [Render::MAX_TEXTURE];
 		for (u32 i{}; i < TEXTURE::MAX_TEXTURE; ++i) {
 			g_Texture[i] = nullptr;
 		}
+
+		// TODO: Load all textures here
 	}
 
 	void Exit() {
