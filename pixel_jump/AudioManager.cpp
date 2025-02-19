@@ -1,6 +1,7 @@
 #include "AudioManager.h"
 #include <fmod.hpp>
 #include <map>
+#include "AEEngine.h"
 #include <vector>
 
 namespace {
@@ -19,7 +20,7 @@ namespace AudioManager {
 	static std::map<std::string, FMOD::Channel*> sfxMap;
 	FMOD::Channel* bgm;
 	static FMOD::System* mpSystem;
-	static f32 f_BGMVolume = 0.3f, f_SfxVolume = 0.3f;
+	static f32 f_BGMVolume = 0.4f, f_SfxVolume = 0.4f;
 
 	static FMOD::Sound* TryLoadSound(std::string const& s_Name, bool b_Loop);
 
@@ -36,6 +37,8 @@ namespace AudioManager {
 		// TryLoadSound("filepath", false);
 
 		// PlayBGM("filepath to bgm");
+
+		PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 	}
 
 	void Update() {
@@ -67,7 +70,9 @@ namespace AudioManager {
 				return loaded;
 			}
 		}
-		else return sound->second;
+		else { return sound->second; }
+
+		AE_ASSERT_MESG(0, "Failed to load sound: %s", s_Name.c_str());
 		return nullptr;
 	}
 
