@@ -61,6 +61,12 @@ namespace {
 	f32 camMidpoint_X, camMidpoint_Y;
 	bool haveCamZoomFeature = true;
 	bool dynamicCamFeature = true;
+
+	//DOUBLE JUMP FEATURES
+	s32 doubleJumpCounter_S = 0;
+	bool haveDoubleJump_S = true;
+	s32 doubleJumpCounter_L = 0;
+	bool haveDoubleJump_L = true;
 }
 
 /******************************************************************************/
@@ -159,6 +165,8 @@ void GameStateLevel1PlatformInit(void) {
 	::p_BlackCell = 0;
 	::p_WhiteCell = 0;
 	::i_TotalCoins = 0;
+	::doubleJumpCounter_S = 0;
+	::doubleJumpCounter_L = 0;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -308,15 +316,53 @@ void GameStateLevel1PlatformUpdate(void) {
 
 	}
 
-	if (AEInputCheckTriggered(AEVK_W)) {
+	// basic jump
+	/*if (AEInputCheckTriggered(AEVK_W)) {
 		if (p_LightPlayer->currVelocity.y == 0) {
 			p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+		}
+	}*/
+
+	
+	if (AEInputCheckTriggered(AEVK_W)) {
+		// double jump
+		if (haveDoubleJump_L) {
+			::doubleJumpCounter_L++;
+
+			if (p_LightPlayer->i_gridCollisionFlag && ::doubleJumpCounter_L >= 2)
+			{
+				::doubleJumpCounter_L = 0;
+			}
+
+			if (::doubleJumpCounter_L < 2) {
+				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
+		}
+		else { // basic jump
+			if (p_LightPlayer->currVelocity.y == 0) {
+				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
 		}
 	}
 
 	if (AEInputCheckTriggered(AEVK_UP)) {
-		if (p_ShadowPlayer->currVelocity.y == 0) {
-			p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+		// double jump
+		if (haveDoubleJump_S) {
+			::doubleJumpCounter_S++;
+
+			if (p_ShadowPlayer->i_gridCollisionFlag && ::doubleJumpCounter_S >= 2)
+			{
+				::doubleJumpCounter_S = 0;
+			}
+
+			if (::doubleJumpCounter_S < 2) {
+				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
+		}
+		else { // basic jump
+			if (p_ShadowPlayer->currVelocity.y == 0) {
+				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
 		}
 	}
 
