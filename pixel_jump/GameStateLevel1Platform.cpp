@@ -410,18 +410,18 @@ void GameStateLevel1PlatformUpdate(void) {
 	if (haveCamZoomFeature)
 	{
 		// Calculate zoomOffset (distance between player and enemy)
-		::zoomOffset = sqrt(pow(::p_LightPlayer->currPosition.x - p_ShadowPlayer->currPosition.x, 2) +
-			pow(::p_LightPlayer->currPosition.y - p_ShadowPlayer->currPosition.y, 2));
+		::zoomOffset = static_cast<f32>(sqrt(pow(::p_LightPlayer->currPosition.x - p_ShadowPlayer->currPosition.x, 2) +
+			pow(::p_LightPlayer->currPosition.y - p_ShadowPlayer->currPosition.y, 2)));
 
 		// Make another variable decrease when zoomOffset increases
 		::inverseValue = ::k / (::zoomOffset + ::c);
 
-		camera.changeZoomVal(::inverseValue);
+		camera.changeZoomVal(static_cast<s32>(::inverseValue));
 
 		// Apply zoom change
 		if (::inverseValue > 0)
 		{
-			::inverseValue* ::zoomRangeMultiplier;
+			::inverseValue *= ::zoomRangeMultiplier;
 		}
 		else if (::inverseValue <= 0) {
 			::inverseValue = 0;
