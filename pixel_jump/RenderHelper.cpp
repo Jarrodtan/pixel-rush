@@ -124,7 +124,8 @@ namespace Render {
 			switch (p_Object->u_Type) {
 			case Objects::TYPE_OBJECT_EMPTY:
 			case Objects::TYPE_OBJECT_WALL:
-			case Objects::TYPE_OBJECT_PLAYER:
+			case Objects::TYPE_OBJECT_LIGHTPLAYER:
+			case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			case Objects::TYPE_OBJECT_ENEMY:
 			case Objects::TYPE_OBJECT_POWERUP:
 			case Objects::TYPE_OBJECT_POWERUPEFFECT:
@@ -132,6 +133,8 @@ namespace Render {
 				break;
 
 			case Objects::TYPE_OBJECT_COIN:
+			case Objects::TYPE_OBJECT_LIGHTSHARD:
+			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
 				break;
 			}
@@ -159,12 +162,24 @@ namespace Render {
 		AEGfxSetTransform(transform.m);
 
 		switch (p_Object->p_GameObject->u_Type) {
-		case Objects::TYPE_OBJECT_PLAYER:
-			AEGfxSetColorToAdd(0.f, 0.f, 1.f, 1.f);
+		case Objects::TYPE_OBJECT_LIGHTPLAYER:
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWPLAYER:
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_COIN:
 			AEGfxSetColorToAdd(1.f, 1.f, 0.f, 1.f);
+			break;
+		
+		case Objects::TYPE_OBJECT_LIGHTSHARD:
+			AEGfxSetColorToAdd(1.f, 0.f, 0.f, 1.f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
+			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_ENEMY:

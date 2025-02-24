@@ -12,6 +12,8 @@ namespace {
 		if(f_Volume > f_MaxVolume) return f_MaxVolume;
 		return f_Volume;
 	}
+
+	bool playBGMAudio = true;
 }
 
 namespace AudioManager {
@@ -45,12 +47,15 @@ namespace AudioManager {
 		if (driverCount == 0) return;
 		mpSystem->init(s_MaxChannels, FMOD_INIT_NORMAL, 0);
 
-		// TODO: Load all sounds (add sound path here to try load)
-		// TryLoadSound("filepath", false);
+		if (playBGMAudio)
+		{
+			// TODO: Load all sounds (add sound path here to try load)
+			//TryLoadSound("filepath", false);
 
-		// PlayBGM("filepath to bgm");
+			//PlayBGM("filepath to bgm");
 
-		PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
+			PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
+		}
 	}
 
 	/******************************************************************************/

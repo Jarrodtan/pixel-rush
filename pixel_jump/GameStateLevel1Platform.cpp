@@ -8,10 +8,15 @@
 
 
 namespace {
-	s32 i_PlayerLives;
-	s32 i_PlayerInitialX;
-	s32 i_PlayerInitialY;
+	s32 i_LightPlayerLives;
+	s32 i_LightPlayerInitialX;
+	s32 i_LightPlayerInitialY;
+	s32 i_ShadowPlayerLives;
+	s32 i_ShadowPlayerInitialX;
+	s32 i_ShadowPlayerInitialY;
 	s32 i_TotalCoins;
+	s32 i_TotalLightShard;
+	s32 i_TotalShadowFragment;
 
 	// List of original objects
 	Objects::GameObject* p_GameObjectList = nullptr;
@@ -32,7 +37,8 @@ namespace {
 	AEMtx33 MapTransform;
 
 	// Pointer to player object
-	Objects::GameObjectInstance* p_Player;
+	Objects::GameObjectInstance* p_LightPlayer;
+	Objects::GameObjectInstance* p_ShadowPlayer;
 	s32 i_Jump;
 
 	//CAMERA VARIABLES
@@ -48,10 +54,19 @@ namespace {
 	//CAMERA ZOOM IN/OUT - BASED ON DISTANCE BETWEEN PLAYER 1 & PLAYER 2
 	f32 zoomOffset;  // Calculate the distance for camera zoom-in and zoom-out, also to define min/max distances for zoom control.
 	// Define a constant for inverse scaling
-	f32 k = 400.0f;  // Adjust this to control the rate of decrease
+	f32 k = 200.0f;  // Adjust this to control the rate of decrease
 	f32 c = 1.0f;    // Small constant to avoid division by zero
 	f32 inverseValue; // Value to inverse zoomOffset when it increases, this value decreases
 	s32 zoomRangeMultiplier = 32; // To lock the range to zoom in/out
+	f32 camMidpoint_X, camMidpoint_Y;
+	bool haveCamZoomFeature = true;
+	bool dynamicCamFeature = true;
+
+	//DOUBLE JUMP FEATURES
+	s32 doubleJumpCounter_S = 0;
+	bool haveDoubleJump_S = true;
+	s32 doubleJumpCounter_L = 0;
+	bool haveDoubleJump_L = true;
 }
 
 /******************************************************************************/
@@ -83,7 +98,11 @@ void GameStateLevel1PlatformLoad(void) {
 
 	// create the player object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = Objects::TYPE_OBJECT_PLAYER;
+	p_Object->u_Type = Objects::TYPE_OBJECT_LIGHTPLAYER;
+
+	// create the player object
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWPLAYER;
 
 	// create the enemy object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
@@ -92,6 +111,14 @@ void GameStateLevel1PlatformLoad(void) {
 	// create the coin object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_COIN;
+
+	// create the coin object
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_LIGHTSHARD;
+
+	// create the coin object
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWFRAGMENT;
 
 	// create the powerup object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
@@ -133,10 +160,13 @@ void GameStateLevel1PlatformLoad(void) {
 void GameStateLevel1PlatformInit(void) {
 	AESysSetWindowTitle("Level 1");
 	
-	::p_Player = 0;
+	::p_LightPlayer = 0;
+	::p_ShadowPlayer = 0;
 	::p_BlackCell = 0;
 	::p_WhiteCell = 0;
 	::i_TotalCoins = 0;
+	::doubleJumpCounter_S = 0;
+	::doubleJumpCounter_L = 0;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -147,7 +177,8 @@ void GameStateLevel1PlatformInit(void) {
 	::p_WhiteCell->u_Flag ^= FLAG_VISIBLE;
 	::p_WhiteCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
-	::i_PlayerLives = PLAYER_LIVES;
+	::i_LightPlayerLives = PLAYER_LIVES;
+	::i_ShadowPlayerLives = PLAYER_LIVES;
 
 	AEVec2 Position{}, Velocity{};
 
@@ -163,15 +194,31 @@ void GameStateLevel1PlatformInit(void) {
 			AEVec2Set(&Velocity, static_cast<f32>(0), static_cast<f32>(0));
 
 			switch (::p_MapData[i][j]) {
-			case Objects::TYPE_OBJECT_PLAYER:
-				::p_Player = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PLAYER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
-				::i_PlayerInitialX = i;
-				::i_PlayerInitialY = j;
+			case Objects::TYPE_OBJECT_LIGHTPLAYER:
+				::p_LightPlayer = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_LIGHTPLAYER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				::i_LightPlayerInitialX = i;
+				::i_LightPlayerInitialY = j;
+				break;
+
+			case Objects::TYPE_OBJECT_SHADOWPLAYER:
+				::p_ShadowPlayer = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWPLAYER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				::i_ShadowPlayerInitialX = i;
+				::i_ShadowPlayerInitialY = j;
 				break;
 
 			case Objects::TYPE_OBJECT_COIN:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_COIN, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				++::i_TotalCoins;
+				break;
+
+			case Objects::TYPE_OBJECT_LIGHTSHARD:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_LIGHTSHARD, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				++::i_TotalLightShard;
+				break;
+
+			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWFRAGMENT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				++::i_TotalShadowFragment;
 				break;
 
 			case Objects::TYPE_OBJECT_ENEMY:
@@ -192,7 +239,7 @@ void GameStateLevel1PlatformInit(void) {
 	for (int i{}; i < numOfPowerUps; ++i) {
 		while (p_MapData[u_powerUpXLoc][u_powerUpYLoc] != Objects::TYPE_OBJECT_EMPTY ||
 			(
-				(u_powerUpXLoc == i_PlayerInitialX) ? true : ((p_MapData[u_powerUpXLoc][u_powerUpYLoc - 1] == Objects::TYPE_OBJECT_WALL ? 0 : 1))
+				(u_powerUpXLoc == i_LightPlayerInitialX) ? true : ((p_MapData[u_powerUpXLoc][u_powerUpYLoc - 1] == Objects::TYPE_OBJECT_WALL ? 0 : 1))
 			)
 		) {
 			u_powerUpXLoc = randX(rng);
@@ -241,59 +288,114 @@ void GameStateLevel1PlatformUpdate(void) {
 	Objects::GameObjectInstance* p_Instance{};
 
 	if (AEInputCheckCurr(AEVK_D)) {
-		::p_Player->currVelocity.x = (powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY;
+		::p_LightPlayer->currVelocity.x = (powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY;
 	}
 	else if (AEInputCheckCurr(AEVK_A)) {
-		::p_Player->currVelocity.x = -((powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY);
+		::p_LightPlayer->currVelocity.x = -((powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY);
 	}
 	else {
-		::p_Player->currVelocity.x = 0;
+		::p_LightPlayer->currVelocity.x = 0;
 	}
 
+	if (AEInputCheckCurr(AEVK_RIGHT)) {
+		::p_ShadowPlayer->currVelocity.x = (powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY;
+	}
+	else if (AEInputCheckCurr(AEVK_LEFT)) {
+		::p_ShadowPlayer->currVelocity.x = -((powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY);
+	}
+	else {
+		::p_ShadowPlayer->currVelocity.x = 0;
+	}
+
+	//Power up [increase velocity]
 	if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
 		powerUpFlag ^= POWER_ACTIVE;
-		AEGfxVertexList* staging = p_Player->p_GameObject->p_Mesh;
-		p_Player->p_GameObject->p_Mesh = p_Effect->p_Mesh;
+		AEGfxVertexList* staging = p_LightPlayer->p_GameObject->p_Mesh;
+		p_LightPlayer->p_GameObject->p_Mesh = p_Effect->p_Mesh;
 		p_Effect->p_Mesh = staging;
 
 	}
 
-	if (AEInputCheckTriggered(AEVK_SPACE)) {
-		if (p_Player->currVelocity.y == 0) {
-			p_Player->currVelocity.y = JUMP_VELOCITY;
+	// basic jump
+	/*if (AEInputCheckTriggered(AEVK_W)) {
+		if (p_LightPlayer->currVelocity.y == 0) {
+			p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
 		}
+	}*/
 
+	
+	if (AEInputCheckTriggered(AEVK_W)) {
+		// double jump
+		if (haveDoubleJump_L) {
+			::doubleJumpCounter_L++;
 
+			if (p_LightPlayer->i_gridCollisionFlag && ::doubleJumpCounter_L >= 2)
+			{
+				::doubleJumpCounter_L = 0;
+			}
 
-		//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
+			if (::doubleJumpCounter_L < 2) {
+				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
+		}
+		else { // basic jump
+			if (p_LightPlayer->currVelocity.y == 0) {
+				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
+		}
 	}
+
+	if (AEInputCheckTriggered(AEVK_UP)) {
+		// double jump
+		if (haveDoubleJump_S) {
+			::doubleJumpCounter_S++;
+
+			if (p_ShadowPlayer->i_gridCollisionFlag && ::doubleJumpCounter_S >= 2)
+			{
+				::doubleJumpCounter_S = 0;
+			}
+
+			if (::doubleJumpCounter_S < 2) {
+				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
+		}
+		else { // basic jump
+			if (p_ShadowPlayer->currVelocity.y == 0) {
+				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+			}
+		}
+	}
+
+	//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_PLAYER) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 		}
-		else if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
+			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+		}
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			// TODO: Call the enemy state machine
-
 			/*if (p_Instance->currPosition.x < 10)
 			{
 				p_Instance->currVelocity.x += 0.01f;
@@ -302,27 +404,27 @@ void GameStateLevel1PlatformUpdate(void) {
 			{
 				p_Instance->currVelocity.x -= 0.01f;
 			}*/
+		}
+	}
 			
-			
-			// Calculate zoomOffset (distance between player and enemy)
-			::zoomOffset = sqrt(pow(::p_Player->currPosition.x - p_Instance->currPosition.x, 2) +
-				pow(::p_Player->currPosition.y - p_Instance->currPosition.y, 2));
+	if (haveCamZoomFeature)
+	{
+		// Calculate zoomOffset (distance between player and enemy)
+		::zoomOffset = sqrt(pow(::p_LightPlayer->currPosition.x - p_ShadowPlayer->currPosition.x, 2) +
+			pow(::p_LightPlayer->currPosition.y - p_ShadowPlayer->currPosition.y, 2));
 
-			// Make another variable decrease when zoomOffset increases
-			::inverseValue = ::k / (::zoomOffset + ::c);
+		// Make another variable decrease when zoomOffset increases
+		::inverseValue = ::k / (::zoomOffset + ::c);
 
-			camera.changeZoomVal(::inverseValue);
-	
-			// Apply zoom change
-			if (::inverseValue > 0)
-			{
-				::inverseValue* ::zoomRangeMultiplier;
-			}
-			else if (::inverseValue <= 0) {
-				::inverseValue = 0;
-			}
+		camera.changeZoomVal(::inverseValue);
 
-		
+		// Apply zoom change
+		if (::inverseValue > 0)
+		{
+			::inverseValue* ::zoomRangeMultiplier;
+		}
+		else if (::inverseValue <= 0) {
+			::inverseValue = 0;
 		}
 	}
 
@@ -395,30 +497,37 @@ void GameStateLevel1PlatformUpdate(void) {
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0 || (p_Instance->u_Flag & FLAG_VISIBLE) == 0) continue;
 
 		switch (p_Instance->p_GameObject->u_Type) {
-		case Objects::TYPE_OBJECT_COIN:
-			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+		case Objects::TYPE_OBJECT_LIGHTSHARD:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
-				--::i_TotalCoins;
-				if (::i_TotalCoins == 0) {
-					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+				--::i_TotalLightShard;
+				if (::i_TotalLightShard == 0) {
+					// TODO: Go to the next level or something else
+				}
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				gameObjectInstanceDestroy(p_Instance);
+				--::i_TotalShadowFragment;
+				if (::i_TotalShadowFragment == 0) {
 					// TODO: Go to the next level or something else
 				}
 			}
 			break;
 
 		case Objects::TYPE_OBJECT_ENEMY:
-			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				gameObjectInstanceDestroy(p_Instance);
-				--::i_PlayerLives;
-				if (::i_PlayerLives == 0) {
-					GameStateManager::g_GameStateNext = States::GS_LOSE;
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--::i_LightPlayerLives;
+				if (::i_LightPlayerLives == 0) {
 					// TODO: Go to lose state
 				}
 			}
 			break;
 
 		case Objects::TYPE_OBJECT_POWERUP:
-			if (Collision::CollisionAABB(p_Player->boundingBox, p_Player->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
 				powerUpFlag |= POWER_PICKEDUP;
 			}
@@ -457,19 +566,28 @@ void GameStateLevel1PlatformDraw(void) {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(1.f);
 
+
+	if (dynamicCamFeature) {
+		camMidpoint_X = (p_LightPlayer->currPosition.x + p_ShadowPlayer->currPosition.x) / 2; // find X midpoint for camera Transform between two players X positions
+		camMidpoint_Y = (p_LightPlayer->currPosition.y + p_ShadowPlayer->currPosition.y) / 2; // find Y midpoint for camera Transform between two players Y positions
+	}
+
+
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
 			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
 			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
-			camera.applyCameraTransform(FinalCellTransform, p_Player->currPosition.x, p_Player->currPosition.y);
+			if (dynamicCamFeature) {
+				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
+			}
 			AEGfxSetTransform(FinalCellTransform.m);
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
-				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.f, 0.f, 0.f, 1.f);
+				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.68f, 0.85f, 0.90f, 1.f);
 				break;
 
 			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 1.f, 1.f, 1.f, 1.f);
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
 				break;
 
 			default:
@@ -487,7 +605,9 @@ void GameStateLevel1PlatformDraw(void) {
 
 		AEMtx33 FinalTransform{};
 		AEMtx33Concat(&FinalTransform, &::MapTransform, &p_Instance->transform);
-		camera.applyCameraTransform(FinalTransform, p_Player->currPosition.x, p_Player->currPosition.y);
+		if (dynamicCamFeature) {
+			camera.applyCameraTransform(FinalTransform, camMidpoint_X, camMidpoint_Y);
+		}
 		AEGfxSetTransform(FinalTransform.m);
 
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_COIN || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
