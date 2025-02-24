@@ -4,7 +4,18 @@
 #include <string>
 
 namespace Render {
+	/******************************************************************************/
+	/*!
+		Load function to load all the necessary resources for rendering.
+		Call this function in main.cpp before the game loop.
 
+		\param
+			none
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void Load() {
 		// load the font
 		g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);
@@ -61,6 +72,18 @@ namespace Render {
 
 	}
 
+	/******************************************************************************/
+	/*!
+		Exit function to unload all the resources for rendering.
+		Call this function in main.cpp after the game loop.
+
+		\param
+			none
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void Exit() {
 		for (u32 i{}; i < SHAPES::MAX_SHAPES; ++i) {
 			if (g_Shapes[i] == nullptr) continue;
@@ -77,6 +100,21 @@ namespace Render {
 		delete[] g_Texture;
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to initialize the rendering of the game objects.
+		Assigns the appropriate mesh to the game objects.
+		Call this function in the game state's init function.
+
+		\param p_GameObjectList
+			pointer to the game object list
+		\param max
+			maximum number of game objects
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void InitRender(Objects::GameObject*& p_GameObjectList, u32 max) {
 
 
@@ -100,6 +138,22 @@ namespace Render {
 		}
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to render the game objects.
+		Call this function in the game state's draw function.
+		Use this function if you want to render the game objects with the default colours.
+
+		\param p_GameObjectInstanceList
+			pointer to the game object instance list
+
+		\param max
+			maximum number of game object instances
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform) {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		AEGfxSetTransform(transform.m);
@@ -121,6 +175,34 @@ namespace Render {
 		AEGfxMeshDraw(p_Object->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to render the game objects.
+		Call this function in the game state's draw function.
+		Use this function if you want to render the game objects with custom colours.
+
+		\param p_GameObjectInstanceList
+			pointer to the game object instance list
+
+		\param max
+			maximum number of game object instances
+
+		\param r
+			red colour component
+
+		\param g
+			green colour component
+
+		\param b
+			blue colour component
+
+		\param a
+			alpha colour component
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, f32 r, f32 g, f32 b, f32 a) {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		AEGfxSetColorToAdd(r, g, b, a);
@@ -128,6 +210,25 @@ namespace Render {
 		AEGfxMeshDraw(p_Object->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to render the game objects.
+		Call this function in the game state's draw function.
+		Use this function if you want to render the game objects with textures.
+
+		\param p_GameObjectInstanceList
+			pointer to the game object instance list
+
+		\param max
+			maximum number of game object instances
+
+		\param tex
+			texture to render the game object with
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void Render::RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a){
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f);
@@ -138,6 +239,33 @@ namespace Render {
 		AEGfxTextureSet(NULL, 0, 0);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to render fonts for the game.
+		Call this function to render text on the screen with the default colour.
+
+		\param text
+			text to render
+
+		\param size
+			size of the text
+
+		\param x
+			x position of the text
+
+		\param y
+			y position of the text
+
+		\param colour
+			colour of the text
+
+		\param alignment
+			align the text to the left, center, or right
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, COLOUR colour, FONT_ALIGN alignment) {
 		f32 r{}, g{}, b{}, a = 0.75f;
 
@@ -175,6 +303,42 @@ namespace Render {
 		RenderFont(text, size, x, y, r, g, b, a, alignment);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to render fonts for the game.
+		Call this function to render text on the screen with custom colours.
+
+		\param text
+			text to render
+
+		\param size
+			size of the text
+
+		\param x
+			x position of the text
+
+		\param y
+			y position of the text
+
+		\param r
+			red colour component
+
+		\param g
+			green colour component
+
+		\param b
+			blue colour component
+
+		\param a
+			alpha colour component
+
+		\param alignment
+			align the text to the left, center, or right
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, f32 r, f32 g, f32 b, f32 a, FONT_ALIGN alignment) {
 		f32 f_TextWidth, f_TextHeight;
 		AEGfxGetPrintSize(g_Font, text.c_str(), size, &f_TextWidth, &f_TextHeight);

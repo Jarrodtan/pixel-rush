@@ -24,6 +24,18 @@ namespace AudioManager {
 
 	static FMOD::Sound* TryLoadSound(std::string const& s_Name, bool b_Loop);
 
+	/******************************************************************************/
+	/*!
+		Function to init the audio manager
+		Call this function in main.cpp before the game loop.
+
+		\param
+			none
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void Init() {
 		mpSystem = NULL;
 		if (FMOD::System_Create(&mpSystem) != FMOD_OK) return;
@@ -41,6 +53,18 @@ namespace AudioManager {
 		PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to update the audio manager
+		Call this function in main.cpp in the game loop.
+
+		\param
+			none
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void Update() {
 		for (std::vector<FMOD::Channel*>::iterator it = sfxList.begin(); it != sfxList.end();) {
 			bool b_IsPlaying = false;
@@ -51,10 +75,37 @@ namespace AudioManager {
 		mpSystem->update();
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to exit the audio manager
+		Call this function in main.cpp after the game loop.
+
+		\param
+			none
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void Exit() {
 		if (mpSystem != NULL) mpSystem->release();
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to try load a sound
+		Call this function in main.cpp to load a sound.
+
+		\param s_Name
+			the name of the sound to load
+
+		\param b_Loop
+			true to loop the sound, false otherwise
+
+		\return
+			the loaded sound
+	*/
+	/******************************************************************************/
 	static FMOD::Sound* TryLoadSound(std::string const& s_Name, bool b_Loop) {
 		std::map<std::string, FMOD::Sound*>::iterator sound = SoundMap.find(s_Name);
 		if (sound == SoundMap.end()) {
@@ -76,6 +127,17 @@ namespace AudioManager {
 		return nullptr;
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to unload a sound
+
+		\param s_Name
+			the name of the sound to unload
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void UnloadSound(std::string const& s_Name) {
 		std::map<std::string, FMOD::Sound*>::iterator sound = SoundMap.find(s_Name);
 		if (sound == SoundMap.end()) return;
@@ -84,6 +146,17 @@ namespace AudioManager {
 		SoundMap.erase(sound);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to play a background music
+
+		\param s_Name
+			the name of the background music to play
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void PlayBGM(std::string const& s_Name) {
 		if (bgm) {
 			bgm->setPaused(true);
@@ -98,6 +171,23 @@ namespace AudioManager {
 		}
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to play an audio
+
+		\param s_Name
+			the name of the audio to play
+
+		\param f_Volume
+			the volume of the audio
+
+		\param b_Loop
+			true to loop the audio, false otherwise
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void PlayAudio(std::string const& s_Name, f32 f_Volume, bool b_Loop) {
 		if (b_Loop) {
 			std::map<std::string, FMOD::Channel*>::iterator it = sfxMap.find(s_Name);
@@ -125,15 +215,48 @@ namespace AudioManager {
 		}
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to pause an audio
+
+		\param s_Name
+			the name of the audio to pause
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void PauseAudio(std::string const& s_Name) {
 		std::map<std::string, FMOD::Channel*>::iterator it = sfxMap.find(s_Name);
 		if (it != sfxMap.end()) it->second->setPaused(true);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to stop an audio
+
+		\param s_Name
+			the name of the audio to stop
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void SetBGMVolume(f32 f_Percentage) {
 		f_BGMVolume = f_Percentage;
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to set the sfx volume
+
+		\param f_Percentage
+			the percentage of the sfx volume
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void SetSfxVolume(f32 f_Percentage) {
 		f_SfxVolume = f_Percentage;
 	}

@@ -69,6 +69,17 @@ namespace Objects {
 		return 0;
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to destroy a game object instance
+
+		\param p_Instance
+			the pointer to the game object instance to destroy
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void gameObjectInstanceDestroy(GameObjectInstance* p_Instance) {
 		if (p_Instance->u_Flag == 0) {
 			return;
