@@ -38,7 +38,7 @@ namespace AudioManager {
 
 		// PlayBGM("filepath to bgm");
 
-		PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
+		//PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 	}
 
 	void Update() {

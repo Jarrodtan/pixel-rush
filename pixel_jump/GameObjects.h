@@ -20,12 +20,14 @@ namespace Objects {
 	enum TYPE_OBJECT {
 		TYPE_OBJECT_EMPTY,	// used in the map grid to indicate no object
 		TYPE_OBJECT_WALL,	// used in the map grid to indicate a wall or floor
-		TYPE_OBJECT_PLAYER, // used to indicate the player object
+		TYPE_OBJECT_LIGHTPLAYER, // used to indicate the player object
+		TYPE_OBJECT_SHADOWPLAYER,
 		TYPE_OBJECT_ENEMY,	// used to indicate the enemy object
 		TYPE_OBJECT_COIN,	// used to indicate the coin object
+		TYPE_OBJECT_LIGHTSHARD,
+		TYPE_OBJECT_SHADOWFRAGMENT,
 		TYPE_OBJECT_POWERUP,
 		TYPE_OBJECT_POWERUPEFFECT,
-
 		TYPE_MAX_OBJECT
 	};
 
