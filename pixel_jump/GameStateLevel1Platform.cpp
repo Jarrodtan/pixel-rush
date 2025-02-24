@@ -54,10 +54,13 @@ namespace {
 	//CAMERA ZOOM IN/OUT - BASED ON DISTANCE BETWEEN PLAYER 1 & PLAYER 2
 	f32 zoomOffset;  // Calculate the distance for camera zoom-in and zoom-out, also to define min/max distances for zoom control.
 	// Define a constant for inverse scaling
-	f32 k = 400.0f;  // Adjust this to control the rate of decrease
+	f32 k = 200.0f;  // Adjust this to control the rate of decrease
 	f32 c = 1.0f;    // Small constant to avoid division by zero
 	f32 inverseValue; // Value to inverse zoomOffset when it increases, this value decreases
 	s32 zoomRangeMultiplier = 32; // To lock the range to zoom in/out
+	f32 camMidpoint_X, camMidpoint_Y;
+	bool haveCamZoomFeature = true;
+	bool dynamicCamFeature = true;
 }
 
 /******************************************************************************/
@@ -347,9 +350,6 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			// TODO: Call the enemy state machine
-
-		}
-	}
 			/*if (p_Instance->currPosition.x < 10)
 			{
 				p_Instance->currVelocity.x += 0.01f;
@@ -358,26 +358,29 @@ void GameStateLevel1PlatformUpdate(void) {
 			{
 				p_Instance->currVelocity.x -= 0.01f;
 			}*/
+		}
+	}
 			
-			/*
-			// Calculate zoomOffset (distance between player and enemy)
-			::zoomOffset = sqrt(pow(::p_Player->currPosition.x - p_Instance->currPosition.x, 2) +
-				pow(::p_Player->currPosition.y - p_Instance->currPosition.y, 2));
+	if (haveCamZoomFeature)
+	{
+		// Calculate zoomOffset (distance between player and enemy)
+		::zoomOffset = sqrt(pow(::p_LightPlayer->currPosition.x - p_ShadowPlayer->currPosition.x, 2) +
+			pow(::p_LightPlayer->currPosition.y - p_ShadowPlayer->currPosition.y, 2));
 
-			// Make another variable decrease when zoomOffset increases
-			::inverseValue = ::k / (::zoomOffset + ::c);
+		// Make another variable decrease when zoomOffset increases
+		::inverseValue = ::k / (::zoomOffset + ::c);
 
-			camera.changeZoomVal(::inverseValue);
-	
-			// Apply zoom change
-			if (::inverseValue > 0)
-			{
-				::inverseValue* ::zoomRangeMultiplier;
-			}
-			else if (::inverseValue <= 0) {
-				::inverseValue = 0;
-			}
-		}*/
+		camera.changeZoomVal(::inverseValue);
+
+		// Apply zoom change
+		if (::inverseValue > 0)
+		{
+			::inverseValue* ::zoomRangeMultiplier;
+		}
+		else if (::inverseValue <= 0) {
+			::inverseValue = 0;
+		}
+	}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -517,11 +520,20 @@ void GameStateLevel1PlatformDraw(void) {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(1.f);
 
+
+	if (dynamicCamFeature) {
+		camMidpoint_X = (p_LightPlayer->currPosition.x + p_ShadowPlayer->currPosition.x) / 2; // find X midpoint for camera Transform between two players X positions
+		camMidpoint_Y = (p_LightPlayer->currPosition.y + p_ShadowPlayer->currPosition.y) / 2; // find Y midpoint for camera Transform between two players Y positions
+	}
+
+
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
 			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
 			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
-			//camera.applyCameraTransform(FinalCellTransform, p_Player->currPosition.x, p_Player->currPosition.y);
+			if (dynamicCamFeature) {
+				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
+			}
 			AEGfxSetTransform(FinalCellTransform.m);
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
@@ -547,7 +559,9 @@ void GameStateLevel1PlatformDraw(void) {
 
 		AEMtx33 FinalTransform{};
 		AEMtx33Concat(&FinalTransform, &::MapTransform, &p_Instance->transform);
-		//camera.applyCameraTransform(FinalTransform, p_Player->currPosition.x, p_Player->currPosition.y);
+		if (dynamicCamFeature) {
+			camera.applyCameraTransform(FinalTransform, camMidpoint_X, camMidpoint_Y);
+		}
 		AEGfxSetTransform(FinalTransform.m);
 
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_COIN || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
