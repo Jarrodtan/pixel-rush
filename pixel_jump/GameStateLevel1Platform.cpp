@@ -309,28 +309,29 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_LightPlayer->currVelocity.y == 0) {
 			p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
 		}
+	}
 
 	if (AEInputCheckTriggered(AEVK_UP)) {
 		if (p_ShadowPlayer->currVelocity.y == 0) {
 			p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
 		}
-
-		//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
-		//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-		//	p_Player->currVelocity.y = JUMP_VELOCITY;
-		//}
 	}
+
+	//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
+	//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
+	//	p_Player->currVelocity.y = JUMP_VELOCITY;
+	//}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -340,10 +341,10 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 		}
-		else if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 		}
-		else if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			// TODO: Call the enemy state machine
 
@@ -377,7 +378,6 @@ void GameStateLevel1PlatformUpdate(void) {
 				::inverseValue = 0;
 			}
 		}*/
-	}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
