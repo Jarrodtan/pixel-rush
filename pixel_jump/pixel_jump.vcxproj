@@ -27,7 +27,7 @@
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
-    <ClCompile Include="RenderHelper.h" />
+    <ClInclude Include="RenderHelper.h" />
     <ClCompile Include="PowerUpManager.cpp" />
   </ItemGroup>
   <ItemGroup>
