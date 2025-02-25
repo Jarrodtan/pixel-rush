@@ -23,7 +23,7 @@ namespace AudioManager {
 	static std::map<std::string, FMOD::Channel*> sfxMap;
 	FMOD::Channel* bgm;
 	static FMOD::System* mpSystem;
-	static f32 f_BGMVolume = 0.4f, f_SfxVolume = 0.4f;
+	static f32 f_BGMVolume = 0.3f, f_SfxVolume = 0.4f;
 
 	static FMOD::Sound* TryLoadSound(std::string const& s_Name, bool b_Loop);
 

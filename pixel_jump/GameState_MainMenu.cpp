@@ -21,7 +21,7 @@ void GameStateMainMenuLoad(void) {
 /******************************************************************************/
 void GameStateMainMenuInit(void) {
 	AESysSetWindowTitle("Main Menu");
-	
+	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 }
 
 /******************************************************************************/
