@@ -23,6 +23,7 @@ s32 mouseposX, mouseposY;
 /******************************************************************************/
 void GameStateLoseLoad(void) {
 	AESysSetWindowTitle("Lose");
+	AudioManager::PlayBGM("Assets/AudioBGM/Sadness_Cosmo_by_Bruno_ph_Id_109409_trim.wav");
 }
 
 /******************************************************************************/

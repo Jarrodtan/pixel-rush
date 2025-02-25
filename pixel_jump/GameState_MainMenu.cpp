@@ -21,6 +21,7 @@ void GameStateMainMenuLoad(void) {
 /******************************************************************************/
 void GameStateMainMenuInit(void) {
 	AESysSetWindowTitle("Main Menu");
+	
 }
 
 /******************************************************************************/

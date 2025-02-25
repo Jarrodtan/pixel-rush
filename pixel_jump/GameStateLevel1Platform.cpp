@@ -182,9 +182,7 @@ void GameStateLevel1PlatformInit(void) {
 
 	AEVec2 Position{}, Velocity{};
 
-	
-
-	
+	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < ::i_BINARY_MAP_HEIGHT; ++j) {

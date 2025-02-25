@@ -2,6 +2,7 @@
 #include <fmod.hpp>
 #include <map>
 #include "AEEngine.h"
+#include "main.h"
 #include <vector>
 
 namespace {
@@ -51,8 +52,9 @@ namespace AudioManager {
 		{
 			// TODO: Load all sounds (add sound path here to try load)
 			//TryLoadSound("filepath", false);
-
-			//PlayBGM("filepath to bgm");
+			
+			TryLoadSound("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav", true);
+			TryLoadSound("Assets/AudioBGM/Sadness_Cosmo_by_Bruno_ph_Id_109409_trim.wav", true);
 
 			PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 		}
@@ -163,6 +165,10 @@ namespace AudioManager {
 	*/
 	/******************************************************************************/
 	void PlayBGM(std::string const& s_Name) {
+		static std::string s_CurrentBGM{};
+
+		if (s_Name == s_CurrentBGM) return;
+
 		if (bgm) {
 			bgm->setPaused(true);
 			bgm = nullptr;
@@ -174,6 +180,8 @@ namespace AudioManager {
 			bgm->setVolume(ConvertVolume(f_BGMVolume));
 			bgm->setPaused(false);
 		}
+
+		s_CurrentBGM = s_Name;
 	}
 
 	/******************************************************************************/

@@ -32,6 +32,7 @@ void GameStateLevel2PlatformInit(void) {
 */
 /******************************************************************************/
 void GameStateLevel2PlatformUpdate(void) {
+
 	if (AEInputCheckTriggered(AEVK_Q)) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
