@@ -68,11 +68,11 @@ AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float
 
 }
 
-void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, int rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform, float r, float g, float b, float e, float a)
+void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform, float r, float g, float b, float e, float a)
 {
 	AEMtx33Scale(&scale, sizeX, sizeY);
 
-	AEMtx33Rot(&rotate, rotation);
+	AEMtx33Rot(&rotate,rotation);
 
 	// Create a translation matrix that translates by
 	// 200 in the x-axis and 100 in the y-axis
