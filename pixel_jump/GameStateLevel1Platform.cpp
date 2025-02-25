@@ -323,6 +323,7 @@ void GameStateLevel1PlatformUpdate(void) {
 
 	
 	if (AEInputCheckTriggered(AEVK_W)) {
+
 		// double jump
 		if (haveDoubleJump_L) {
 			::doubleJumpCounter_L++;
@@ -334,16 +335,22 @@ void GameStateLevel1PlatformUpdate(void) {
 
 			if (::doubleJumpCounter_L < 2) {
 				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				// Sound effect
+				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
+
 		}
 		else { // basic jump
 			if (p_LightPlayer->currVelocity.y == 0) {
 				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				// Sound effect
+				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
 		}
 	}
 
 	if (AEInputCheckTriggered(AEVK_UP)) {
+
 		// double jump
 		if (haveDoubleJump_S) {
 			::doubleJumpCounter_S++;
@@ -355,13 +362,20 @@ void GameStateLevel1PlatformUpdate(void) {
 
 			if (::doubleJumpCounter_S < 2) {
 				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+
+				// Sound effect
+				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
 		}
 		else { // basic jump
 			if (p_ShadowPlayer->currVelocity.y == 0) {
 				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+
+				// Sound effect
+				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
 		}
+
 	}
 
 	//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  

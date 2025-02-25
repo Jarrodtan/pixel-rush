@@ -15,6 +15,8 @@ namespace AudioManager {
 	void PauseAudio(std::string const& s_Name);
 	void SetBGMVolume(f32 f_Percentage);
 	void SetSfxVolume(f32 f_Percentage);
+
+	const f32 f_JumpVolume = 0.6f;
 }
 
 

@@ -23,7 +23,7 @@ namespace AudioManager {
 	static std::map<std::string, FMOD::Channel*> sfxMap;
 	FMOD::Channel* bgm;
 	static FMOD::System* mpSystem;
-	static f32 f_BGMVolume = 0.3f, f_SfxVolume = 0.4f;
+	static f32 f_BGMVolume = 0.4f, f_SfxVolume = 0.4f;
 
 	static FMOD::Sound* TryLoadSound(std::string const& s_Name, bool b_Loop);
 
@@ -53,6 +53,9 @@ namespace AudioManager {
 			// TODO: Load all sounds (add sound path here to try load)
 			//TryLoadSound("filepath", false);
 			
+			TryLoadSound("Assets/AudioSFX/Jump_retro_up.wav", false);
+			TryLoadSound("Assets/AudioSFX/Jump_retro_land.wav", false);
+
 			TryLoadSound("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav", true);
 			TryLoadSound("Assets/AudioBGM/Sadness_Cosmo_by_Bruno_ph_Id_109409_trim.wav", true);
 
@@ -205,26 +208,27 @@ namespace AudioManager {
 		if (b_Loop) {
 			std::map<std::string, FMOD::Channel*>::iterator it = sfxMap.find(s_Name);
 			if (it != sfxMap.end()) {
-				it->second->setVolume(ConvertVolume(f_SfxVolume * f_Volume));
+				it->second->setVolume(ConvertVolume(f_Volume * f_SfxVolume));
 				it->second->setPaused(false);
 				return;
 			}
+		}
+		if (sfxMap.size() + sfxList.size() + 1 >= s_MaxChannels) 
+			return;
 
-			if (sfxMap.size() + sfxList.size() + 1 >= s_MaxChannels) return;
+		FMOD::Sound* sound = TryLoadSound(s_Name, b_Loop);
 
-			FMOD::Sound* sound = TryLoadSound(s_Name, b_Loop);
-			if (sound != nullptr) {
-				FMOD::Channel* p_Channel = nullptr;
-				mpSystem->playSound(sound, nullptr, true, &p_Channel);
-
-				if (p_Channel) {
-					p_Channel->setVolume(ConvertVolume(f_SfxVolume * f_Volume));
-					p_Channel->setPaused(false);
-				}
-
-				if (b_Loop) sfxMap[s_Name] = p_Channel;
-				else sfxList.push_back(p_Channel);
+		if (sound != nullptr) {
+			FMOD::Channel* p_Channel = nullptr;
+			mpSystem->playSound(sound, nullptr, true, &p_Channel);
+			if (p_Channel) {
+				p_Channel->setVolume(ConvertVolume(f_Volume * f_SfxVolume));
+				p_Channel->setPaused(false);
 			}
+			if (b_Loop)
+				sfxMap[s_Name] = p_Channel;
+			else
+				sfxList.push_back(p_Channel);
 		}
 	}
 
