@@ -213,8 +213,7 @@ namespace AudioManager {
 				return;
 			}
 		}
-		if (sfxMap.size() + sfxList.size() + 1 >= s_MaxChannels) 
-			return;
+		if (sfxMap.size() + sfxList.size() + 1 >= s_MaxChannels) return;
 
 		FMOD::Sound* sound = TryLoadSound(s_Name, b_Loop);
 
@@ -225,10 +224,8 @@ namespace AudioManager {
 				p_Channel->setVolume(ConvertVolume(f_Volume * f_SfxVolume));
 				p_Channel->setPaused(false);
 			}
-			if (b_Loop)
-				sfxMap[s_Name] = p_Channel;
-			else
-				sfxList.push_back(p_Channel);
+			if (b_Loop) sfxMap[s_Name] = p_Channel;
+			else sfxList.push_back(p_Channel);
 		}
 	}
 
