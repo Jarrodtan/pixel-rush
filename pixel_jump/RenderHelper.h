@@ -32,10 +32,14 @@ namespace Render {
 	};
 
 	enum TEXTURE {
-		PLAYER = 0,
+		LIGHT_PLAYER = 0,
+		SHADOW_PLAYER,
 		TILE_FLOOR,
-		COIN,
+		LIGHT_SHARD,
+		SHADOW_FRAGMENT,
 		ENEMY,
+		POWERUP,
+		COIN,
 
 		// TODO: Add more textures here as needed
 

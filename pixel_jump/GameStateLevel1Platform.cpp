@@ -120,13 +120,13 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWFRAGMENT;
 
-	// create the powerup object
-	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = Objects::TYPE_OBJECT_POWERUP;
+	//// create the powerup object
+	//p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	//p_Object->u_Type = Objects::TYPE_OBJECT_POWERUP;
 
-	// create the powerup effect
-	p_Effect = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Effect->u_Type = Objects::TYPE_OBJECT_POWERUPEFFECT;
+	//// create the powerup effect
+	//p_Effect = ::p_GameObjectList + ::u_GameObjectNum++;
+	//p_Effect->u_Type = Objects::TYPE_OBJECT_POWERUPEFFECT;
 
 
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
@@ -225,31 +225,6 @@ void GameStateLevel1PlatformInit(void) {
 			}
 		}
 	}
-
-	//TODO REFACTOR -- RNG POWERUP SPAWNER-----------------
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> randX(1, i_BINARY_MAP_WIDTH-1);
-	std::uniform_int_distribution<std::mt19937::result_type> randY(3, i_BINARY_MAP_HEIGHT - 15);
-
-	u32 u_powerUpXLoc = randX(rng);
-	u32 u_powerUpYLoc = randY(rng);
-	for (int i{}; i < numOfPowerUps; ++i) {
-		while (p_MapData[u_powerUpXLoc][u_powerUpYLoc] != Objects::TYPE_OBJECT_EMPTY ||
-			(
-				(u_powerUpXLoc == i_LightPlayerInitialX) ? true : ((p_MapData[u_powerUpXLoc][u_powerUpYLoc - 1] == Objects::TYPE_OBJECT_WALL ? 0 : 1))
-			)
-		) {
-			u_powerUpXLoc = randX(rng);
-			u_powerUpYLoc = randY(rng);
-
-		}
-		AEVec2Set(&Position, static_cast<f32>(u_powerUpXLoc + 0.5f), static_cast<f32>(u_powerUpYLoc + 0.5f));
-		gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_POWERUP, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
-		u_powerUpXLoc = randX(rng);
-		u_powerUpYLoc = randY(rng);
-	}
-	//------------------------------------------------------
 
 }
 
@@ -514,7 +489,11 @@ void GameStateLevel1PlatformUpdate(void) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalLightShard;
 				if (::i_TotalLightShard == 0) {
-					// TODO: Go to the next level or something else
+					// check if all shadow fragments are collected
+					if (::i_TotalShadowFragment == 0) {
+						// TODO: Go to the next level
+						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+					}
 				}
 			}
 			break;
@@ -524,7 +503,10 @@ void GameStateLevel1PlatformUpdate(void) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalShadowFragment;
 				if (::i_TotalShadowFragment == 0) {
-					// TODO: Go to the next level or something else
+					if (::i_TotalLightShard == 0) {
+						// TODO: Go to the next level
+						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+					}
 				}
 			}
 			break;
@@ -536,12 +518,12 @@ void GameStateLevel1PlatformUpdate(void) {
 					// TODO: Go to lose state
 				}
 			}
-			break;
 
-		case Objects::TYPE_OBJECT_POWERUP:
-			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				gameObjectInstanceDestroy(p_Instance);
-				powerUpFlag |= POWER_PICKEDUP;
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--i_ShadowPlayerLives;
+				if (i_ShadowPlayerLives == 0) {
+					// TODO: Go to lose state
+				}
 			}
 			break;
 		}
@@ -577,7 +559,6 @@ void GameStateLevel1PlatformDraw(void) {
 	AEGfxTextureSet(NULL, 0, 0);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(1.f);
-
 
 	if (dynamicCamFeature) {
 		camMidpoint_X = (p_LightPlayer->currPosition.x + p_ShadowPlayer->currPosition.x) / 2; // find X midpoint for camera Transform between two players X positions
@@ -622,14 +603,19 @@ void GameStateLevel1PlatformDraw(void) {
 		}
 		AEGfxSetTransform(FinalTransform.m);
 
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_COIN || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
-			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::COIN);
-			continue;
-		}
+		//if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_COIN) {
+		//	Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::COIN);
+		//	continue;
+		//}
 
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}
 
+	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
+	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
+
+	Render::RenderFont(s_LightShards, 0.8f, 0.7f, 0.8f, Render::COLOUR::LIGHT_BLUE);
+	Render::RenderFont(s_ShadowFragments, 0.8f, -0.7f, 0.8f, Render::COLOUR::YELLOW);
 }
 
 /******************************************************************************/

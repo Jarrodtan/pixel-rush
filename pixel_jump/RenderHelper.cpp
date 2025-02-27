@@ -127,8 +127,6 @@ namespace Render {
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			case Objects::TYPE_OBJECT_ENEMY:
-			case Objects::TYPE_OBJECT_POWERUP:
-			case Objects::TYPE_OBJECT_POWERUPEFFECT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
@@ -163,11 +161,11 @@ namespace Render {
 
 		switch (p_Object->p_GameObject->u_Type) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
-			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 1.f);
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_COIN:
@@ -175,11 +173,11 @@ namespace Render {
 			break;
 		
 		case Objects::TYPE_OBJECT_LIGHTSHARD:
-			AEGfxSetColorToAdd(1.f, 0.f, 0.f, 1.f);
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
-			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_ENEMY:
