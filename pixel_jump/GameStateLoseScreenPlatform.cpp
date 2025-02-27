@@ -15,7 +15,6 @@ GamePrefabs RestartButton{}, ExitButton;
 float BtnposX[99] = { 0 }, BtnposY[99] = { 0 };
 s32 mouseposX, mouseposY;
 
-
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object
@@ -24,6 +23,8 @@ s32 mouseposX, mouseposY;
 void GameStateLoseLoad(void) {
 	AESysSetWindowTitle("Lose");
 	AudioManager::PlayBGM("Assets/AudioBGM/Sadness_Cosmo_by_Bruno_ph_Id_109409_trim.wav");
+	// load the font
+	g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);
 }
 
 /******************************************************************************/
@@ -32,13 +33,17 @@ void GameStateLoseLoad(void) {
 */
 /******************************************************************************/
 void GameStateLoseInit(void) {
-	RestartButton.pMesh = mesh_create_square();
-	ExitButton.pMesh = mesh_create_square();
+	
+	RestartButton.pMesh = mesh_create_square(4278255360);
+	ExitButton.pMesh = mesh_create_square(4294901760);
 	BtnposX[0] = 0;
-	BtnposY[0] = 150;
+	BtnposY[0] = 100;
 	BtnposX[1] = 0;
-	BtnposY[1] = -50;
+	BtnposY[1] = -100;
 
+	//MeshCreation::CreateSquareMesh();
+	
+	
 }
 
 /******************************************************************************/
@@ -62,18 +67,18 @@ void GameStateLoseUpdate(void) {
 	else if (AEInputCheckTriggered(AEVK_4)) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
-
+	
 	AEInputGetCursorPosition(&mouseposX, &mouseposY);
 
 	if (AEInputCheckTriggered(RI_MOUSE_LEFT_BUTTON_DOWN))
 	{
 		if (mouseposX > BtnposX[0] + 700 && mouseposX < BtnposX[0] + 900
-			&& mouseposY > BtnposY[0] + 100 && mouseposY < BtnposY[0] + 200)
+			&& mouseposY > BtnposY[0] + 200 && mouseposY < BtnposY[0] + 300)
 		{
 			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
 		}
 		if (mouseposX > BtnposX[1] + 700 && mouseposX < BtnposX[1] + 900
-			&& mouseposY > BtnposY[1] + 500 && mouseposY < BtnposY[1] + 600)
+			&& mouseposY > BtnposY[1] + 600 && mouseposY < BtnposY[1] + 700)
 		{
 			GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 		}
@@ -87,9 +92,11 @@ void GameStateLoseUpdate(void) {
 */
 /******************************************************************************/
 void GameStateLoseDraw(void) {
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	//Render::RenderFont("Game Over", 2.5, 900.0f, 900.0f, Render::WHITE, Render::CENTER);
 
-
+	//AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 
 	mesh_square_transform(BtnposX[0], BtnposY[0], 200, 100, 0, RestartButton.scale, RestartButton.rotate, RestartButton.translate, RestartButton.transform, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f);
@@ -98,7 +105,11 @@ void GameStateLoseDraw(void) {
 
 	mesh_square_transform(BtnposX[1], BtnposY[1], 200, 100, 0, ExitButton.scale, ExitButton.rotate, ExitButton.translate, ExitButton.transform, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 	AEGfxMeshDraw(ExitButton.pMesh, AE_GFX_MDM_TRIANGLES);
+	
 
+	AEGfxPrint(g_Font,"Game Over", -0.23f, 0.6f, 2.5f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(g_Font, "Restart", -0.09f, 0.20f, 1.5f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(g_Font, "  Quit", -0.09f, -0.25f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 }
 
 /******************************************************************************/
@@ -109,6 +120,8 @@ void GameStateLoseDraw(void) {
 void GameStateLoseFree(void) {
 	AEGfxMeshFree(RestartButton.pMesh);
 	AEGfxMeshFree(ExitButton.pMesh);
+	// Releases resources used by a font
+	AEGfxDestroyFont(g_Font);
 }
 
 /******************************************************************************/
