@@ -8,6 +8,7 @@
 
 
 namespace {
+	// Player related variables
 	s32 i_LightPlayerLives;
 	s32 i_LightPlayerInitialX;
 	s32 i_LightPlayerInitialY;
@@ -16,6 +17,9 @@ namespace {
 	s32 i_ShadowPlayerInitialY;
 	s32 i_TotalLightShard;
 	s32 i_TotalShadowFragment;
+
+	// Time
+	s32 i_Time;
 
 	// List of original objects
 	Objects::GameObject* p_GameObjectList = nullptr;
@@ -165,6 +169,8 @@ void GameStateLevel1PlatformInit(void) {
 	::doubleJumpCounter_S = 0;
 	::doubleJumpCounter_L = 0;
 
+	::i_Time = 10;
+
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
 	::p_BlackCell->u_Flag ^= FLAG_VISIBLE;
@@ -296,6 +302,15 @@ void GameStateLevel1PlatformUpdate(void) {
 		camera.changeZoomVal(deltaWheel);
 
 	}*/
+
+	// Time counter
+	static f32 f_TimeCounter{};
+	f_TimeCounter += g_dt;
+	if (f_TimeCounter >= 1.0f) {
+		--::i_Time;
+		f_TimeCounter = 0.0f;
+	}
+	
 
 	s32 i{}, j{};
 	Objects::GameObjectInstance* p_Instance{};
@@ -557,7 +572,7 @@ void GameStateLevel1PlatformUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 	}
 
-	if (::i_LightPlayerLives == 0 || ::i_ShadowPlayerLives == 0) {
+	if (::i_LightPlayerLives == 0 || ::i_ShadowPlayerLives == 0 || ::i_Time == 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
@@ -794,6 +809,9 @@ void GameStateLevel1PlatformDraw(void) {
 	const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
 	const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
 
+	const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
+
+	Render::RenderFont(s_Time, 0.8f, 0.f, 0.8f, Render::COLOUR::RED);
 	Render::RenderFont(s_LightShards, 0.8f, 0.7f, 0.8f, Render::COLOUR::LIGHT_BLUE);
 	Render::RenderFont(s_ShadowFragments, 0.8f, -0.7f, 0.8f, Render::COLOUR::YELLOW);
 	Render::RenderFont(s_LightPlayerLives, 0.8f, 0.7f, 0.7f, Render::COLOUR::LIGHT_BLUE);
