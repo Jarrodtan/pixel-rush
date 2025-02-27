@@ -25,21 +25,21 @@ float timedelta{ 10 };
 }*/
 
 
-AEGfxVertexList* mesh_create_square()
+AEGfxVertexList* mesh_create_square(u32 colour)
 {
 
 	// Informing the library that we're about to start adding triangles
 	AEGfxMeshStart();
 
 	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,  // bottom-left: red
-		0.5f, -0.5f, 0xFFFFFFF, 1.0f, 1.0f,   // bottom-right: green
-		-0.5f, 0.5f, 0xFFFFFFF, 0.0f, 0.0f);  // top-left: blue
+		-0.5f, -0.5f, colour, 0.0f, 1.0f,  // bottom-left: red
+		0.5f, -0.5f, colour, 1.0f, 1.0f,   // bottom-right: green
+		-0.5f, 0.5f, colour, 0.0f, 0.0f);  // top-left: blue
 
 	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFF00FF00, 1.0f, 1.0f,   // bottom-right: green
-		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,    // top-right: white
-		-0.5f, 0.5f, 0xFF0000FF, 0.0f, 0.0f);  // top-left: blue
+		0.5f, -0.5f, colour, 1.0f, 1.0f,   // bottom-right: green
+		0.5f, 0.5f, colour, 1.0f, 0.0f,    // top-right: white
+		-0.5f, 0.5f, colour, 0.0f, 0.0f);  // top-left: blue
 
 
 
@@ -54,8 +54,8 @@ AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float
 
 	AEGfxTriAdd(
 		x3, y3, 0xFFFFFFFF, 0.0f, 1.0f,  // bottom-left: red
-		0.5f, -0.5f, 0xFFFFFFF, 1.0f, 1.0f,   // bottom-right: green
-		x1, y1, 0xFFFFFFF, 0.0f, 0.0f);  // top-left: blue
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,   // bottom-right: green
+		x1, y1, 0xFFFFFFFF, 0.0f, 0.0f);  // top-left: blue
 
 	AEGfxTriAdd(
 		0.5f, -0.5f, 0xFF00FF00, 1.0f, 1.0f,   // bottom-right: green

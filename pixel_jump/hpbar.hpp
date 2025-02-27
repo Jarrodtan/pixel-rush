@@ -7,7 +7,7 @@ extern float maxhp;
 extern float currenthp;
 extern float timedelta;
 
-AEGfxVertexList* mesh_create_square();
+AEGfxVertexList* mesh_create_square(u32 colour);
 
 AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float x3, float y3);
 
