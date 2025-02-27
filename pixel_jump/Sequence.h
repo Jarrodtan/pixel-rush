@@ -3,7 +3,7 @@
 
 #include "AEEngine.h"
 
-enum SpecialSequence { PRESSURE_PLATE_STEPPED, PRESSURE_PLATE_RELEASED };
+enum SpecialSequence { PRESSURE_PLATE_STEPPED, PRESSURE_PLATE_RELEASED, MOVE_LEFT, MOVE_RIGHT};
 
 class Sequence {
 public:

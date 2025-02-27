@@ -127,6 +127,7 @@ namespace Render {
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			case Objects::TYPE_PRESSURE_PLATE:
+			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
@@ -134,6 +135,9 @@ namespace Render {
 			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
 				break;
+
+			case Objects::TYPE_OBJECT_SPIKE:
+				p_Object->p_Mesh = g_Shapes[SHAPES::TRIANGLE];
 			}
 		}
 	}
@@ -179,6 +183,11 @@ namespace Render {
 			break;
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			AEGfxSetColorToAdd(1.f, 0.f, 0.f, 1.f);
+		case Objects::TYPE_OBJECT_SPIKE:
+			AEGfxSetColorToAdd(0.75f, 0.75f, 0.75f, 1.f);
+			break;
+		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			AEGfxSetColorToAdd(0.4f, 0.9f, 0.4f, 1.f);
 			break;
 		}
 

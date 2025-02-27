@@ -103,9 +103,13 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWPLAYER;
 
-	// create the enemy object
+	// create the moveable spike object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SPIKE;
+
+	// create the stationary spike object
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SPIKE;
 
 	// create the light collectable object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
@@ -118,6 +122,10 @@ void GameStateLevel1PlatformLoad(void) {
 	// create the pressure plate
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_PRESSURE_PLATE;
+
+	// create the moving platform
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_MOVINGPLATFORM;
 
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
@@ -213,6 +221,22 @@ void GameStateLevel1PlatformInit(void) {
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
 				break;
+
+			case Objects::TYPE_OBJECT_SPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+			
+			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
+				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				// Add movement sequence
+				platform->sequenceCollection.sequenceCount = 2;
+				platform->sequenceCollection.sequence = new Sequence[2]{
+					{false, false, Position.x - 5.0f, 0.0f, 2.0f, SpecialSequence::MOVE_LEFT},
+					{false, false, Position.x + 5.0f, 0.0f, 2.0f, SpecialSequence::MOVE_RIGHT}
+				};
+				break;
+			}
+
 			case Objects::TYPE_PRESSURE_PLATE:
 				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_PRESSURE_PLATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				int count = p_Instance->sequenceCollection.sequenceCount = 2;
@@ -297,13 +321,13 @@ void GameStateLevel1PlatformUpdate(void) {
 	}
 
 	//Power up [increase velocity]
-	if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
-		powerUpFlag ^= POWER_ACTIVE;
-		AEGfxVertexList* staging = p_LightPlayer->p_GameObject->p_Mesh;
-		p_LightPlayer->p_GameObject->p_Mesh = p_Effect->p_Mesh;
-		p_Effect->p_Mesh = staging;
+	//if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
+	//	powerUpFlag ^= POWER_ACTIVE;
+	//	AEGfxVertexList* staging = p_LightPlayer->p_GameObject->p_Mesh;
+	//	p_LightPlayer->p_GameObject->p_Mesh = p_Effect->p_Mesh;
+	//	p_Effect->p_Mesh = staging;
 
-	}
+	//}
 
 	// basic jump
 	/*if (AEInputCheckTriggered(AEVK_W)) {
@@ -396,10 +420,28 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 		}
+
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
 		}
+
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVINGPLATFORM) {
+			// Example: Move horizontally between two points
+			static float moveSpeed = 2.0f;
+			static float leftBound = 5.0f;
+			static float rightBound = 15.0f;
+
+			// Update platform position
+			p_Instance->currPosition.y += moveSpeed * g_dt;
+
+			// Reverse direction at bounds
+			if (p_Instance->currPosition.y >= rightBound ||
+				p_Instance->currPosition.y <= leftBound) {
+				moveSpeed *= -1;
+			}
+		}
+		
 	}
 			
 	if (haveCamZoomFeature)
@@ -463,26 +505,49 @@ void GameStateLevel1PlatformUpdate(void) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
 		}
+
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE) {
-			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) { 
+			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
-			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT && p_Instance->currVelocity.x > 0) { 
+			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT && p_Instance->currVelocity.x > 0) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
 		}
 		else {
-			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT) { 
+			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
-			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) { 
+			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
 		}
+
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SPIKE) {
+			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
+				Collision::SnapToCell(&p_Instance->currPosition.x);
+				p_Instance->currVelocity.x = 0;
+			}
+			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT && p_Instance->currVelocity.x > 0) {
+				Collision::SnapToCell(&p_Instance->currPosition.x);
+				p_Instance->currVelocity.x = 0;
+			}
+		}
+		else {
+			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT) {
+				Collision::SnapToCell(&p_Instance->currPosition.x);
+				p_Instance->currVelocity.x = 0;
+			}
+			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) {
+				Collision::SnapToCell(&p_Instance->currPosition.x);
+				p_Instance->currVelocity.x = 0;
+			}
+		}
+	}
 	}
 
 	// check if all shadow fragments & light shards are collected
@@ -528,15 +593,51 @@ void GameStateLevel1PlatformUpdate(void) {
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				std::cout << "touched";
 				--::i_LightPlayerLives;
 				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
 			}
-
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				std::cout << "touched";
 				--i_ShadowPlayerLives;
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+			}
+			break;
+		case Objects::TYPE_OBJECT_SPIKE:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				std::cout << "touched";
+				--::i_LightPlayerLives;
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+			}
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				std::cout << "touched";
+				--i_ShadowPlayerLives;
+				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox,
+				p_LightPlayer->currVelocity,
+				p_Instance->boundingBox,
+				p_Instance->currVelocity,
+				f_Time)) {
+
+				// Move player with platform
+				p_LightPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
+			}
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox,
+				p_ShadowPlayer->currVelocity,
+				p_Instance->boundingBox,
+				p_Instance->currVelocity,
+				f_Time)) {
+
+				// Move player with platform
+				p_ShadowPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
 			}
 			break;
 
@@ -722,7 +823,14 @@ void GameStateLevel1PlatformDraw(void) {
 void GameStateLevel1PlatformFree(void) {
 	// kill all objects in the list
 	for (u32 i{}; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
-		gameObjectInstanceDestroy(::p_GameObjectInstanceList + i);
+		Objects::GameObjectInstance* p_Instance = ::p_GameObjectInstanceList + i;
+		if ((p_Instance->u_Flag & FLAG_ACTIVE) != 0) { // Check if instance is active
+			if (p_Instance->sequenceCollection.sequence != nullptr) {
+				delete[] p_Instance->sequenceCollection.sequence;
+				p_Instance->sequenceCollection.sequence = nullptr; // Important: set to nullptr
+			}
+			gameObjectInstanceDestroy(p_Instance);
+		}
 	}
 }
 

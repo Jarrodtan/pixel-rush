@@ -24,9 +24,11 @@ namespace Objects {
 		TYPE_OBJECT_LIGHTPLAYER, // used to indicate the player object
 		TYPE_OBJECT_SHADOWPLAYER,
 		TYPE_OBJECT_MOVEABLE_SPIKE,	// used to indicate the enemy object
+		TYPE_OBJECT_SPIKE,	// used to indicate the enemy object
 		TYPE_OBJECT_LIGHTSHARD,
 		TYPE_OBJECT_SHADOWFRAGMENT,
 		TYPE_PRESSURE_PLATE,
+		TYPE_OBJECT_MOVINGPLATFORM,
 
 		TYPE_MAX_OBJECT
 	};
