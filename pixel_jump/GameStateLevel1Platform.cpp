@@ -124,6 +124,10 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_POWERUP;
 
+	// create the pressure plate
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_PRESSURE_PLATE;
+
 	// create the powerup effect
 	p_Effect = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Effect->u_Type = Objects::TYPE_OBJECT_POWERUPEFFECT;
@@ -221,6 +225,31 @@ void GameStateLevel1PlatformInit(void) {
 
 			case Objects::TYPE_OBJECT_ENEMY:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_ENEMY, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
+				break;
+			case Objects::TYPE_PRESSURE_PLATE:
+				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_PRESSURE_PLATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				int count = p_Instance->sequenceCollection.sequenceCount = 2;
+
+				p_Instance->sequenceCollection.sequence = new Sequence[count];
+
+				p_Instance->sequenceCollection.sequence[0] = Sequence{
+					false,
+					false,
+					Position.y,
+					0.0f,
+					0.0f,
+					SpecialSequence::PRESSURE_PLATE_RELEASED
+				};
+
+				p_Instance->sequenceCollection.sequence[1] = Sequence{
+					false,
+					false,
+					Position.y - Scale.y,
+					0.0f,
+					0.0f,
+					SpecialSequence::PRESSURE_PLATE_STEPPED
+				};
+
 				break;
 			}
 		}
@@ -468,7 +497,7 @@ void GameStateLevel1PlatformUpdate(void) {
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 
-		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
+		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0 || p_Instance->p_GameObject->u_Type == Objects::TYPE_PRESSURE_PLATE) continue;
 
 		p_Instance->i_gridCollisionFlag = Collision::CheckInstanceBinaryMapCollision(::p_BinaryCollisionArray, p_Instance->currPosition.x, p_Instance->currPosition.y, p_Instance->scale.x, p_Instance->scale.y);
 
@@ -544,6 +573,71 @@ void GameStateLevel1PlatformUpdate(void) {
 				powerUpFlag |= POWER_PICKEDUP;
 			}
 			break;
+
+		case Objects::TYPE_PRESSURE_PLATE:
+
+			if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, f_Time)) {
+				if (p_Instance->boundingBox.min.x >= p_LightPlayer->boundingBox.max.x && p_LightPlayer->currVelocity.x > 0.0) {
+					p_LightPlayer->currPosition.x = p_LightPlayer->currVelocity.x * f_Time + p_LightPlayer->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+				}
+				if (p_Instance->boundingBox.max.x <= p_LightPlayer->boundingBox.min.x && p_LightPlayer->currVelocity.x < 0.0) {
+					p_LightPlayer->currPosition.x = p_LightPlayer->currVelocity.x * f_Time + p_LightPlayer->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+				}if (p_Instance->boundingBox.max.y <= p_LightPlayer->boundingBox.min.y) {
+
+					//p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+					if (p_LightPlayer->currVelocity.y <= 0.0f) {
+						p_LightPlayer->currVelocity.y = 0.0f;
+						p_LightPlayer->currPosition.y = p_LightPlayer->prevPosition.y; //SNAP PLAYER BACK VIA X AXIS
+					}
+
+
+
+
+					for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+						Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
+						if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_STEPPED) {
+
+							if (sequence.targetValue < p_Instance->currPosition.y) {
+								f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
+								p_Instance->currPosition.y -= yVel;
+								p_LightPlayer->currPosition.y = p_Instance->currPosition.y + 1.0f;
+
+							}
+							if (sequence.targetValue >= p_Instance->currPosition.y) {
+								Collision::SnapToCell(&p_Instance->currPosition.y);
+							}
+
+
+						}
+					}
+
+				}
+
+
+			}
+			else {
+				for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
+
+					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {
+						Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
+
+						if (p_Instance->currPosition.y < sequence.targetValue) {
+							f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
+							sequence.currentValue += yVel;
+							p_Instance->currPosition.y += yVel;
+							p_LightPlayer->currPosition.y += yVel;
+						}
+						else {
+							p_Instance->currPosition.y = sequence.targetValue;
+						}
+
+					}
+				}
+			}
+			break;
+		
+
 		}
 	}
 
@@ -597,11 +691,6 @@ void GameStateLevel1PlatformDraw(void) {
 			case Objects::TYPE_OBJECT_EMPTY:
 				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.68f, 0.85f, 0.90f, 1.f);
 				break;
-
-			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
-				break;
-
 			default:
 				break;
 			}
@@ -628,6 +717,26 @@ void GameStateLevel1PlatformDraw(void) {
 		}
 
 		Render::RenderShapes(p_Instance, FinalTransform);
+	}
+
+	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
+		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
+			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
+			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
+			if (dynamicCamFeature) {
+				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
+			}
+			AEGfxSetTransform(FinalCellTransform.m);
+			switch (::p_BinaryCollisionArray[i][j]) {
+
+			case Objects::TYPE_OBJECT_WALL:
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 
 }

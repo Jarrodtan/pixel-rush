@@ -8,6 +8,7 @@
 /******************************************************************************/
 #include "AEEngine.h"
 #include "Collision.h"
+#include "Sequence.h"
 
 namespace Objects {
 	/******************************************************************************/
@@ -27,6 +28,7 @@ namespace Objects {
 		TYPE_OBJECT_LIGHTSHARD,
 		TYPE_OBJECT_SHADOWFRAGMENT,
 		TYPE_OBJECT_POWERUP,
+		TYPE_PRESSURE_PLATE,
 		TYPE_OBJECT_POWERUPEFFECT,
 		TYPE_MAX_OBJECT
 	};
@@ -92,6 +94,7 @@ namespace Objects {
 
 		// general purpose counter (This variable can be used for the enemy state machine later)
 		f64 f_Counter;
+		SequenceCollection sequenceCollection;
 
 	};
 	/******************************************************************************/

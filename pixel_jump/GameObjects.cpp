@@ -61,7 +61,7 @@ namespace Objects {
 				p_Instance->state = startState;
 				p_Instance->innerState = INNER_STATE_ON_ENTER;
 				p_Instance->f_Counter = 0;
-
+				p_Instance->sequenceCollection.sequence = nullptr;
 				// return the new instance
 				return p_Instance;
 			}
