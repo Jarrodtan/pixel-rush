@@ -588,6 +588,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalLightShard;
+				++::i_Time;
 				
 			}
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -600,6 +601,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalShadowFragment;
+				++::i_Time;
 			}
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				//gameObjectInstanceDestroy(p_Instance);
