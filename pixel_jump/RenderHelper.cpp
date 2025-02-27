@@ -30,7 +30,7 @@ namespace Render {
 		AEGfxTriAdd(
 			-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
 			0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
+			0.f, 0.5f, 0xFF000000, 0.0f, 0.0f);
 		g_Shapes[SHAPES::TRIANGLE] = AEGfxMeshEnd();
 
 		AEGfxMeshStart();
@@ -125,7 +125,6 @@ namespace Render {
 			case Objects::TYPE_OBJECT_WALL:
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			case Objects::TYPE_PRESSURE_PLATE:
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
@@ -136,8 +135,10 @@ namespace Render {
 				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
 				break;
 
+			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			case Objects::TYPE_OBJECT_SPIKE:
 				p_Object->p_Mesh = g_Shapes[SHAPES::TRIANGLE];
+				break;
 			}
 		}
 	}
