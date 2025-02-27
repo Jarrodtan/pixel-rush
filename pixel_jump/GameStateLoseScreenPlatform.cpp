@@ -107,7 +107,7 @@ void GameStateLoseDraw(void) {
 	AEGfxMeshDraw(ExitButton.pMesh, AE_GFX_MDM_TRIANGLES);
 	
 
-	AEGfxPrint(g_Font,"Game Over", -0.23f, 0.6f, 2.5f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(g_Font,"Game Over! :(", -0.23f, 0.6f, 2.5f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "Restart", -0.09f, 0.20f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "  Quit", -0.09f, -0.25f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 }
