@@ -24,12 +24,10 @@ namespace Objects {
 		TYPE_OBJECT_LIGHTPLAYER, // used to indicate the player object
 		TYPE_OBJECT_SHADOWPLAYER,
 		TYPE_OBJECT_ENEMY,	// used to indicate the enemy object
-		TYPE_OBJECT_COIN,	// used to indicate the coin object
 		TYPE_OBJECT_LIGHTSHARD,
 		TYPE_OBJECT_SHADOWFRAGMENT,
-		TYPE_OBJECT_POWERUP,
 		TYPE_PRESSURE_PLATE,
-		TYPE_OBJECT_POWERUPEFFECT,
+
 		TYPE_MAX_OBJECT
 	};
 

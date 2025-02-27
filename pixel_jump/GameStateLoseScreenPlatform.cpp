@@ -88,13 +88,16 @@ void GameStateLoseUpdate(void) {
 /******************************************************************************/
 void GameStateLoseDraw(void) {
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
+	AEGfxTextureSet(NULL, 0, 0);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetTransparency(1.f);
 
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 
 	mesh_square_transform(BtnposX[0], BtnposY[0], 200, 100, 0, RestartButton.scale, RestartButton.rotate, RestartButton.translate, RestartButton.transform, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f);
 	//mesh_square_transform(0, 150, 200, 100, 0, RestartButton.scale, RestartButton.rotate, RestartButton.translate, RestartButton.transform, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f);
 	AEGfxMeshDraw(RestartButton.pMesh, AE_GFX_MDM_TRIANGLES);
+	Render::RenderFont("Restart", 0.8f, BtnposX[0], BtnposY[0], Render::COLOUR::LIGHT_BLUE);
 
 	mesh_square_transform(BtnposX[1], BtnposY[1], 200, 100, 0, ExitButton.scale, ExitButton.rotate, ExitButton.translate, ExitButton.transform, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 	AEGfxMeshDraw(ExitButton.pMesh, AE_GFX_MDM_TRIANGLES);
