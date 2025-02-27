@@ -131,6 +131,14 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVINGPLATFORM;
 
+	// create the light spike
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_LIGHTSPIKE;
+
+	// create the shadow spike
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWSPIKE;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -169,7 +177,7 @@ void GameStateLevel1PlatformInit(void) {
 	::doubleJumpCounter_S = 0;
 	::doubleJumpCounter_L = 0;
 
-	::i_Time = 10;
+	::i_Time = -1;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -232,6 +240,14 @@ void GameStateLevel1PlatformInit(void) {
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
 			
+			case Objects::TYPE_OBJECT_LIGHTSPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_LIGHTSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+
+			case Objects::TYPE_OBJECT_SHADOWSPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
 				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				// Add movement sequence
@@ -542,27 +558,6 @@ void GameStateLevel1PlatformUpdate(void) {
 				p_Instance->currVelocity.x = 0;
 			}
 		}
-
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SPIKE) {
-			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
-				Collision::SnapToCell(&p_Instance->currPosition.x);
-				p_Instance->currVelocity.x = 0;
-			}
-			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT && p_Instance->currVelocity.x > 0) {
-				Collision::SnapToCell(&p_Instance->currPosition.x);
-				p_Instance->currVelocity.x = 0;
-			}
-		}
-		else {
-			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT) {
-				Collision::SnapToCell(&p_Instance->currPosition.x);
-				p_Instance->currVelocity.x = 0;
-			}
-			if (p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) {
-				Collision::SnapToCell(&p_Instance->currPosition.x);
-				p_Instance->currVelocity.x = 0;
-			}
-		}
 	}
 	
 
@@ -606,6 +601,22 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				//gameObjectInstanceDestroy(p_Instance);
 				//--i_LightPlayerLives;
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWSPIKE:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--::i_LightPlayerLives;
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_LIGHTSPIKE:
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--i_ShadowPlayerLives;
+				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
 			break;
 

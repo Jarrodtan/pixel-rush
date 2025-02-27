@@ -135,6 +135,8 @@ namespace Render {
 				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
 				break;
 
+			case Objects::TYPE_OBJECT_SHADOWSPIKE:
+			case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			case Objects::TYPE_OBJECT_SPIKE:
 				p_Object->p_Mesh = g_Shapes[SHAPES::TRIANGLE];
@@ -194,6 +196,14 @@ namespace Render {
 
 		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
 			AEGfxSetColorToAdd(0.4f, 0.9f, 0.4f, 1.f);
+			break;
+
+		case Objects::TYPE_OBJECT_LIGHTSPIKE:
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWSPIKE:
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.6f);
 			break;
 		}
 
