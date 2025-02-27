@@ -27,8 +27,10 @@
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
+    <ClCompile Include="Sequence.cpp" />
     <ClInclude Include="RenderHelper.h" />
     <ClCompile Include="PowerUpManager.cpp" />
+    <ClInclude Include="Sequence.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
