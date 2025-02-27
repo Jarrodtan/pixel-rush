@@ -14,7 +14,6 @@ namespace {
 	s32 i_ShadowPlayerLives;
 	s32 i_ShadowPlayerInitialX;
 	s32 i_ShadowPlayerInitialY;
-	s32 i_TotalCoins;
 	s32 i_TotalLightShard;
 	s32 i_TotalShadowFragment;
 
@@ -108,15 +107,11 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_ENEMY;
 
-	// create the coin object
-	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = Objects::TYPE_OBJECT_COIN;
-
-	// create the coin object
+	// create the light collectable object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_LIGHTSHARD;
 
-	// create the coin object
+	// create the shadow collectable object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWFRAGMENT;
 
@@ -164,7 +159,6 @@ void GameStateLevel1PlatformInit(void) {
 	::p_ShadowPlayer = 0;
 	::p_BlackCell = 0;
 	::p_WhiteCell = 0;
-	::i_TotalCoins = 0;
 	::doubleJumpCounter_S = 0;
 	::doubleJumpCounter_L = 0;
 
@@ -202,11 +196,6 @@ void GameStateLevel1PlatformInit(void) {
 				::p_ShadowPlayer = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWPLAYER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				::i_ShadowPlayerInitialX = i;
 				::i_ShadowPlayerInitialY = j;
-				break;
-
-			case Objects::TYPE_OBJECT_COIN:
-				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_COIN, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
-				++::i_TotalCoins;
 				break;
 
 			case Objects::TYPE_OBJECT_LIGHTSHARD:
@@ -602,11 +591,6 @@ void GameStateLevel1PlatformDraw(void) {
 			camera.applyCameraTransform(FinalTransform, camMidpoint_X, camMidpoint_Y);
 		}
 		AEGfxSetTransform(FinalTransform.m);
-
-		//if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_COIN) {
-		//	Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::COIN);
-		//	continue;
-		//}
 
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}

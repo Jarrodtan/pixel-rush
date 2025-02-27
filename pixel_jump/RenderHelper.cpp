@@ -68,7 +68,6 @@ namespace Render {
 		}
 
 		// TODO: Load all textures here
-		g_Texture[TEXTURE::COIN] = AEGfxTextureLoad("Assets/Art/Coin.png");
 
 	}
 
@@ -130,7 +129,6 @@ namespace Render {
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
-			case Objects::TYPE_OBJECT_COIN:
 			case Objects::TYPE_OBJECT_LIGHTSHARD:
 			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
@@ -166,10 +164,6 @@ namespace Render {
 
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
-			break;
-
-		case Objects::TYPE_OBJECT_COIN:
-			AEGfxSetColorToAdd(1.f, 1.f, 0.f, 1.f);
 			break;
 		
 		case Objects::TYPE_OBJECT_LIGHTSHARD:

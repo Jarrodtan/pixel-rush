@@ -39,7 +39,6 @@ namespace Render {
 		SHADOW_FRAGMENT,
 		ENEMY,
 		POWERUP,
-		COIN,
 
 		// TODO: Add more textures here as needed
 
