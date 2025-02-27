@@ -73,7 +73,7 @@ void GameStateLoseUpdate(void) {
 		if (mouseposX > BtnposX[0] + 700 && mouseposX < BtnposX[0] + 900
 			&& mouseposY > BtnposY[0] + 200 && mouseposY < BtnposY[0] + 300)
 		{
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+			GameStateManager::g_GameStateNext = GameStateManager::g_GameStatePrev;
 		}
 		if (mouseposX > BtnposX[1] + 700 && mouseposX < BtnposX[1] + 900
 			&& mouseposY > BtnposY[1] + 600 && mouseposY < BtnposY[1] + 700)
