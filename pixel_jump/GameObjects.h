@@ -23,7 +23,7 @@ namespace Objects {
 		TYPE_OBJECT_WALL,	// used in the map grid to indicate a wall or floor
 		TYPE_OBJECT_LIGHTPLAYER, // used to indicate the player object
 		TYPE_OBJECT_SHADOWPLAYER,
-		TYPE_OBJECT_ENEMY,	// used to indicate the enemy object
+		TYPE_OBJECT_MOVEABLE_SPIKE,	// used to indicate the enemy object
 		TYPE_OBJECT_LIGHTSHARD,
 		TYPE_OBJECT_SHADOWFRAGMENT,
 		TYPE_PRESSURE_PLATE,
@@ -102,6 +102,7 @@ namespace Objects {
 	/******************************************************************************/
 	GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, GameObjectInstance* p_GameObjectInstanceList, u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState);
 	void gameObjectInstanceDestroy(GameObjectInstance* p_Instance);
+	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT);
 
 }
 

@@ -125,7 +125,7 @@ namespace Render {
 			case Objects::TYPE_OBJECT_WALL:
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			case Objects::TYPE_OBJECT_ENEMY:
+			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			case Objects::TYPE_PRESSURE_PLATE:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
@@ -177,7 +177,7 @@ namespace Render {
 		case Objects::TYPE_PRESSURE_PLATE:
 			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
 			break;
-		case Objects::TYPE_OBJECT_ENEMY:
+		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			AEGfxSetColorToAdd(1.f, 0.f, 0.f, 1.f);
 			break;
 		}

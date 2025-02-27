@@ -105,7 +105,7 @@ void GameStateLevel1PlatformLoad(void) {
 
 	// create the enemy object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = Objects::TYPE_OBJECT_ENEMY;
+	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SPIKE;
 
 	// create the light collectable object
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
@@ -203,8 +203,8 @@ void GameStateLevel1PlatformInit(void) {
 				++::i_TotalShadowFragment;
 				break;
 
-			case Objects::TYPE_OBJECT_ENEMY:
-				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_ENEMY, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
+			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
 				break;
 			case Objects::TYPE_PRESSURE_PLATE:
 				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_PRESSURE_PLATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
@@ -389,17 +389,9 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 		}
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
-			// TODO: Call the enemy state machine
-			/*if (p_Instance->currPosition.x < 10)
-			{
-				p_Instance->currVelocity.x += 0.01f;
-			}
-			else
-			{
-				p_Instance->currVelocity.x -= 0.01f;
-			}*/
+			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
 		}
 	}
 			
@@ -464,7 +456,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
 		}
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_ENEMY) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE) {
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) { 
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
@@ -520,7 +512,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 			break;
 
-		case Objects::TYPE_OBJECT_ENEMY:
+		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--::i_LightPlayerLives;
 				if (::i_LightPlayerLives == 0) {

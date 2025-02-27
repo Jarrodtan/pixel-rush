@@ -87,6 +87,58 @@ namespace Objects {
 
 		p_Instance->u_Flag = 0;
 	}
+
+	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT) {
+		switch (p_Instance->state) {
+		case STATE_GOING_LEFT:
+			switch (p_Instance->innerState) {
+			case INNER_STATE_ON_ENTER:
+				p_Instance->currVelocity.x = -ENEMY_MOVE_VELOCITY;
+				p_Instance->innerState = INNER_STATE_ON_UPDATE;
+				break;
+			case INNER_STATE_ON_UPDATE:
+				if ((p_Instance->i_gridCollisionFlag & COLLISION_LEFT) || Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT, static_cast<s32>(p_Instance->currPosition.x - 1 + 0.5), static_cast<s32>(p_Instance->currPosition.y - 1 - 0.5)) == TYPE_OBJECT_EMPTY) {
+					p_Instance->f_Counter = ENEMY_IDLE_TIME;
+					p_Instance->innerState = INNER_STATE_ON_EXIT;
+					p_Instance->currVelocity.x = 0;
+					Collision::SnapToCell(&p_Instance->currPosition.x);
+				}
+				break;
+			case INNER_STATE_ON_EXIT:
+				p_Instance->f_Counter -= g_dt;
+				if (p_Instance->f_Counter < 0) {
+					p_Instance->state = STATE_GOING_RIGHT;
+					p_Instance->innerState = INNER_STATE_ON_ENTER;
+				}
+				break;
+			}
+			break;
+
+		case STATE_GOING_RIGHT:
+			switch (p_Instance->innerState) {
+			case INNER_STATE_ON_ENTER:
+				p_Instance->currVelocity.x = ENEMY_MOVE_VELOCITY;
+				p_Instance->innerState = INNER_STATE_ON_UPDATE;
+				break;
+			case INNER_STATE_ON_UPDATE:
+				if ((p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) || Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT, static_cast<s32>(p_Instance->currPosition.x + 1 - 0.5), static_cast<s32>(p_Instance->currPosition.y - 1 - 0.5)) == TYPE_OBJECT_EMPTY) {
+					p_Instance->f_Counter = ENEMY_IDLE_TIME;
+					p_Instance->innerState = INNER_STATE_ON_EXIT;
+					p_Instance->currVelocity.x = 0;
+					Collision::SnapToCell(&p_Instance->currPosition.x);
+				}
+				break;
+			case INNER_STATE_ON_EXIT:
+				p_Instance->f_Counter -= g_dt;
+				if (p_Instance->f_Counter < 0) {
+					p_Instance->state = STATE_GOING_LEFT;
+					p_Instance->innerState = INNER_STATE_ON_ENTER;
+				}
+				break;
+			}
+			break;
+		}
+	}
 }
 
 
