@@ -595,14 +595,10 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				std::cout << "touched";
 				--::i_LightPlayerLives;
-				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
-				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
 			}
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				std::cout << "touched";
 				--i_ShadowPlayerLives;
-				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
 			break;
 		case Objects::TYPE_OBJECT_SPIKE:
@@ -804,14 +800,9 @@ void GameStateLevel1PlatformDraw(void) {
 
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
-	
-	const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
-	const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
 
 	Render::RenderFont(s_LightShards, 0.8f, 0.7f, 0.8f, Render::COLOUR::LIGHT_BLUE);
 	Render::RenderFont(s_ShadowFragments, 0.8f, -0.7f, 0.8f, Render::COLOUR::YELLOW);
-	Render::RenderFont(s_LightPlayerLives, 0.8f, 0.7f, 0.7f, Render::COLOUR::LIGHT_BLUE);
-	Render::RenderFont(s_ShadowPlayerLives, 0.8f, -0.7f, 0.7f, Render::COLOUR::YELLOW);
 
 }
 
