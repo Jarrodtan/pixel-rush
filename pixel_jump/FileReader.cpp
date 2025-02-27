@@ -43,12 +43,22 @@ namespace FileReader {
 				file >> temp;
 				r_MapData[n][j] = temp;
 
-				if (temp == 1) {
+
+				switch (temp) {
+				case Objects::TYPE_OBJECT_WALL:
 					r_BinaryCollisionArray[n][j] = 1;
-				}
-				else {
+					break;
+				default:
 					r_BinaryCollisionArray[n][j] = 0;
+					break;
 				}
+
+				//if (temp == 1) {
+				//	r_BinaryCollisionArray[n][j] = 1;
+				//}
+				//else {
+				//	r_BinaryCollisionArray[n][j] = 0;
+				//}
 			}
 		}
 		file.close();

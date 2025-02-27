@@ -139,6 +139,10 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWSPIKE;
 
+	// create the moveable light spike
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -234,6 +238,10 @@ void GameStateLevel1PlatformInit(void) {
 
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
+				break;
+
+			case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
 				break;
 
 			case Objects::TYPE_OBJECT_SPIKE:
@@ -451,6 +459,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			break;
 
+		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
@@ -538,7 +547,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			p_Instance->currVelocity.y = 0;
 		}
 
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE) {
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
@@ -609,6 +618,14 @@ void GameStateLevel1PlatformUpdate(void) {
 				--::i_LightPlayerLives;
 				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+			}
+			break;
+			
+		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--i_ShadowPlayerLives;
+				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
 			break;
 
