@@ -172,6 +172,10 @@ void GameStateLevel1PlatformInit(void) {
 	::i_LightPlayerLives = 1;
 	::i_ShadowPlayerLives = 1;
 
+	// reset the total values for both to avoid double count for each of them
+	::i_TotalLightShard = 0;
+	::i_TotalShadowFragment = 0;
+
 	AEVec2 Position{}, Velocity{};
 
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
@@ -514,8 +518,8 @@ void GameStateLevel1PlatformUpdate(void) {
 				
 			}
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				gameObjectInstanceDestroy(p_Instance);
-				--i_ShadowPlayerLives;
+				//gameObjectInstanceDestroy(p_Instance);
+				//--i_ShadowPlayerLives;
 			}
 			break;
 
@@ -525,8 +529,8 @@ void GameStateLevel1PlatformUpdate(void) {
 				--::i_TotalShadowFragment;
 			}
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				gameObjectInstanceDestroy(p_Instance);
-				--i_LightPlayerLives;
+				//gameObjectInstanceDestroy(p_Instance);
+				//--i_LightPlayerLives;
 			}
 			break;
 
