@@ -166,8 +166,15 @@ void GameStateLevel1PlatformInit(void) {
 	::p_WhiteCell->u_Flag ^= FLAG_VISIBLE;
 	::p_WhiteCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
-	::i_LightPlayerLives = PLAYER_LIVES;
-	::i_ShadowPlayerLives = PLAYER_LIVES;
+	//::i_LightPlayerLives = PLAYER_LIVES;
+	//::i_ShadowPlayerLives = PLAYER_LIVES;
+	// for testing purposes only
+	::i_LightPlayerLives = 1;
+	::i_ShadowPlayerLives = 1;
+
+	// reset the total values for both to avoid double count for each of them
+	::i_TotalLightShard = 0;
+	::i_TotalShadowFragment = 0;
 
 	AEVec2 Position{}, Velocity{};
 
@@ -478,6 +485,17 @@ void GameStateLevel1PlatformUpdate(void) {
 		}
 	}
 
+	// check if all shadow fragments & light shards are collected
+	if (::i_TotalLightShard == 0 && ::i_TotalShadowFragment == 0) {
+		// TODO: Go to the next level
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+	}
+
+	if (::i_LightPlayerLives == 0 || ::i_ShadowPlayerLives == 0) {
+		// TODO: Go to lose state
+		GameStateManager::g_GameStateNext = States::GS_LOSE;
+	}
+
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		f32 f_Time = 0.f;
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -489,13 +507,11 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalLightShard;
-				if (::i_TotalLightShard == 0) {
-					// check if all shadow fragments are collected
-					if (::i_TotalShadowFragment == 0) {
-						// TODO: Go to the next level
-						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-					}
-				}
+				
+			}
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				//gameObjectInstanceDestroy(p_Instance);
+				//--i_ShadowPlayerLives;
 			}
 			break;
 
@@ -503,28 +519,20 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
 				--::i_TotalShadowFragment;
-				if (::i_TotalShadowFragment == 0) {
-					if (::i_TotalLightShard == 0) {
-						// TODO: Go to the next level
-						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-					}
-				}
+			}
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				//gameObjectInstanceDestroy(p_Instance);
+				//--i_LightPlayerLives;
 			}
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--::i_LightPlayerLives;
-				if (::i_LightPlayerLives == 0) {
-					// TODO: Go to lose state
-				}
 			}
 
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_ShadowPlayerLives;
-				if (i_ShadowPlayerLives == 0) {
-					// TODO: Go to lose state
-				}
 			}
 			break;
 
