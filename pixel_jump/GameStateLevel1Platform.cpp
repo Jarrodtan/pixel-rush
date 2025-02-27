@@ -16,7 +16,6 @@ namespace {
 	s32 i_ShadowPlayerInitialY;
 	s32 i_TotalLightShard;
 	s32 i_TotalShadowFragment;
-	s32 i_Spikes;
 
 	// List of original objects
 	Objects::GameObject* p_GameObjectList = nullptr;
@@ -120,6 +119,10 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_PRESSURE_PLATE;
 
+	// create the moving platform
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_MOVINGPLATFORM;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -207,7 +210,18 @@ void GameStateLevel1PlatformInit(void) {
 			case Objects::TYPE_OBJECT_SPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
-				
+			
+			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
+				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				// Add movement sequence
+				platform->sequenceCollection.sequenceCount = 2;
+				platform->sequenceCollection.sequence = new Sequence[2]{
+					{false, false, Position.x - 5.0f, 0.0f, 2.0f, SpecialSequence::MOVE_LEFT},
+					{false, false, Position.x + 5.0f, 0.0f, 2.0f, SpecialSequence::MOVE_RIGHT}
+				};
+				break;
+			}
+
 			case Objects::TYPE_PRESSURE_PLATE:
 				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_PRESSURE_PLATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				int count = p_Instance->sequenceCollection.sequenceCount = 2;
@@ -292,13 +306,13 @@ void GameStateLevel1PlatformUpdate(void) {
 	}
 
 	//Power up [increase velocity]
-	if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
-		powerUpFlag ^= POWER_ACTIVE;
-		AEGfxVertexList* staging = p_LightPlayer->p_GameObject->p_Mesh;
-		p_LightPlayer->p_GameObject->p_Mesh = p_Effect->p_Mesh;
-		p_Effect->p_Mesh = staging;
+	//if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
+	//	powerUpFlag ^= POWER_ACTIVE;
+	//	AEGfxVertexList* staging = p_LightPlayer->p_GameObject->p_Mesh;
+	//	p_LightPlayer->p_GameObject->p_Mesh = p_Effect->p_Mesh;
+	//	p_Effect->p_Mesh = staging;
 
-	}
+	//}
 
 	// basic jump
 	/*if (AEInputCheckTriggered(AEVK_W)) {
@@ -390,6 +404,21 @@ void GameStateLevel1PlatformUpdate(void) {
 		}
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+		}
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVINGPLATFORM) {
+			// Example: Move horizontally between two points
+			static float moveSpeed = 2.0f;
+			static float leftBound = 5.0f;
+			static float rightBound = 15.0f;
+
+			// Update platform position
+			p_Instance->currPosition.y += moveSpeed * g_dt;
+
+			// Reverse direction at bounds
+			if (p_Instance->currPosition.y >= rightBound ||
+				p_Instance->currPosition.y <= leftBound) {
+				moveSpeed *= -1;
+			}
 		}
 		
 	}
@@ -525,6 +554,27 @@ void GameStateLevel1PlatformUpdate(void) {
 				if (i_ShadowPlayerLives == 0) {
 					// TODO: Go to lose state
 				}
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox,
+				p_LightPlayer->currVelocity,
+				p_Instance->boundingBox,
+				p_Instance->currVelocity,
+				f_Time)) {
+
+				// Move player with platform
+				p_LightPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
+			}
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox,
+				p_ShadowPlayer->currVelocity,
+				p_Instance->boundingBox,
+				p_Instance->currVelocity,
+				f_Time)) {
+
+				// Move player with platform
+				p_ShadowPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
 			}
 			break;
 
