@@ -22,8 +22,6 @@ s32 keyposX, keyposY;
 void GameStateWinLoad(void) {
 	AESysSetWindowTitle("Win");
 	AudioManager::PlayBGM("Assets/AudioBGM/Sadness_Cosmo_by_Bruno_ph_Id_109409_trim.wav");
-	// load the font
-	g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);
 }
 
 /******************************************************************************/
@@ -112,8 +110,6 @@ void GameStateWinDraw(void) {
 void GameStateWinFree(void) {
 	AEGfxMeshFree(RestartButton.pMesh);
 	AEGfxMeshFree(ExitButton.pMesh);
-	// Releases resources used by a font
-	AEGfxDestroyFont(g_Font);
 }
 
 /******************************************************************************/

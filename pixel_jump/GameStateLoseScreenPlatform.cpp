@@ -23,8 +23,6 @@ s32 mouseposX, mouseposY;
 void GameStateLoseLoad(void) {
 	AESysSetWindowTitle("Lose");
 	AudioManager::PlayBGM("Assets/AudioBGM/Sadness_Cosmo_by_Bruno_ph_Id_109409_trim.wav");
-	// load the font
-	g_Font = AEGfxCreateFont("Assets/Fonts/Arial Italic.ttf", 30);
 }
 
 /******************************************************************************/
@@ -109,7 +107,6 @@ void GameStateLoseDraw(void) {
 	mesh_square_transform(BtnposX[0], BtnposY[0], 200, 100, 0, RestartButton.scale, RestartButton.rotate, RestartButton.translate, RestartButton.transform, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f);
 	//mesh_square_transform(0, 150, 200, 100, 0, RestartButton.scale, RestartButton.rotate, RestartButton.translate, RestartButton.transform, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f);
 	AEGfxMeshDraw(RestartButton.pMesh, AE_GFX_MDM_TRIANGLES);
-	Render::RenderFont("Restart", 0.8f, BtnposX[0], BtnposY[0], Render::COLOUR::LIGHT_BLUE);
 
 	mesh_square_transform(BtnposX[1], BtnposY[1], 200, 100, 0, ExitButton.scale, ExitButton.rotate, ExitButton.translate, ExitButton.transform, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 	AEGfxMeshDraw(ExitButton.pMesh, AE_GFX_MDM_TRIANGLES);
@@ -128,8 +125,6 @@ void GameStateLoseDraw(void) {
 void GameStateLoseFree(void) {
 	AEGfxMeshFree(RestartButton.pMesh);
 	AEGfxMeshFree(ExitButton.pMesh);
-	// Releases resources used by a font
-	AEGfxDestroyFont(g_Font);
 }
 
 /******************************************************************************/
