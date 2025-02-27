@@ -219,7 +219,7 @@ void GameStateLevel1PlatformInit(void) {
 				break;
 
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
-				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
 				break;
 
 			case Objects::TYPE_OBJECT_SPIKE:
@@ -414,17 +414,18 @@ void GameStateLevel1PlatformUpdate(void) {
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER) {
+		switch (p_Instance->p_GameObject->u_Type) {
+		case Objects::TYPE_OBJECT_LIGHTPLAYER:
+		case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
-		}
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
-			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
-		}
+			break;
 
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE) {
+		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
+			break;
 		}
+
 
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVINGPLATFORM) {
 			// Example: Move horizontally between two points
@@ -548,7 +549,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 		}
 	}
-	}
+	
 
 	// check if all shadow fragments & light shards are collected
 	if (::i_TotalLightShard == 0 && ::i_TotalShadowFragment == 0) {

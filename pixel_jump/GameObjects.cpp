@@ -97,7 +97,9 @@ namespace Objects {
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				break;
 			case INNER_STATE_ON_UPDATE:
-				if ((p_Instance->i_gridCollisionFlag & COLLISION_LEFT) || Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT, static_cast<s32>(p_Instance->currPosition.x - 1 + 0.5), static_cast<s32>(p_Instance->currPosition.y - 1 - 0.5)) == TYPE_OBJECT_EMPTY) {
+				if ((p_Instance->i_gridCollisionFlag & COLLISION_LEFT) ||
+					Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT,
+						static_cast<s32>(p_Instance->currPosition.x - 1 + 0.5), static_cast<s32>(p_Instance->currPosition.y - 1 - 0.5)) == TYPE_OBJECT_EMPTY) {
 					p_Instance->f_Counter = ENEMY_IDLE_TIME;
 					p_Instance->innerState = INNER_STATE_ON_EXIT;
 					p_Instance->currVelocity.x = 0;
@@ -121,7 +123,9 @@ namespace Objects {
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				break;
 			case INNER_STATE_ON_UPDATE:
-				if ((p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) || Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT, static_cast<s32>(p_Instance->currPosition.x + 1 - 0.5), static_cast<s32>(p_Instance->currPosition.y - 1 - 0.5)) == TYPE_OBJECT_EMPTY) {
+				if ((p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) ||
+					Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT,
+						static_cast<s32>(p_Instance->currPosition.x + 1 - 0.5), static_cast<s32>(p_Instance->currPosition.y - 1 - 0.5)) == TYPE_OBJECT_EMPTY) {
 					p_Instance->f_Counter = ENEMY_IDLE_TIME;
 					p_Instance->innerState = INNER_STATE_ON_EXIT;
 					p_Instance->currVelocity.x = 0;
