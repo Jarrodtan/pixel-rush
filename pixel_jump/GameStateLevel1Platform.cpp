@@ -755,7 +755,14 @@ void GameStateLevel1PlatformDraw(void) {
 void GameStateLevel1PlatformFree(void) {
 	// kill all objects in the list
 	for (u32 i{}; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
-		gameObjectInstanceDestroy(::p_GameObjectInstanceList + i);
+		Objects::GameObjectInstance* p_Instance = ::p_GameObjectInstanceList + i;
+		if ((p_Instance->u_Flag & FLAG_ACTIVE) != 0) { // Check if instance is active
+			if (p_Instance->sequenceCollection.sequence != nullptr) {
+				delete[] p_Instance->sequenceCollection.sequence;
+				p_Instance->sequenceCollection.sequence = nullptr; // Important: set to nullptr
+			}
+			gameObjectInstanceDestroy(p_Instance);
+		}
 	}
 }
 
