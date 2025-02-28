@@ -450,6 +450,7 @@ void GameStateLevel1PlatformUpdate(void) {
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
+		f32 f_Time{};
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
@@ -460,6 +461,9 @@ void GameStateLevel1PlatformUpdate(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
+			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_LightPlayer, f_Time);
+			break;
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
@@ -626,6 +630,23 @@ void GameStateLevel1PlatformUpdate(void) {
 				--i_ShadowPlayerLives;
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+			}
+
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+					if (p_LightPlayer->currVelocity.x > 0) {
+						p_LightPlayer->currVelocity.x = 0;
+						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+					}
+				}
+				else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+					if (p_LightPlayer->currVelocity.x < 0) {
+						p_LightPlayer->currVelocity.x = 0;
+						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+					}
+				}
 			}
 			break;
 
