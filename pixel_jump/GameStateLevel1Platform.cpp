@@ -861,6 +861,9 @@ void GameStateLevel1PlatformDraw(void) {
 			case Objects::TYPE_OBJECT_EMPTY:
 				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.68f, 0.85f, 0.90f, 1.f);
 				break;
+			case Objects::TYPE_OBJECT_WALL:
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
+				break;
 			default:
 				break;
 			}
@@ -883,28 +886,6 @@ void GameStateLevel1PlatformDraw(void) {
 
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}
-
-
-	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
-		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
-			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
-			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
-			if (dynamicCamFeature) {
-				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
-			}
-			AEGfxSetTransform(FinalCellTransform.m);
-			switch (::p_BinaryCollisionArray[i][j]) {
-
-			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
-				break;
-
-			default:
-				break;
-			}
-		}
-	}
-
 
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
