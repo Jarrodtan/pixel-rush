@@ -649,14 +649,12 @@ void GameStateLevel1PlatformUpdate(void) {
 				if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
 					if (p_LightPlayer->currVelocity.x > 0) {
 						p_LightPlayer->currVelocity.x = 0;
-						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
 						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
 					}
 				}
 				else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
 					if (p_LightPlayer->currVelocity.x < 0) {
 						p_LightPlayer->currVelocity.x = 0;
-						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
 						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
 					}
 				}
@@ -674,14 +672,12 @@ void GameStateLevel1PlatformUpdate(void) {
 				if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
 					if (p_ShadowPlayer->currVelocity.x > 0) {
 						p_ShadowPlayer->currVelocity.x = 0;
-						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
 						Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
 					}
 				}
 				else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
 					if (p_ShadowPlayer->currVelocity.x < 0) {
 						p_ShadowPlayer->currVelocity.x = 0;
-						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
 						Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
 					}
 				}
