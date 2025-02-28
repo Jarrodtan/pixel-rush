@@ -143,6 +143,10 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE;
 
+	// create the moveable shadow spike
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -238,6 +242,10 @@ void GameStateLevel1PlatformInit(void) {
 
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
+				break;
+
+			case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
 				break;
 
 			case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
@@ -460,6 +468,11 @@ void GameStateLevel1PlatformUpdate(void) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			break;
 
+		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_ShadowPlayer, f_Time);
+			break;
+
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_LightPlayer, f_Time);
@@ -645,6 +658,31 @@ void GameStateLevel1PlatformUpdate(void) {
 						p_LightPlayer->currVelocity.x = 0;
 						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
 						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+					}
+				}
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--i_LightPlayerLives;
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+			}
+
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+					if (p_ShadowPlayer->currVelocity.x > 0) {
+						p_ShadowPlayer->currVelocity.x = 0;
+						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
+						Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+					}
+				}
+				else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+					if (p_ShadowPlayer->currVelocity.x < 0) {
+						p_ShadowPlayer->currVelocity.x = 0;
+						//p_LightPlayer->currPosition.x = p_LightPlayer->prevPosition.x;
+						Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
 					}
 				}
 			}
