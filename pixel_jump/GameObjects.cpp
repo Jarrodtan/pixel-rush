@@ -59,7 +59,7 @@ namespace Objects {
 				p_Instance->p_userData = 0;
 				p_Instance->i_gridCollisionFlag = 0;
 				p_Instance->state = startState;
-				p_Instance->innerState = INNER_STATE_ON_ENTER;
+				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				p_Instance->f_Counter = 0;
 				p_Instance->sequenceCollection.sequence = nullptr;
 				// return the new instance

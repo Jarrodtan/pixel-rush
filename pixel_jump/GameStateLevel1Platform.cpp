@@ -245,7 +245,7 @@ void GameStateLevel1PlatformInit(void) {
 				break;
 
 			case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
-				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
 				break;
 
 			case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
@@ -646,16 +646,25 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
-				if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
-					if (p_LightPlayer->currVelocity.x > 0) {
-						p_LightPlayer->currVelocity.x = 0;
-						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x > 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+					else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x < 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
 					}
 				}
-				else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
-					if (p_LightPlayer->currVelocity.x < 0) {
-						p_LightPlayer->currVelocity.x = 0;
-						Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+
+				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_LightPlayer->currVelocity.y < 0) {
+						p_LightPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 					}
 				}
 			}
@@ -669,16 +678,25 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
-				if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
-					if (p_ShadowPlayer->currVelocity.x > 0) {
-						p_ShadowPlayer->currVelocity.x = 0;
-						Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+				if (p_ShadowPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x > 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+					else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x < 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
 					}
 				}
-				else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
-					if (p_ShadowPlayer->currVelocity.x < 0) {
-						p_ShadowPlayer->currVelocity.x = 0;
-						Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+
+				if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currVelocity.y < 0) {
+						p_ShadowPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 					}
 				}
 			}
