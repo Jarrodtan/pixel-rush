@@ -52,13 +52,6 @@ namespace FileReader {
 					r_BinaryCollisionArray[n][j] = 0;
 					break;
 				}
-
-				//if (temp == 1) {
-				//	r_BinaryCollisionArray[n][j] = 1;
-				//}
-				//else {
-				//	r_BinaryCollisionArray[n][j] = 0;
-				//}
 			}
 		}
 		file.close();
