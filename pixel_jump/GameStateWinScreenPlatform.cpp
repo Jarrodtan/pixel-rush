@@ -97,7 +97,7 @@ void GameStateWinDraw(void) {
 	AEGfxMeshDraw(ExitButton.pMesh, AE_GFX_MDM_TRIANGLES);
 
 
-	AEGfxPrint(g_Font, "YOU WON! :)", -0.23f, 0.6f, 2.5f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(g_Font, "YOU WON! :)", -0.26f, 0.6f, 2.5f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "Replay", -0.09f, 0.20f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "  Quit", -0.09f, -0.25f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 }
