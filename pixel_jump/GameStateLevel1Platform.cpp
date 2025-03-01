@@ -488,15 +488,20 @@ void GameStateLevel1PlatformUpdate(void) {
 			break;
 		}
 
-
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVINGPLATFORM) {
 			// Example: Move horizontally between two points
 			static float moveSpeed = 2.0f;
-			static float leftBound = 5.0f;
-			static float rightBound = 15.0f;
+			static float leftBound = 8.0f;
+			static float rightBound = 14.0f;
+
+			//static float lf = p_Instance->currPosition.y + 5.0f;
 
 			// Update platform position
 			p_Instance->currPosition.y += moveSpeed * g_dt;
+
+			/*if (p_Instance->currPosition.y > 13.0f || p_Instance->currPosition.y < 8.0f)  {
+				moveSpeed *= -1;
+			}*/
 
 			// Reverse direction at bounds
 			if (p_Instance->currPosition.y >= rightBound ||
@@ -568,6 +573,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
 		}
+
 
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE) {
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
@@ -730,7 +736,7 @@ void GameStateLevel1PlatformUpdate(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
-			if (Collision::CollisionAABB(p_LightPlayer->boundingBox,
+			/*if (Collision::CollisionAABB(p_LightPlayer->boundingBox,
 				p_LightPlayer->currVelocity,
 				p_Instance->boundingBox,
 				p_Instance->currVelocity,
@@ -747,6 +753,29 @@ void GameStateLevel1PlatformUpdate(void) {
 
 				// Move player with platform
 				p_ShadowPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
+			}*/
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x > 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+					else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x < 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+				}
+
+				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_LightPlayer->currVelocity.y < 0) {
+						p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y + 8.0f;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+					}
+				}
 			}
 			break;
 
