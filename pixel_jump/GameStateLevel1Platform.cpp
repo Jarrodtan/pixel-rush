@@ -564,7 +564,9 @@ void GameStateLevel1PlatformUpdate(void) {
 			p_Instance->currVelocity.y = 0;
 		}
 
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE) {
+		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE || 
+			p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE ||
+			p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE) {
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
