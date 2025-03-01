@@ -18,8 +18,9 @@ namespace {
 	s32 i_TotalLightShard;
 	s32 i_TotalShadowFragment;
 
-	// Time
+	// Timer Features
 	s32 i_Time;
+	bool haveTiming = false;
 
 	// List of original objects
 	Objects::GameObject* p_GameObjectList = nullptr;
@@ -70,6 +71,9 @@ namespace {
 	bool haveDoubleJump_S = true;
 	s32 doubleJumpCounter_L = 0;
 	bool haveDoubleJump_L = true;
+
+	//PUZZLE FEATURE 1 *(LIGHTPLAYER CANNOT TOUCH SHADOWFRAGMENT, VIA VISA)
+	bool puzzle1 = false;
 }
 
 /******************************************************************************/
@@ -185,7 +189,7 @@ void GameStateLevel1PlatformInit(void) {
 	::doubleJumpCounter_S = 0;
 	::doubleJumpCounter_L = 0;
 
-	::i_Time = -1;
+	::i_Time = 20;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -336,13 +340,14 @@ void GameStateLevel1PlatformUpdate(void) {
 	}*/
 
 	// Time counter
-	static f32 f_TimeCounter{};
-	f_TimeCounter += g_dt;
-	if (f_TimeCounter >= 1.0f) {
-		--::i_Time;
-		f_TimeCounter = 0.0f;
+	if (haveTiming) {
+		static f32 f_TimeCounter{};
+		f_TimeCounter += g_dt;
+		if (f_TimeCounter >= 1.0f) {
+			--::i_Time;
+			f_TimeCounter = 0.0f;
+		}
 	}
-	
 
 	s32 i{}, j{};
 	Objects::GameObjectInstance* p_Instance{};
@@ -614,9 +619,9 @@ void GameStateLevel1PlatformUpdate(void) {
 				++::i_Time;
 				
 			}
-			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				//gameObjectInstanceDestroy(p_Instance);
-				//--i_ShadowPlayerLives;
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && puzzle1) {
+					gameObjectInstanceDestroy(p_Instance);
+					--i_ShadowPlayerLives;
 			}
 			break;
 
@@ -626,9 +631,9 @@ void GameStateLevel1PlatformUpdate(void) {
 				--::i_TotalShadowFragment;
 				++::i_Time;
 			}
-			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				//gameObjectInstanceDestroy(p_Instance);
-				//--i_LightPlayerLives;
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && puzzle1) {
+				gameObjectInstanceDestroy(p_Instance);
+				--i_LightPlayerLives;
 			}
 			break;
 
