@@ -147,6 +147,10 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE;
 
+	// create the moveable shadow spike
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -242,6 +246,10 @@ void GameStateLevel1PlatformInit(void) {
 
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_RIGHT);
+				break;
+
+			case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_LEFT);
 				break;
 
 			case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
@@ -455,6 +463,7 @@ void GameStateLevel1PlatformUpdate(void) {
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
+		f32 f_Time{};
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
@@ -464,7 +473,15 @@ void GameStateLevel1PlatformUpdate(void) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			break;
 
+		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_ShadowPlayer, f_Time);
+			break;
+
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
+			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_LightPlayer, f_Time);
+			break;
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
@@ -632,6 +649,62 @@ void GameStateLevel1PlatformUpdate(void) {
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
+
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x > 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+					else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x < 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+				}
+
+				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_LightPlayer->currVelocity.y < 0) {
+						p_LightPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+					}
+				}
+			}
+			break;
+
+		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				--i_LightPlayerLives;
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+			}
+
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				if (p_ShadowPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x > 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+					else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x < 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+				}
+
+				if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currVelocity.y < 0) {
+						p_ShadowPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
+					}
+				}
+			}
 			break;
 
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
@@ -793,6 +866,9 @@ void GameStateLevel1PlatformDraw(void) {
 			case Objects::TYPE_OBJECT_EMPTY:
 				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.68f, 0.85f, 0.90f, 1.f);
 				break;
+			case Objects::TYPE_OBJECT_WALL:
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
+				break;
 			default:
 				break;
 			}
@@ -815,28 +891,6 @@ void GameStateLevel1PlatformDraw(void) {
 
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}
-
-
-	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
-		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
-			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
-			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
-			if (dynamicCamFeature) {
-				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
-			}
-			AEGfxSetTransform(FinalCellTransform.m);
-			switch (::p_BinaryCollisionArray[i][j]) {
-
-			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
-				break;
-
-			default:
-				break;
-			}
-		}
-	}
-
 
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
