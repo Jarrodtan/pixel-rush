@@ -78,6 +78,12 @@ namespace {
 
 	//PRESSURE PLATES
 	bool unlockDoor;
+
+	//COLLISION CHECK
+	bool isCollideDoor_S;
+	bool isCollideDoor_L;
+	bool isCollideSpikes_S;
+	bool isCollideSpikes_L;
 }
 
 /******************************************************************************/
@@ -201,6 +207,10 @@ void GameStateLevel1PlatformInit(void) {
 	unlockDoor = false;
 	jumpEnabled_S = false;
 	jumpEnabled_L = false;
+	isCollideDoor_S = false;
+	isCollideDoor_L = false;
+	isCollideSpikes_S = false;
+	isCollideSpikes_L = false;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -626,6 +636,19 @@ void GameStateLevel1PlatformUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 
+	if (!::isCollideDoor_L && !::isCollideSpikes_L) {
+		::jumpEnabled_L = false;
+	}
+	else {
+		::jumpEnabled_L = true;
+	}
+	if (!::isCollideDoor_S && !::isCollideSpikes_S) {
+		::jumpEnabled_S = false;
+	}
+	else {
+		::jumpEnabled_S = true;
+	}
+
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		f32 f_Time = 0.f;
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -691,6 +714,10 @@ void GameStateLevel1PlatformUpdate(void) {
 							Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 						}
 					}
+					isCollideDoor_S = true;
+				}
+				else {
+					isCollideDoor_S = false;
 				}
 				if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
 
@@ -714,6 +741,10 @@ void GameStateLevel1PlatformUpdate(void) {
 							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 						}
 					}
+					isCollideDoor_L = true;
+				}
+				else {
+					isCollideDoor_L = false;
 				}
 			}
 			
@@ -748,10 +779,12 @@ void GameStateLevel1PlatformUpdate(void) {
 						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 					}
 				}
-				::jumpEnabled_L = true;
+				//::jumpEnabled_L = true;
+				::isCollideSpikes_L = true;
 			}
 			else {
-				::jumpEnabled_L = false;
+				//::jumpEnabled_L = false;
+				::isCollideSpikes_L = false;
 			}
 			break;
 
@@ -785,10 +818,12 @@ void GameStateLevel1PlatformUpdate(void) {
 					}
 				}
 
-				::jumpEnabled_S = true;
+				//::jumpEnabled_S = true;
+				::isCollideSpikes_S = true;
 			}
 			else {
-				::jumpEnabled_S = false;
+				//::jumpEnabled_S = false;
+				::isCollideSpikes_S = false;
 			}
 			break;
 
