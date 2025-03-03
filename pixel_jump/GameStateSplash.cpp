@@ -16,6 +16,16 @@ void GameStateSplashInit() {
 }
 
 void GameStateSplashUpdate() {
+
+}
+
+void GameStateSplashDraw() {
+	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetTransparency(0.5f);
+
 	f_SplashScreenTime += g_dt;
 	f32 f_SplashScreenProgress = max(0, f_SplashScreenTime - f_SplashScrrenUnChangedTime);
 
@@ -45,16 +55,6 @@ void GameStateSplashUpdate() {
 			GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 		}
 	}
-}
-
-void GameStateSplashDraw() {
-	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxSetTransparency(0.5f);
-
-
 }
 
 void GameStateSplashFree() {
