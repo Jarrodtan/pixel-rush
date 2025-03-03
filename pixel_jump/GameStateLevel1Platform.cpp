@@ -797,7 +797,8 @@ void GameStateLevel1PlatformUpdate(void) {
 					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
 
 					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {
-						Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
+						// TODO: Remove this commented line when there is a use for it
+						// Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
 
 						if (p_Instance->currPosition.y < sequence.targetValue) {
 							f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
