@@ -16,6 +16,8 @@ f64 g_appTime;
 s8 g_Font;
 AEGfxTexture** g_Texture;
 AEGfxVertexList** g_Shapes;
+f32 g_WindowWidth;
+f32 g_WindowHeight;
 
 /******************************************************************************/
 /*!
@@ -37,7 +39,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	Render::Load();
 	AudioManager::Init();
-	GameStateManager::GameStateMgrInit(States::GS_PLATFORM_LVL1);
+	GameStateManager::GameStateMgrInit(States::GS_SPLASHSCREEN);
+	g_WindowWidth = static_cast<f32>(AEGfxGetWindowWidth());
+	g_WindowHeight = static_cast<f32>(AEGfxGetWindowHeight());
 
 	while (GameStateManager::g_GameStateCurr != States::GS_QUIT)
 	{

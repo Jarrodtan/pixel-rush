@@ -898,11 +898,11 @@ void GameStateLevelDraw(void) {
 
 	const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
 
-	Render::RenderFont(s_Time, 0.8f, 0.f, 0.8f, Render::COLOUR::RED);
-	Render::RenderFont(s_LightShards, 0.8f, 0.7f, 0.8f, Render::COLOUR::LIGHT_BLUE);
-	Render::RenderFont(s_ShadowFragments, 0.8f, -0.7f, 0.8f, Render::COLOUR::YELLOW);
-	Render::RenderFont(s_LightPlayerLives, 0.8f, 0.7f, 0.7f, Render::COLOUR::LIGHT_BLUE);
-	Render::RenderFont(s_ShadowPlayerLives, 0.8f, -0.7f, 0.7f, Render::COLOUR::YELLOW);
+	Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+	Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
+	Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
+	Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
+	Render::RenderFont(s_ShadowPlayerLives, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.85f, Render::COLOUR::YELLOW);
 
 }
 

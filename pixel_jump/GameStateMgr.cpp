@@ -59,6 +59,12 @@ namespace GameStateManager {
 			break;
 
 		case States::GS_SPLASHSCREEN:
+			GameStateLoad = GameStateSplashLoad;
+			GameStateInit = GameStateSplashInit;
+			GameStateUpdate = GameStateSplashUpdate;
+			GameStateDraw = GameStateSplashDraw;
+			GameStateFree = GameStateSplashFree;
+			GameStateUnload = GameStateSplashUnload;
 			break;
 
 		case States::GS_MAINMENU:

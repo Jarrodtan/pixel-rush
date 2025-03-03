@@ -29,20 +29,20 @@ namespace Render {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
 			-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.f, 0.5f, 0xFF000000, 0.0f, 0.0f);
+			0.5f, -0.5f, 0xFF000000, 1.0f, 0.0f,
+			0.f, 0.5f, 0xFF000000, 0.0f, 1.0f);
 		g_Shapes[SHAPES::TRIANGLE] = AEGfxMeshEnd();
 
 		AEGfxMeshStart();
 		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0xFF000000, 0.0f, 1.0f,
+			0.5f, -0.5f, 0xFF000000, 1.0f, 1.0f,
 			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
 
 		AEGfxTriAdd(
-			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-			0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
+			0.5f, -0.5f, 0xFF000000, 1.0f, 1.0f,
+			0.5f, 0.5f, 0xFF000000, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
 		g_Shapes[SHAPES::SQUARE] = AEGfxMeshEnd();
 
 		{
@@ -68,6 +68,8 @@ namespace Render {
 		}
 
 		// TODO: Load all textures here
+		g_Texture[TEXTURE::SPLASHSCREEN] = AEGfxTextureLoad("Assets/Art/DigiPen_Singapore_WEB_WHITE.png");
+		g_Texture[TEXTURE::FMODSCREEN] = AEGfxTextureLoad("Assets/Art/FMOD-Logo.png");
 
 	}
 
@@ -274,13 +276,23 @@ namespace Render {
 			none
 	*/
 	/******************************************************************************/
-	void Render::RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a){
+	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a){
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f);
 		AEGfxSetColorToAdd(r, g, b, a);
 		AEGfxTextureSet(g_Texture[tex], 0, 0);
 		AEGfxSetTransform(transform.m);
 		AEGfxMeshDraw(p_Object->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxTextureSet(NULL, 0, 0);
+	}
+
+	void RenderShapes(SHAPES shape, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a) {
+		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+		AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f);
+		AEGfxSetColorToAdd(r, g, b, a);
+		AEGfxTextureSet(g_Texture[tex], 0, 0);
+		AEGfxSetTransform(transform.m);
+		AEGfxMeshDraw(g_Shapes[shape], AE_GFX_MDM_TRIANGLES);
 		AEGfxTextureSet(NULL, 0, 0);
 	}
 
@@ -387,15 +399,17 @@ namespace Render {
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, f32 r, f32 g, f32 b, f32 a, FONT_ALIGN alignment) {
 		f32 f_TextWidth, f_TextHeight;
 		AEGfxGetPrintSize(g_Font, text.c_str(), size, &f_TextWidth, &f_TextHeight);
+		x = (-g_WindowWidth + (x * 2)) / g_WindowWidth;
+		y = (-g_WindowHeight + (y * 2)) / g_WindowHeight;
 		switch (alignment) {
 		case LEFT:
 			break;
 		case CENTER:
-			x = -f_TextWidth / 2.f;
-			y = -f_TextHeight / 2.f;
+			x = x -f_TextWidth / 2.f;
+			y = y -f_TextHeight / 2.f;
 			break;
 		case RIGHT:
-			x = -f_TextWidth;
+			x = x -f_TextWidth;
 			break;
 		}
 

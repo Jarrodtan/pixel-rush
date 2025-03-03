@@ -39,6 +39,8 @@ namespace Render {
 		SHADOW_FRAGMENT,
 		ENEMY,
 		POWERUP,
+		SPLASHSCREEN,
+		FMODSCREEN,
 
 		// TODO: Add more textures here as needed
 
@@ -50,6 +52,7 @@ namespace Render {
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform);
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, f32 r, f32 g, f32 b, f32 a);
 	void RenderShapes(Objects::GameObjectInstance*& p_Object, AEMtx33 transform, TEXTURE tex, f32 r = 0.f, f32 g = 0.f, f32 b = 0.f, f32 a = 1.f);
+	void RenderShapes(SHAPES shape, AEMtx33 transform, TEXTURE tex, f32 r = 0.f, f32 g = 0.f, f32 b = 0.f, f32 a = 1.f);
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, COLOUR colour, FONT_ALIGN alignment = LEFT);
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, f32 r, f32 g, f32 b, f32 a, FONT_ALIGN alignment = CENTER);
 	void Exit();
