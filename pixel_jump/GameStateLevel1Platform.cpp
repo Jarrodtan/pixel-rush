@@ -84,6 +84,7 @@ namespace {
 	bool isCollideDoor_L;
 	bool isCollideSpikes_S;
 	bool isCollideSpikes_L;
+	bool isCollideMovingPlatform_L;
 }
 
 /******************************************************************************/
@@ -211,6 +212,7 @@ void GameStateLevel1PlatformInit(void) {
 	isCollideDoor_L = false;
 	isCollideSpikes_S = false;
 	isCollideSpikes_L = false;
+	isCollideMovingPlatform_L = false;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -495,7 +497,11 @@ void GameStateLevel1PlatformUpdate(void) {
 		switch (p_Instance->p_GameObject->u_Type) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			if (!isCollideMovingPlatform_L) {
+				p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			}
+			else {
+			}
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
@@ -636,7 +642,7 @@ void GameStateLevel1PlatformUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 
-	if (!::isCollideDoor_L && !::isCollideSpikes_L) {
+	if (!::isCollideDoor_L && !::isCollideSpikes_L && !::isCollideMovingPlatform_L) {
 		::jumpEnabled_L = false;
 	}
 	else {
@@ -869,6 +875,28 @@ void GameStateLevel1PlatformUpdate(void) {
 				p_ShadowPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
 			}*/
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				isCollideMovingPlatform_L = true;
+				
+				
+					// Move player with platform
+					if (p_Instance->currPosition.y > 0) {
+						if (AEInputCheckCurr(AEVK_W)) {
+							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y + 10.0f;
+						}
+						else {
+							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y + 1.0f;
+						}
+					}
+					else {
+						if (AEInputCheckCurr(AEVK_W)) {
+							p_LightPlayer->currVelocity.y = (p_Instance->currVelocity.y - 10.0f) * -1;
+						}
+						else {
+							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y - 1.0f;
+						}
+					}
+				
+
 				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
 					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
 						if (p_LightPlayer->currVelocity.x > 0) {
@@ -890,6 +918,9 @@ void GameStateLevel1PlatformUpdate(void) {
 						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 					}
 				}
+			}
+			else {
+				isCollideMovingPlatform_L = false;
 			}
 			break;
 
