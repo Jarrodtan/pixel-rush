@@ -87,6 +87,9 @@ namespace {
 	bool isCollideSpikes_S;
 	bool isCollideSpikes_L;
 	bool isCollideMovingPlatform_L;
+
+	//GRAVITY SWITCHER
+	bool isGravitySwitch_S, isGravitySwitch_L;
 }
 
 /******************************************************************************/
@@ -231,6 +234,8 @@ void GameStateLevel1PlatformInit(void) {
 	isCollideSpikes_S = false;
 	isCollideSpikes_L = false;
 	isCollideMovingPlatform_L = false;
+	isGravitySwitch_S = false;
+	isGravitySwitch_L = false;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -459,7 +464,12 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 
 			if (::doubleJumpCounter_L < 2) {
-				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				if (!isGravitySwitch_L) {
+					p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				}
+				else {
+					p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
+				}
 				// Sound effect
 				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
@@ -467,7 +477,12 @@ void GameStateLevel1PlatformUpdate(void) {
 		}
 		else { // basic jump
 			if (p_LightPlayer->currVelocity.y == 0) {
-				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				if (!isGravitySwitch_L) {
+					p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				}
+				else {
+					p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
+				}
 				// Sound effect
 				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
@@ -486,7 +501,12 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 
 			if (::doubleJumpCounter_S < 2) {
-				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+				if (!isGravitySwitch_S) {
+					p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+				}
+				else {
+					p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
+				}
 
 				// Sound effect
 				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
@@ -494,7 +514,12 @@ void GameStateLevel1PlatformUpdate(void) {
 		}
 		else { // basic jump
 			if (p_ShadowPlayer->currVelocity.y == 0) {
-				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+				if (!isGravitySwitch_S) {
+					p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+				}
+				else {
+					p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
+				}
 
 				// Sound effect
 				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
@@ -528,12 +553,21 @@ void GameStateLevel1PlatformUpdate(void) {
 		switch (p_Instance->p_GameObject->u_Type) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			if (!isCollideMovingPlatform_L) {
-				p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+				if (!isGravitySwitch_L) {
+					p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+				}
+				else {
+					p_Instance->currVelocity.y = -GRAVITY * g_dt + p_Instance->currVelocity.y;
+				}
 			}
 			break;
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			
+			if (!isGravitySwitch_S) {
 				p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			}
+			else {
+				p_Instance->currVelocity.y = -GRAVITY * g_dt + p_Instance->currVelocity.y;
+			}
 			
 			break;
 
@@ -940,6 +974,18 @@ void GameStateLevel1PlatformUpdate(void) {
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				p_LightPlayer->currPosition.x = p_ShadowPlayer->currPosition.x;
 				p_LightPlayer->currPosition.y = p_ShadowPlayer->currPosition.y;
+			}
+			break;
+		case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				gameObjectInstanceDestroy(p_Instance);
+				isGravitySwitch_S = !isGravitySwitch_S;
+				
+			}
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				gameObjectInstanceDestroy(p_Instance);
+				isGravitySwitch_L = !isGravitySwitch_L;
+				
 			}
 			break;
 
