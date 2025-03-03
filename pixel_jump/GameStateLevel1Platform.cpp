@@ -1027,6 +1027,7 @@ void GameStateLevel1PlatformUpdate(void) {
 				
 				
 					// Move player with platform
+				if (!isGravitySwitch_L) {
 					if (p_Instance->currPosition.y > 0) {
 						if (AEInputCheckCurr(AEVK_W)) {
 							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y + 10.0f;
@@ -1043,6 +1044,25 @@ void GameStateLevel1PlatformUpdate(void) {
 							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y - 1.0f;
 						}
 					}
+				}
+				else {
+					if (p_Instance->currPosition.y > 0) {
+						if (AEInputCheckCurr(AEVK_W)) {
+							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y - 10.0f;
+						}
+						else {
+							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y - 1.0f;
+						}
+					}
+					else {
+						if (AEInputCheckCurr(AEVK_W)) {
+							p_LightPlayer->currVelocity.y = (p_Instance->currVelocity.y + 10.0f) * 1;
+						}
+						else {
+							p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y + 1.0f;
+						}
+					}
+				}
 				
 
 				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
