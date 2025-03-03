@@ -75,6 +75,9 @@ namespace {
 
 	//PUZZLE FEATURE 1 *(LIGHTPLAYER CANNOT TOUCH SHADOWFRAGMENT, VIA VISA)
 	bool puzzle1 = false;
+
+	//PRESSURE PLATES
+	bool unlockDoor;
 }
 
 /******************************************************************************/
@@ -152,6 +155,10 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE;
 
+	// create the door / gate
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_GATE;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -191,6 +198,7 @@ void GameStateLevel1PlatformInit(void) {
 	::doubleJumpCounter_L = 0;
 
 	::i_Time = 20;
+	unlockDoor = false;
 	//jumpEnabled = false;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
@@ -269,6 +277,9 @@ void GameStateLevel1PlatformInit(void) {
 			case Objects::TYPE_OBJECT_SHADOWSPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
+			case Objects::TYPE_OBJECT_GATE:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
 
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
 				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
@@ -307,6 +318,7 @@ void GameStateLevel1PlatformInit(void) {
 
 				break;
 			}
+			
 		}
 	}
 
@@ -494,10 +506,10 @@ void GameStateLevel1PlatformUpdate(void) {
 		}
 
 		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVINGPLATFORM) {
-			// Example: Move horizontally between two points
-			static float moveSpeed = 2.0f;
-			static float leftBound = 8.0f;
-			static float rightBound = 14.0f;
+			// Example: Move vertically between two points
+			static float moveSpeed = 1.0f;
+			static float bottomBound = 8.0f;
+			static float topBound = 14.0f;
 
 			//static float lf = p_Instance->currPosition.y + 5.0f;
 
@@ -509,8 +521,8 @@ void GameStateLevel1PlatformUpdate(void) {
 			}*/
 
 			// Reverse direction at bounds
-			if (p_Instance->currPosition.y >= rightBound ||
-				p_Instance->currPosition.y <= leftBound) {
+			if (p_Instance->currPosition.y >= topBound ||
+				p_Instance->currPosition.y <= bottomBound) {
 				moveSpeed *= -1;
 			}
 		}
@@ -660,6 +672,59 @@ void GameStateLevel1PlatformUpdate(void) {
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
 			}
 			break;
+
+		case Objects::TYPE_OBJECT_GATE:
+			if (!unlockDoor) {
+				if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+
+					if (p_ShadowPlayer->currPosition.y == p_Instance->currPosition.y) {
+						if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+							if (p_ShadowPlayer->currVelocity.x > 0) {
+								p_ShadowPlayer->currVelocity.x = 0;
+								Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+							}
+						}
+						else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+							if (p_ShadowPlayer->currVelocity.x < 0) {
+								p_ShadowPlayer->currVelocity.x = 0;
+								Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+							}
+						}
+					}
+
+					if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
+						if (p_ShadowPlayer->currVelocity.y < 0) {
+							p_ShadowPlayer->currVelocity.y = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
+						}
+					}
+				}
+				if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+
+					if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
+						if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+							if (p_LightPlayer->currVelocity.x > 0) {
+								p_LightPlayer->currVelocity.x = 0;
+								Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+							}
+						}
+						else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+							if (p_LightPlayer->currVelocity.x < 0) {
+								p_LightPlayer->currVelocity.x = 0;
+								Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+							}
+						}
+					}
+					if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
+						if (p_LightPlayer->currVelocity.y < 0) {
+							p_LightPlayer->currVelocity.y = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+						}
+					}
+				}
+			}
+			
+		break;
 			
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -813,7 +878,7 @@ void GameStateLevel1PlatformUpdate(void) {
 					for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
 						Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
 						if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_STEPPED) {
-
+							unlockDoor = true;
 							if (sequence.targetValue < p_Instance->currPosition.y) {
 								f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
 								p_Instance->currPosition.y -= yVel;
@@ -838,7 +903,7 @@ void GameStateLevel1PlatformUpdate(void) {
 
 					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {
 						Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
-
+						unlockDoor = false;
 						if (p_Instance->currPosition.y < sequence.targetValue) {
 							f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
 							sequence.currentValue += yVel;

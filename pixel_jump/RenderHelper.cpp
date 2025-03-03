@@ -129,6 +129,9 @@ namespace Render {
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
+			case Objects::TYPE_OBJECT_GATE:
+				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
+				break;
 
 			case Objects::TYPE_OBJECT_LIGHTSHARD:
 			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
@@ -186,6 +189,10 @@ namespace Render {
 
 		case Objects::TYPE_PRESSURE_PLATE:
 			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
+			break;
+
+		case Objects::TYPE_OBJECT_GATE:
+			AEGfxSetColorToAdd(0.f, 0.5f, 0.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
