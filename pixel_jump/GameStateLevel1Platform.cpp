@@ -527,12 +527,14 @@ void GameStateLevel1PlatformUpdate(void) {
 
 		switch (p_Instance->p_GameObject->u_Type) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
-		case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			if (!isCollideMovingPlatform_L) {
 				p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			}
-			else {
-			}
+			break;
+		case Objects::TYPE_OBJECT_SHADOWPLAYER:
+			
+				p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+			
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
@@ -927,6 +929,17 @@ void GameStateLevel1PlatformUpdate(void) {
 				--i_ShadowPlayerLives;
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+			}
+			break;
+		// teleport the respective LIGHT / SHADOW player to be together once again
+		case Objects::TYPE_OBJECT_TELEPORTOR:
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				p_ShadowPlayer->currPosition.x = p_LightPlayer->currPosition.x;
+				p_ShadowPlayer->currPosition.y = p_LightPlayer->currPosition.y;
+			}
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				p_LightPlayer->currPosition.x = p_ShadowPlayer->currPosition.x;
+				p_LightPlayer->currPosition.y = p_ShadowPlayer->currPosition.y;
 			}
 			break;
 
