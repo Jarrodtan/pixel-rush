@@ -80,6 +80,8 @@ namespace {
 	bool unlockDoor;
 
 	//COLLISION CHECK
+	bool isCollideGate_S;
+	bool isCollideGate_L;
 	bool isCollideDoor_S;
 	bool isCollideDoor_L;
 	bool isCollideSpikes_S;
@@ -162,9 +164,25 @@ void GameStateLevel1PlatformLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE;
 
-	// create the door / gate
+	// create the gate
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_GATE;
+
+	// create the shadow door
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOW_DOOR;
+
+	// create the light door
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_LIGHT_DOOR;
+
+	// create the teleporter
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_TELEPORTOR;
+
+	// create the gravity switcher
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_GRAVITYSWITCHER;
 
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
@@ -208,8 +226,8 @@ void GameStateLevel1PlatformInit(void) {
 	unlockDoor = false;
 	jumpEnabled_S = false;
 	jumpEnabled_L = false;
-	isCollideDoor_S = false;
-	isCollideDoor_L = false;
+	isCollideGate_S = false;
+	isCollideGate_L = false;
 	isCollideSpikes_S = false;
 	isCollideSpikes_L = false;
 	isCollideMovingPlatform_L = false;
@@ -293,7 +311,20 @@ void GameStateLevel1PlatformInit(void) {
 			case Objects::TYPE_OBJECT_GATE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
+			case Objects::TYPE_OBJECT_SHADOW_DOOR:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOW_DOOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
 
+			case Objects::TYPE_OBJECT_LIGHT_DOOR:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_LIGHT_DOOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+
+			case Objects::TYPE_OBJECT_TELEPORTOR:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_TELEPORTOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+			case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GRAVITYSWITCHER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
 				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				// Add movement sequence
@@ -642,13 +673,13 @@ void GameStateLevel1PlatformUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 
-	if (!::isCollideDoor_L && !::isCollideSpikes_L && !::isCollideMovingPlatform_L) {
+	if (!::isCollideGate_L && !::isCollideDoor_L && !::isCollideSpikes_L && !::isCollideMovingPlatform_L) {
 		::jumpEnabled_L = false;
 	}
 	else {
 		::jumpEnabled_L = true;
 	}
-	if (!::isCollideDoor_S && !::isCollideSpikes_S) {
+	if (!::isCollideGate_S && !::isCollideDoor_S && !::isCollideSpikes_S) {
 		::jumpEnabled_S = false;
 	}
 	else {
@@ -694,7 +725,65 @@ void GameStateLevel1PlatformUpdate(void) {
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
 			}
 			break;
+		case Objects::TYPE_OBJECT_SHADOW_DOOR:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
 
+				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x > 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+					else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x < 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+				}
+				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_LightPlayer->currVelocity.y < 0) {
+						p_LightPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+					}
+				}
+				isCollideDoor_L = true;
+			}
+			else {
+				isCollideDoor_L = false;
+			}
+			break;
+		case Objects::TYPE_OBJECT_LIGHT_DOOR:
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+
+				if (p_ShadowPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x > 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+					else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x < 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+				}
+
+				if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currVelocity.y < 0) {
+						p_ShadowPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
+					}
+				}
+				isCollideDoor_S = true;
+			}
+			else {
+				isCollideDoor_S = false;
+			}
+			break;
 		case Objects::TYPE_OBJECT_GATE:
 			if (!unlockDoor) {
 				if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -720,10 +809,10 @@ void GameStateLevel1PlatformUpdate(void) {
 							Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 						}
 					}
-					isCollideDoor_S = true;
+					isCollideGate_S = true;
 				}
 				else {
-					isCollideDoor_S = false;
+					isCollideGate_S = false;
 				}
 				if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
 
@@ -747,10 +836,10 @@ void GameStateLevel1PlatformUpdate(void) {
 							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 						}
 					}
-					isCollideDoor_L = true;
+					isCollideGate_L = true;
 				}
 				else {
-					isCollideDoor_L = false;
+					isCollideGate_L = false;
 				}
 			}
 			
