@@ -41,21 +41,21 @@ namespace GameStateManager {
 
 		switch (g_GameStateCurr) {
 		case States::GS_PLATFORM_LVL1:
-			GameStateLoad = GameStateLevel1PlatformLoad;
-			GameStateInit = GameStateLevel1PlatformInit;
-			GameStateUpdate = GameStateLevel1PlatformUpdate;
-			GameStateDraw = GameStateLevel1PlatformDraw;
-			GameStateFree = GameStateLevel1PlatformFree;
-			GameStateUnload = GameStateLevel1PlatformUnload;
+			GameStateLoad = GameStateLevelLoad;
+			GameStateInit = GameStateLevelInit;
+			GameStateUpdate = GameStateLevelUpdate;
+			GameStateDraw = GameStateLevelDraw;
+			GameStateFree = GameStateLevelFree;
+			GameStateUnload = GameStateLevelUnload;
 			break;
 
 		case States::GS_PLATFORM_LVL2:
-			GameStateLoad = GameStateLevel2PlatformLoad;
-			GameStateInit = GameStateLevel2PlatformInit;
-			GameStateUpdate = GameStateLevel2PlatformUpdate;
-			GameStateDraw = GameStateLevel2PlatformDraw;
-			GameStateFree = GameStateLevel2PlatformFree;
-			GameStateUnload = GameStateLevel2PlatformUnload;
+			GameStateLoad = GameStateLevelLoad;
+			GameStateInit = GameStateLevelInit;
+			GameStateUpdate = GameStateLevelUpdate;
+			GameStateDraw = GameStateLevelDraw;
+			GameStateFree = GameStateLevelFree;
+			GameStateUnload = GameStateLevelUnload;
 			break;
 
 		case States::GS_MAINMENU:

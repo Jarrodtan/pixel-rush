@@ -16,8 +16,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="GameObjects.cpp" />
-    <ClCompile Include="GameStateLevel1Platform.cpp" />
-    <ClCompile Include="GameStateLevel2Platform.cpp" />
+    <ClCompile Include="GameStateLevel.cpp" />
     <ClCompile Include="GameStateLoseScreenPlatform.cpp" />
     <ClCompile Include="GameStateMgr.cpp" />
     <ClCompile Include="GameStateWinScreenPlatform.cpp" />
@@ -37,8 +36,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="GameObjects.h" />
-    <ClInclude Include="GameStateLevel1Platform.h" />
-    <ClInclude Include="GameStateLevel2Platform.h" />
+    <ClInclude Include="GameStateLevel.h" />
     <ClInclude Include="GameStateList.h" />
     <ClInclude Include="GameStateLoseScreenPlatform.h" />
     <ClInclude Include="GameStateMgr.h" />

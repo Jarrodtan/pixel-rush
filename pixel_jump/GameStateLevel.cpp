@@ -81,7 +81,7 @@ namespace {
 	Load meshes,particle,font and map. Allocate memory for game object
 */
 /******************************************************************************/
-void GameStateLevel1PlatformLoad(void) {
+void GameStateLevelLoad(void) {
 	// allocate memory for the object type and mesh
 	::p_GameObjectList = (Objects::GameObject*)calloc(GAME_OBJECT_NUM_MAX, sizeof(Objects::GameObject));
 	// allocate memory for the object instance
@@ -159,7 +159,17 @@ void GameStateLevel1PlatformLoad(void) {
 	::i_BINARY_MAP_WIDTH = 0;
 	::i_BINARY_MAP_HEIGHT = 0;
 
-	std::string s_FilePath = "Assets/Maps/Test1.txt";
+	
+	std::string s_FilePath{};
+	switch (GameStateManager::g_GameStateCurr) {
+	case States::GS_PLATFORM_LVL1:
+		s_FilePath = "Assets/Maps/Test1.txt";
+		break;
+		
+	case States::GS_PLATFORM_LVL2:
+		break;
+	}
+
 	if (!FileReader::ImportMapDataFromFile(s_FilePath, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_MapData, ::p_BinaryCollisionArray)) {
 		GameStateManager::g_GameStateNext = States::GS_QUIT;
 		return;
@@ -178,7 +188,7 @@ void GameStateLevel1PlatformLoad(void) {
 	Initialize all varaibles and funtions
 */
 /******************************************************************************/
-void GameStateLevel1PlatformInit(void) {
+void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Level 1");
 	
 	::p_LightPlayer = 0;
@@ -314,7 +324,7 @@ void GameStateLevel1PlatformInit(void) {
 	Update function of the state, calculate position and logics for the objects
 */
 /******************************************************************************/
-void GameStateLevel1PlatformUpdate(void) {
+void GameStateLevelUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 		GameStateManager::g_GameStateNext = States::GS_QUIT;
 	}
@@ -825,7 +835,7 @@ void GameStateLevel1PlatformUpdate(void) {
 	Draws all the objects, particle and text for the game
 */
 /******************************************************************************/
-void GameStateLevel1PlatformDraw(void) {
+void GameStateLevelDraw(void) {
 
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
@@ -899,7 +909,7 @@ void GameStateLevel1PlatformDraw(void) {
 	Destroy all objects when function is called
 */
 /******************************************************************************/
-void GameStateLevel1PlatformFree(void) {
+void GameStateLevelFree(void) {
 	// kill all objects in the list
 	for (u32 i{}; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		Objects::GameObjectInstance* p_Instance = ::p_GameObjectInstanceList + i;
@@ -918,7 +928,7 @@ void GameStateLevel1PlatformFree(void) {
 	Free all memory when function is called
 */
 /******************************************************************************/
-void GameStateLevel1PlatformUnload(void) {
+void GameStateLevelUnload(void) {
 	delete[] ::p_GameObjectList;
 	delete[] ::p_GameObjectInstanceList;
 
