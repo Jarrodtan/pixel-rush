@@ -39,7 +39,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	Render::Load();
 	AudioManager::Init();
-	GameStateManager::GameStateMgrInit(States::GS_SPLASHSCREEN);
+	// TODO: Change this to splash screen when level dev has been completed
+	GameStateManager::GameStateMgrInit(States::GS_PLATFORM_LVL1);
 	g_WindowWidth = static_cast<f32>(AEGfxGetWindowWidth());
 	g_WindowHeight = static_cast<f32>(AEGfxGetWindowHeight());
 
