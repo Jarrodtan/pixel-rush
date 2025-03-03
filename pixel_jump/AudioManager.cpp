@@ -133,7 +133,6 @@ namespace AudioManager {
 		}
 		else { return sound->second; }
 
-		AE_ASSERT_MESG(0, "Failed to load sound: %s", s_Name.c_str());
 		return nullptr;
 	}
 

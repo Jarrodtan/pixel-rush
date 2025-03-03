@@ -161,7 +161,6 @@ void GameStateLevel1PlatformLoad(void) {
 
 	std::string s_FilePath = "Assets/Maps/Test1.txt";
 	if (!FileReader::ImportMapDataFromFile(s_FilePath, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_MapData, ::p_BinaryCollisionArray)) {
-		AE_ASSERT_MESG(0, "Failed to import map data");
 		GameStateManager::g_GameStateNext = States::GS_QUIT;
 		return;
 	}
@@ -349,7 +348,7 @@ void GameStateLevel1PlatformUpdate(void) {
 		}
 	}
 
-	s32 i{}, j{};
+	s32 i{};
 	Objects::GameObjectInstance* p_Instance{};
 
 	if (AEInputCheckCurr(AEVK_D)) {
@@ -771,7 +770,7 @@ void GameStateLevel1PlatformUpdate(void) {
 
 
 
-					for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+					for (i = 0; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
 						Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
 						if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_STEPPED) {
 
@@ -794,7 +793,7 @@ void GameStateLevel1PlatformUpdate(void) {
 
 			}
 			else {
-				for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+				for (i = 0; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
 					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
 
 					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {

@@ -16,7 +16,6 @@ namespace FileReader {
 		file.open(s_FileName);
 
 		if (!file.is_open()) {
-			AE_ASSERT_MESG(0, "Failed to open file");
 			return 0;
 		}
 
