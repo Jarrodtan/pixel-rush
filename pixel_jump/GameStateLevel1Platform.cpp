@@ -71,6 +71,7 @@ namespace {
 	bool haveDoubleJump_S = true;
 	s32 doubleJumpCounter_L = 0;
 	bool haveDoubleJump_L = true;
+	//bool jumpEnabled;
 
 	//PUZZLE FEATURE 1 *(LIGHTPLAYER CANNOT TOUCH SHADOWFRAGMENT, VIA VISA)
 	bool puzzle1 = false;
@@ -190,6 +191,7 @@ void GameStateLevel1PlatformInit(void) {
 	::doubleJumpCounter_L = 0;
 
 	::i_Time = 20;
+	//jumpEnabled = false;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
@@ -422,7 +424,7 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (haveDoubleJump_S) {
 			::doubleJumpCounter_S++;
 
-			if (p_ShadowPlayer->i_gridCollisionFlag && ::doubleJumpCounter_S >= 2)
+			if (p_ShadowPlayer->i_gridCollisionFlag  && ::doubleJumpCounter_S >= 2)
 			{
 				::doubleJumpCounter_S = 0;
 			}
@@ -433,6 +435,9 @@ void GameStateLevel1PlatformUpdate(void) {
 				// Sound effect
 				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
 			}
+			/*if (::doubleJumpCounter_S >= 2 && ::jumpEnabled) {
+				::doubleJumpCounter_S = 0;
+			}*/
 		}
 		else { // basic jump
 			if (p_ShadowPlayer->currVelocity.y == 0) {
@@ -558,6 +563,8 @@ void GameStateLevel1PlatformUpdate(void) {
 		AEVec2Add(&p_Instance->currPosition, &p_Instance->currPosition, &displacement);
 	}
 
+	
+
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 
@@ -568,10 +575,15 @@ void GameStateLevel1PlatformUpdate(void) {
 		if (p_Instance->i_gridCollisionFlag & COLLISION_BOTTOM) { 
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
+			//::doubleJumpCounter_S = 0;
 		}
 		if (p_Instance->i_gridCollisionFlag & COLLISION_TOP) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
+			
+			/*if (::doubleJumpCounter_S >= 2) {
+				::doubleJumpCounter_S = 0;
+		    }*/
 		}
 
 

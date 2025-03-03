@@ -148,7 +148,8 @@ void GameStateMainMenuDraw(void) {
 	AEGfxMeshDraw(CreditButton.pMesh, AE_GFX_MDM_TRIANGLES);
 
 
-	AEGfxPrint(g_Font, "PIXEL RUSH", -0.26f, 0.6f, 2.5f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(g_Font, "PIXEL RUSH", -0.36f, 0.65f, 3.5f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(g_Font, "------ Dash through the Puzzle! ------", -0.3f, 0.5f, 1.0f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "Play", -0.06f, 0.20f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "  Exit", -0.09f, -0.7f, 1.5f, 1.f, 1.f, 1.f, 1.f);
 	AEGfxPrint(g_Font, "Tutorial", -0.09f, -0.25f, 1.5f, 1.f, 1.f, 1.f, 1.f);
