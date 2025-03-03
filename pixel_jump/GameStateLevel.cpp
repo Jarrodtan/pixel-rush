@@ -167,6 +167,8 @@ void GameStateLevelLoad(void) {
 		break;
 		
 	case States::GS_PLATFORM_LVL2:
+		// TODO: Change this to the path of the second level when available
+		// s_FilePath = Path to file
 		break;
 	}
 
