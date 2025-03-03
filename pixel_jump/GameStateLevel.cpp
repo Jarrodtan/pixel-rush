@@ -1218,7 +1218,7 @@ void GameStateLevelUpdate(void) {
 
 
 
-					for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+					for (i = 0; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
 						Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
 						if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_STEPPED) {
 							unlockDoor = true;
@@ -1245,8 +1245,8 @@ void GameStateLevelUpdate(void) {
 					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
 
 					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {
-
-						Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
+						// TODO: Remove the commeted code below when there is a use case for the variable prevSeq
+						// Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
 						unlockDoor = false;
 
 						if (p_Instance->currPosition.y < sequence.targetValue) {
