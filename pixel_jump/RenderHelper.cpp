@@ -128,11 +128,16 @@ namespace Render {
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			case Objects::TYPE_PRESSURE_PLATE:
+			case Objects::TYPE_OBJECT_GATE:
+			case Objects::TYPE_OBJECT_SHADOW_DOOR:
+			case Objects::TYPE_OBJECT_LIGHT_DOOR:
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
 			case Objects::TYPE_OBJECT_LIGHTSHARD:
+			case Objects::TYPE_OBJECT_TELEPORTOR:
+			case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
 			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
 				break;
@@ -190,6 +195,10 @@ namespace Render {
 			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
 			break;
 
+		case Objects::TYPE_OBJECT_GATE:
+			AEGfxSetColorToAdd(0.f, 0.5f, 0.f, 1.f);
+			break;
+
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			AEGfxSetColorToAdd(1.f, 0.f, 0.f, 1.f);
 			break;
@@ -208,6 +217,22 @@ namespace Render {
 
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_LIGHT_DOOR:
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOW_DOOR:
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_TELEPORTOR:
+			AEGfxSetColorToAdd(0.6f, 0.f, 0.f, 0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
+			AEGfxSetColorToAdd(0.f, 0.f, 0.3f, 0.6f);
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
