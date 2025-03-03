@@ -86,7 +86,7 @@ namespace {
 	bool isCollideDoor_L;
 	bool isCollideSpikes_S;
 	bool isCollideSpikes_L;
-	bool isCollideMovingPlatform_L;
+	bool isCollideMovingPlatform_L, isCollideMovingPlatform_S;
 
 	//GRAVITY SWITCHER
 	bool isGravitySwitch_S, isGravitySwitch_L;
@@ -562,11 +562,13 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 			break;
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			if (!isGravitySwitch_S) {
-				p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
-			}
-			else {
-				p_Instance->currVelocity.y = -GRAVITY * g_dt + p_Instance->currVelocity.y;
+			if (!isCollideMovingPlatform_S) {
+				if (!isGravitySwitch_S) {
+					p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+				}
+				else {
+					p_Instance->currVelocity.y = -GRAVITY * g_dt + p_Instance->currVelocity.y;
+				}
 			}
 			
 			break;
@@ -715,7 +717,7 @@ void GameStateLevel1PlatformUpdate(void) {
 	else {
 		::jumpEnabled_L = true;
 	}
-	if (!::isCollideGate_S && !::isCollideDoor_S && !::isCollideSpikes_S) {
+	if (!::isCollideGate_S && !::isCollideDoor_S && !::isCollideSpikes_S && !::isCollideMovingPlatform_S) {
 		::jumpEnabled_S = false;
 	}
 	else {
@@ -1089,6 +1091,75 @@ void GameStateLevel1PlatformUpdate(void) {
 			}
 			else {
 				isCollideMovingPlatform_L = false;
+			}
+
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+				isCollideMovingPlatform_S = true;
+
+
+				// Move player with platform
+				if (!isGravitySwitch_S) {
+					if (p_Instance->currPosition.y > 0) {
+						if (AEInputCheckCurr(AEVK_UP)) {
+							p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y + 10.0f;
+						}
+						else {
+							p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y + 1.0f;
+						}
+					}
+					else {
+						if (AEInputCheckCurr(AEVK_UP)) {
+							p_ShadowPlayer->currVelocity.y = (p_Instance->currVelocity.y - 10.0f) * -1;
+						}
+						else {
+							p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y - 1.0f;
+						}
+					}
+				}
+				else {
+					if (p_Instance->currPosition.y > 0) {
+						if (AEInputCheckCurr(AEVK_UP)) {
+							p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y - 10.0f;
+						}
+						else {
+							p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y - 1.0f;
+						}
+					}
+					else {
+						if (AEInputCheckCurr(AEVK_UP)) {
+							p_ShadowPlayer->currVelocity.y = (p_Instance->currVelocity.y + 10.0f) * 1;
+						}
+						else {
+							p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y + 1.0f;
+						}
+					}
+				}
+
+
+				if (p_ShadowPlayer->currPosition.y == p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x > 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+					else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_ShadowPlayer->currVelocity.x < 0) {
+							p_ShadowPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.x);
+						}
+					}
+				}
+
+				if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
+					if (p_ShadowPlayer->currVelocity.y < 0) {
+						p_ShadowPlayer->currVelocity.y = p_Instance->currVelocity.y + 8.0f;
+						Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
+					}
+				}
+			}
+			else {
+				isCollideMovingPlatform_S = false;
 			}
 			break;
 
