@@ -10,6 +10,7 @@ namespace States {
 		
 		GS_SPLASHSCREEN,
 		GS_MAINMENU,
+		GS_CREDITS,
 		GS_WIN,
 		GS_LOSE,
 
