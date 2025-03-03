@@ -899,6 +899,45 @@ void GameStateLevel1PlatformUpdate(void) {
 
 
 			}
+			else if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, f_Time)) {
+				if (p_Instance->boundingBox.min.x >= p_ShadowPlayer->boundingBox.max.x && p_ShadowPlayer->currVelocity.x > 0.0) {
+					p_ShadowPlayer->currPosition.x = p_ShadowPlayer->currVelocity.x * f_Time + p_ShadowPlayer->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+				}
+				if (p_Instance->boundingBox.max.x <= p_ShadowPlayer->boundingBox.min.x && p_ShadowPlayer->currVelocity.x < 0.0) {
+					p_ShadowPlayer->currPosition.x = p_ShadowPlayer->currVelocity.x * f_Time + p_ShadowPlayer->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+				}if (p_Instance->boundingBox.max.y <= p_ShadowPlayer->boundingBox.min.y) {
+
+					//p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+					if (p_ShadowPlayer->currVelocity.y <= 0.0f) {
+						p_ShadowPlayer->currVelocity.y = 0.0f;
+						p_ShadowPlayer->currPosition.y = p_ShadowPlayer->prevPosition.y; //SNAP PLAYER BACK VIA X AXIS
+					}
+
+
+
+
+					for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+						Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
+						if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_STEPPED) {
+							unlockDoor = true;
+							if (sequence.targetValue < p_Instance->currPosition.y) {
+								f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
+								p_Instance->currPosition.y -= yVel;
+								p_ShadowPlayer->currPosition.y = p_Instance->currPosition.y + 1.0f;
+
+							}
+							if (sequence.targetValue >= p_Instance->currPosition.y) {
+								Collision::SnapToCell(&p_Instance->currPosition.y);
+							}
+
+
+						}
+					}
+
+				}
+
+
+			}
 			else {
 				for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
 					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
@@ -911,6 +950,7 @@ void GameStateLevel1PlatformUpdate(void) {
 							sequence.currentValue += yVel;
 							p_Instance->currPosition.y += yVel;
 							p_LightPlayer->currPosition.y += yVel;
+							p_ShadowPlayer->currPosition.y += yVel;
 						}
 						else {
 							p_Instance->currPosition.y = sequence.targetValue;
@@ -919,6 +959,28 @@ void GameStateLevel1PlatformUpdate(void) {
 					}
 				}
 			}
+			
+			/*
+			else {
+				for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
+					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
+
+					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {
+						Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
+						unlockDoor = false;
+						if (p_Instance->currPosition.y < sequence.targetValue) {
+							f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
+							sequence.currentValue += yVel;
+							p_Instance->currPosition.y += yVel;
+							p_ShadowPlayer->currPosition.y += yVel;
+						}
+						else {
+							p_Instance->currPosition.y = sequence.targetValue;
+						}
+
+					}
+				}
+			}*/
 			break;
 		
 
