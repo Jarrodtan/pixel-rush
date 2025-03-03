@@ -259,6 +259,44 @@ namespace Render {
 
 	/******************************************************************************/
 	/*!
+	Function to render the game objects.
+	Call this function in the game state's draw function.
+	Use this function if you want to render the game objects with textures.
+
+	\param shape
+		the shape of the mesh to render
+
+	\param transform
+		the transformation matrix to apply to the mesh
+
+	\param tex
+		texture to render the game object with
+
+	\param r
+		red colour component
+
+	\param g
+		green colour component
+
+	\param b
+		blue colour component
+
+	\param a
+		alpha colour component
+
+	\return
+		none
+	*/
+	/******************************************************************************/
+	void RenderShapes(SHAPES shape, AEMtx33 trans, f32 r, f32 g, f32 b, f32 a) {
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEGfxSetColorToAdd(r, g, b, a);
+		AEGfxSetTransform(trans.m);
+		AEGfxMeshDraw(g_Shapes[shape], AE_GFX_MDM_TRIANGLES);
+	}
+
+	/******************************************************************************/
+	/*!
 		Function to render the game objects.
 		Call this function in the game state's draw function.
 		Use this function if you want to render the game objects with textures.
@@ -286,6 +324,37 @@ namespace Render {
 		AEGfxTextureSet(NULL, 0, 0);
 	}
 
+	/******************************************************************************/
+	/*!
+		Function to render the game objects.
+		Call this function in the game state's draw function.
+		Use this function if you want to render the game objects with textures.
+
+		\param shape
+			the shape of the mesh to render
+
+		\param transform
+			the transformation matrix to apply to the mesh
+
+		\param tex
+			texture to render the game object with
+
+		\param r
+			red colour component
+
+		\param g
+			green colour component
+
+		\param b
+			blue colour component
+
+		\param a
+			alpha colour component
+
+		\return
+			none
+	*/
+	/******************************************************************************/
 	void RenderShapes(SHAPES shape, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a) {
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 		AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f);
