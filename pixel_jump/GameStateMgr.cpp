@@ -67,6 +67,15 @@ namespace GameStateManager {
 			GameStateUnload = GameStateSplashUnload;
 			break;
 
+		case States::GS_CREDITS:
+			GameStateLoad = GameStateCreditsLoad;
+			GameStateInit = GameStateCreditsInit;
+			GameStateUpdate = GameStateCreditsUpdate;
+			GameStateDraw = GameStateCreditsDraw;
+			GameStateFree = GameStateCreditsFree;
+			GameStateUnload = GameStateCreditsUnload;
+			break;
+
 		case States::GS_MAINMENU:
 			GameStateLoad = GameStateMainMenuLoad;
 			GameStateInit = GameStateMainMenuInit;

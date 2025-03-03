@@ -4,8 +4,11 @@ namespace {
 	static f32 f_CreditsScroll;
 	static f32 f_CreditsScrollTime;
 	static f32 f_MaxCreditsScrollTime = 0.25f;
-	static const f32 f_CreditsFontSize = 20.f;
+	static const f32 f_CreditsFontSize = 0.8f;
 	static f32 f_CreditsOffset = 50.f;
+
+	static const f32 f_ButtonOffsetX = 100.f;
+	static const f32 f_ButtonOffsetY = 50.f;
 	static bool b_CreditsState;
 	static std::vector<std::string> Lines;
 
@@ -67,10 +70,17 @@ void GameStateCreditsUpdate() {
 	s32 s_MouseX, s_MouseY;
 	AEInputGetCursorPosition(&s_MouseX, &s_MouseY);
 
-	for (s32 i = 0; i < Lines.size(); ++i) {
-		Render::RenderFont(Lines[i], f_CreditsFontSize, g_WindowWidth * 0.5f, 0.f + (f_CreditsScroll * 50.0f) - (f_CreditsOffset * static_cast<f32>(i)), Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
-	}
+	// Find the min and max position of the button
+	f32 f_MinX = g_WindowWidth * 0.1f - f_ButtonOffsetX;
+	f32 f_MaxX = g_WindowWidth * 0.1f + f_ButtonOffsetX;
+	f32 f_MinY = g_WindowHeight * 0.9f - f_ButtonOffsetY;
+	f32 f_MaxY = g_WindowHeight * 0.9f + f_ButtonOffsetY;
 
+	if (s_MouseX > f_MinX && s_MouseX < f_MaxX && s_MouseY > f_MinY && s_MouseY < f_MaxY) {
+		if (AEInputCheckTriggered(AEVK_LBUTTON)) {
+			GameStateManager::g_GameStateNext = States::GS_MAINMENU;
+		}
+	}
 }
 
 void GameStateCreditsDraw() {
@@ -79,6 +89,19 @@ void GameStateCreditsDraw() {
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(0.5f);
+
+	AEMtx33 trans {
+		g_WindowWidth * 0.1f, 0, (g_WindowWidth * 0.1f) - (g_WindowWidth * 0.5f),
+		0, g_WindowHeight * 0.1f, (g_WindowHeight * 0.1f) - (g_WindowHeight * 0.5f),
+		0, 0, 1
+	};
+
+	Render::RenderShapes(Render::SHAPES::SQUARE, trans, 1.f, 0, 0, .1f);
+	Render::RenderFont("Back", 0.8f, g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
+
+	for (s32 i = 0; i < Lines.size(); ++i) {
+		Render::RenderFont(Lines[i], f_CreditsFontSize, g_WindowWidth * 0.5f, 0.f + (f_CreditsScroll * 50.0f) - (f_CreditsOffset * static_cast<f32>(i)), Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
+	}
 }
 
 void GameStateCreditsFree() {
