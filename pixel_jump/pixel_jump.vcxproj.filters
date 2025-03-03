@@ -17,12 +17,6 @@
     <ClCompile Include="GameState_MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateLevel1Platform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStateLevel2Platform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameStateLoseScreenPlatform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,14 +59,14 @@
     <ClCompile Include="AudioManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameStateLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateSplash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameStateLevel1Platform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateLevel2Platform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameStateList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -122,6 +116,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sequence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateSplash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

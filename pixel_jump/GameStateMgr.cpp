@@ -58,6 +58,9 @@ namespace GameStateManager {
 			GameStateUnload = GameStateLevelUnload;
 			break;
 
+		case States::GS_SPLASHSCREEN:
+			break;
+
 		case States::GS_MAINMENU:
 			GameStateLoad = GameStateMainMenuLoad;
 			GameStateInit = GameStateMainMenuInit;

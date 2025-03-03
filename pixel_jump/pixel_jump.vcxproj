@@ -19,6 +19,7 @@
     <ClCompile Include="GameStateLevel.cpp" />
     <ClCompile Include="GameStateLoseScreenPlatform.cpp" />
     <ClCompile Include="GameStateMgr.cpp" />
+    <ClCompile Include="GameStateSplash.cpp" />
     <ClCompile Include="GameStateWinScreenPlatform.cpp" />
     <ClCompile Include="GameState_MainMenu.cpp" />
     <ClCompile Include="hpbar.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
+    <ClInclude Include="GameStateSplash.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClCompile Include="PowerUpManager.cpp" />
     <ClInclude Include="Sequence.h" />

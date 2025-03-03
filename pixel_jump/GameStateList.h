@@ -7,6 +7,8 @@ namespace States {
 		// list of all game states 
 		GS_PLATFORM_LVL1 = 0,
 		GS_PLATFORM_LVL2,
+		
+		GS_SPLASHSCREEN,
 		GS_MAINMENU,
 		GS_WIN,
 		GS_LOSE,
