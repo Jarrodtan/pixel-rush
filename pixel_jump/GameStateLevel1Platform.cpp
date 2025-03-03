@@ -444,22 +444,6 @@ void GameStateLevel1PlatformUpdate(void) {
 
 	}
 
-	//else if ((p_Player->i_gridCollisionFlag & COLLISION_LEFT || p_Player->i_gridCollisionFlag & COLLISION_RIGHT)) {  
-	//	p_Player->currVelocity.y = JUMP_VELOCITY;
-	//}
-	//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-	//	p_Player->currVelocity.y = JUMP_VELOCITY;
-	//}
-	//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-	//	p_Player->currVelocity.y = JUMP_VELOCITY;
-	//}
-	//else if (p_Player->i_gridCollisionFlag & COLLISION_LEFT) { 
-	//	p_Player->currVelocity.y = JUMP_VELOCITY;
-	//}
-	//else if (p_Player->i_gridCollisionFlag & COLLISION_RIGHT) { 
-	//	p_Player->currVelocity.y = JUMP_VELOCITY;
-	//}
-
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 		f32 f_Time{};
