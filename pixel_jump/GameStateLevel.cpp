@@ -1044,7 +1044,7 @@ void GameStateLevelUpdate(void) {
 					}
 				}
 				else {
-					if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_LightPlayer->prevPosition.y - p_Instance->prevPosition.y) >= 0.15f) {
+					if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_LightPlayer->prevPosition.y - p_Instance->prevPosition.y) >= (1.f - PLATFORM_SNAPPING_TOLERANCE)) {
 						if (AEInputCheckTriggered(AEVK_W)) {
 							p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
 						}
@@ -1111,13 +1111,14 @@ void GameStateLevelUpdate(void) {
 					}
 				}
 				else {
-					if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_ShadowPlayer->prevPosition.y - p_Instance->prevPosition.y) >= 0.15f) {
-						if (AEInputCheckTriggered(AEVK_UP)) {
-							p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+					if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_ShadowPlayer->prevPosition.y - p_Instance->prevPosition.y) >= (1.f - PLATFORM_SNAPPING_TOLERANCE)) {
+						if (AEInputCheckTriggered(AEVK_W)) {
+							p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
 						}
 						else {
-							p_ShadowPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
+							p_ShadowPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
 						}
+
 						if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y) {
 							if (p_ShadowPlayer->currVelocity.y > 0) {
 								p_ShadowPlayer->currVelocity.y = 0;
@@ -1127,7 +1128,7 @@ void GameStateLevelUpdate(void) {
 					}
 
 					if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
-						// --i_ShadowPlayerLives;
+						// --i_LightPlayerLives;
 						p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
 						p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 					}
