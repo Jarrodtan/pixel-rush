@@ -141,5 +141,17 @@
     <Text Include="..\Assets\Maps\Test1.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\Assets\Maps\Level1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\Assets\Maps\Level2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\Assets\Maps\Level3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\Assets\Maps\Tutorial.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

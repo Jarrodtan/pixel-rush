@@ -195,7 +195,7 @@ void GameStateLevelLoad(void) {
 	::i_BINARY_MAP_WIDTH = 0;
 	::i_BINARY_MAP_HEIGHT = 0;
 
-	
+
 	std::string s_FilePath{};
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_PLATFORM_LVL1:

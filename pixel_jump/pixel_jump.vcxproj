@@ -55,7 +55,11 @@
     <ClInclude Include="PowerUpManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\Assets\Maps\Level1.txt" />
+    <Text Include="..\Assets\Maps\Level2.txt" />
+    <Text Include="..\Assets\Maps\Level3.txt" />
     <Text Include="..\Assets\Maps\Test1.txt" />
+    <Text Include="..\Assets\Maps\Tutorial.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
