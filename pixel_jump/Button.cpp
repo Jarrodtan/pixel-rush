@@ -34,7 +34,7 @@ void Button::Init(f32 f_InitPositionX, f32 f_InitPositionY, f32 f_InitWidth, f32
 	f_BlueStroke = f_B;
 }
 
-void Button::Update(f32 f_MousePositionX, f32 f_MousePositionY, bool b_MouseTriggered, bool b_MouseReleased) {
+bool Button::Update(f32 f_MousePositionX, f32 f_MousePositionY, bool b_MouseTriggered, bool b_MouseReleased) {
 	if (state == STATE_PRESSED) {
 		if (!IsButtonClicked(f_PositionX, f_PositionY, f_Width * 0.5f, f_Height * 0.5f, f_MousePositionX, f_MousePositionY)) {
 			state = STATE_IDLE;
@@ -48,8 +48,10 @@ void Button::Update(f32 f_MousePositionX, f32 f_MousePositionY, bool b_MouseTrig
 		state = IsButtonClicked(f_PositionX, f_PositionY, f_Width * 0.5f, f_Height * 0.5f, f_MousePositionX, f_MousePositionY) ? STATE_HOVER : STATE_IDLE;
 		if (state == STATE_HOVER && b_MouseTriggered) {
 			state = STATE_PRESSED;
+			return true;
 		}
 	}
+	return false;
 }
 
 void Button::Render(f32 f_ScreenOffsetX, f32 f_ScreenOffsetY) const {

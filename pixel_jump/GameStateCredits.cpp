@@ -12,6 +12,16 @@ namespace {
 	static bool b_CreditsState;
 	static std::vector<std::string> Lines;
 
+	static Button button;
+	static const s32 i_ButtonWidth = 200;
+	static const s32 i_ButtonHeight = 75;
+	static bool b_Message = false;
+	static std::string s_Message;
+
+	void ButtonMessageHandler(std::string text) {
+		b_Message = true;
+		s_Message = text;
+	}
 }
 
 void GameStateCreditsLoad() {
@@ -19,6 +29,7 @@ void GameStateCreditsLoad() {
 }
 
 void GameStateCreditsInit() {
+	button.Init(g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Back", "Main Menu", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
 
 	Lines.push_back("Credits:");
 	Lines.push_back("All Content (C) 2025 Digipen Institute of Technology Singaporee");
@@ -70,17 +81,14 @@ void GameStateCreditsUpdate() {
 	s32 s_MouseX, s_MouseY;
 	AEInputGetCursorPosition(&s_MouseX, &s_MouseY);
 
-	// Find the min and max position of the button
-	f32 f_MinX = g_WindowWidth * 0.1f - f_ButtonOffsetX;
-	f32 f_MaxX = g_WindowWidth * 0.1f + f_ButtonOffsetX;
-	f32 f_MinY = g_WindowHeight * 0.9f - f_ButtonOffsetY;
-	f32 f_MaxY = g_WindowHeight * 0.9f + f_ButtonOffsetY;
-
-	if (s_MouseX > f_MinX && s_MouseX < f_MaxX && s_MouseY > f_MinY && s_MouseY < f_MaxY) {
-		if (AEInputCheckTriggered(AEVK_LBUTTON)) {
-			GameStateManager::g_GameStateNext = States::GS_MAINMENU;
-		}
+	s32 i_MousePosX, i_MousePosY;
+	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
+	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
+	i_MousePosY = static_cast<s32>(g_WindowHeight) - i_MousePosY;
+	if (button.Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
+		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
+
 }
 
 void GameStateCreditsDraw() {
@@ -90,15 +98,7 @@ void GameStateCreditsDraw() {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(0.5f);
 
-	AEMtx33 trans {
-		g_WindowWidth * 0.1f, 0, (g_WindowWidth * 0.1f) - (g_WindowWidth * 0.5f),
-		0, g_WindowHeight * 0.1f, (g_WindowHeight * 0.1f) - (g_WindowHeight * 0.5f),
-		0, 0, 1
-	};
-
-	Render::RenderShapes(Render::SHAPES::SQUARE, trans, 1.f, 0, 0, .1f);
-	Render::RenderFont("Back", 0.8f, g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
-
+	button.Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
 	for (s32 i = 0; i < Lines.size(); ++i) {
 		Render::RenderFont(Lines[i], f_CreditsFontSize, g_WindowWidth * 0.5f, 0.f + (f_CreditsScroll * 50.0f) - (f_CreditsOffset * static_cast<f32>(i)), Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
 	}
