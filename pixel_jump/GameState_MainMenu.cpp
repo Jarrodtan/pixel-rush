@@ -4,18 +4,36 @@
 */
 /******************************************************************************/
 #include "main.h"
-#include "hpbar.hpp"
 
-struct GameEnity
-{
-	AEGfxVertexList* pMesh{ nullptr };
-	AEMtx33 scale{ 0 }, rotate{ 0 }, translate{ 0 }, transform{ 0 };
-};
-GameEnity PlayButton{}, ExitButton, TutorialButton, CreditButton, OptionButton;
-float BposX[99] = { 0 }, BposY[99] = { 0 };
-s32 kposX, kposY;
-bool haveOptionButton = true;
-f32 delayClick;
+namespace {
+	struct MainMenuText {
+		f32 f_PositionX, f_PositionY, f_VelocityY;
+		s8 c_Char;
+		bool b_Effect;
+		
+		MainMenuText(char c_ch) :
+			f_PositionX(0.f), f_PositionY(0.f), f_VelocityY(0.f), c_Char(c_ch), b_Effect(false) {}
+	};
+
+	static MainMenuText Title[] = { 'P', 'I', 'X', 'E', 'L', ' ', 'R', 'U', 'S', 'H' };
+	static const f32 f_FirstCharOffsetX = 550.f;
+	static const f32 f_CharOffsetX = 50.f;
+	static const f32 f_CharOffsetY = 20.f;
+	static const f32 f_TitleFallEffect = 10.f;
+
+	static const s8 c_MaxButtons = 4;
+	static Button button[c_MaxButtons];
+	static const f32 f_ButtonWidth = 200.f;
+	static const f32 f_ButtonHeight = 75.f;
+	static const f32 f_ButtonOffset = 25.f;
+	static std::string s_ButtonText = std::string{ "" };
+	static bool b_Message = false;
+
+	void ButtonMessageHandler(std::string text) {
+		b_Message = true;
+		s_ButtonText = text;
+	}
+}
 /******************************************************************************/
 /*!
 	"Load" function of this state
@@ -33,25 +51,16 @@ void GameStateMainMenuLoad(void) {
 void GameStateMainMenuInit(void) {
 	AESysSetWindowTitle("Main Menu");
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
-	PlayButton.pMesh = mesh_create_square(4278255360);
-	ExitButton.pMesh = mesh_create_square(4294901760);
-	TutorialButton.pMesh = mesh_create_square(4294901760);
-	CreditButton.pMesh = mesh_create_square(4278255360);
-	OptionButton.pMesh = mesh_create_square(4294901760);
-	BposX[0] = 0;
-	BposY[0] = 100;
-	BposX[1] = 0;
-	BposY[1] = -300;
-	BposX[2] = 0;
-	BposY[2] = -100;
 
-	BposX[3] = -700;
-	BposY[3] = 350;
+	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
+	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
+	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
+	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
 
-	BposX[4] = 700;
-	BposY[4] = 350;
-
-	delayClick = 0.5f;
+	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
+		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
+		Title[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
+	}
 }
 
 /******************************************************************************/
@@ -76,47 +85,56 @@ void GameStateMainMenuUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
 
-	AEInputGetCursorPosition(&kposX, &kposY);
+	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
+		Title[i].f_PositionY += Title[i].f_VelocityY * g_dt;
+		Title[i].f_VelocityY -= f_TitleFallEffect;
 
-	//if (AEInputCheckTriggered(RI_MOUSE_LEFT_BUTTON_DOWN))
-	if(AEInputCheckCurr(RI_MOUSE_LEFT_BUTTON_DOWN) && delayClick <= 0)
-	{
-		if (kposX > BposX[0] + 700 && kposX < BposX[0] + 900
-			&& kposY > BposY[0] + 200 && kposY < BposY[0] + 300)
-		{
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-		}
-		if (kposX > BposX[1] + 700 && kposX < BposX[1] + 900
-			&& kposY > BposY[1] + 1000 && kposY < BposY[1] + 1100)
-		{
-			GameStateManager::g_GameStateNext = States::GS_QUIT;
-		}
-		if (kposX > BposX[2] + 700 && kposX < BposX[2] + 900
-			&& kposY > BposY[2] + 600 && kposY < BposY[2] + 700)
-		{
-			// go to tutorial stage...
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+		if (Title[i].b_Effect == false) {
+			if (Title[i].f_PositionY < g_WindowHeight * 0.6f) {
+				Title[i].b_Effect = true;
+				Title[i].f_VelocityY = g_WindowHeight * 0.5f;
+			}
 		}
 
-		if ((kposX > BposX[0] + 50 && kposX < BposX[0] + 150
-			&& kposY > BposY[0] - 50 && kposY < BposY[0] + 50) && haveOptionButton)
-		{
-			// go to game settings scene...
-			GameStateManager::g_GameStateNext = States::GS_LOSE;
-		}
-
-		if (kposX > BposX[0] + 1450 && kposX < BposX[0] + 1550
-			&& kposY > BposY[0] - 50 && kposY < BposY[0] + 50)
-		{
-			// go to game credits scene...
-			GameStateManager::g_GameStateNext = States::GS_WIN;
+		if (Title[i].f_PositionY < 0) {
+			Title[i].f_PositionY = g_WindowHeight;
+			Title[i].b_Effect = false;
 		}
 	}
+		
+	s32 i_MousePosX, i_MousePosY;
+	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
+	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
+	i_MousePosY = static_cast<s32>(g_WindowHeight) - i_MousePosY;
 
-	if (delayClick > 0)
-	{
-		delayClick -= 0.01f;
+	for (s32 j = 0; j < c_MaxButtons; ++j) {
+		switch (j) {
+		case 0:
+			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
+				GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+			}
+			break;
+
+		case 1:
+			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
+				// GameStateManager::g_GameStateNext = States::GS_TUTORIAL;
+			}
+			break;
+
+		case 2:
+			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
+				GameStateManager::g_GameStateNext = States::GS_CREDITS;
+			}
+			break;
+
+		case 3:
+			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
+				GameStateManager::g_GameStateNext = States::GS_QUIT;
+			}
+			break;
+		}
 	}
+	
 }
 
 /******************************************************************************/
@@ -125,34 +143,25 @@ void GameStateMainMenuUpdate(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuDraw(void) {
+	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetTransparency(0.5f);
 
-	mesh_square_transform(BposX[0], BposY[0], 200, 100, 0, PlayButton.scale, PlayButton.rotate, PlayButton.translate, PlayButton.transform, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f);
-
-	AEGfxMeshDraw(PlayButton.pMesh, AE_GFX_MDM_TRIANGLES);
-
-	mesh_square_transform(BposX[1], BposY[1], 200, 100, 0, ExitButton.scale, ExitButton.rotate, ExitButton.translate, ExitButton.transform, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
-	AEGfxMeshDraw(ExitButton.pMesh, AE_GFX_MDM_TRIANGLES);
-
-	mesh_square_transform(BposX[2], BposY[2], 200, 100, 0, TutorialButton.scale, TutorialButton.rotate, TutorialButton.translate, TutorialButton.transform, 0.0f, 0.5f, 0.0f, 0.0f, 1.0f);
-	AEGfxMeshDraw(TutorialButton.pMesh, AE_GFX_MDM_TRIANGLES);
-
-	if (haveOptionButton) {
-		mesh_square_transform(BposX[3], BposY[3], 100, 100, 0, OptionButton.scale, OptionButton.rotate, OptionButton.translate, OptionButton.transform, 0.2f, 0.3f, 0.0f, 0.0f, 1.0f);
-		AEGfxMeshDraw(OptionButton.pMesh, AE_GFX_MDM_TRIANGLES);
+	std::stringstream ss;
+	for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
+		ss << Title[i].c_Char;
+		Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
+		ss.str("");
 	}
 
-	mesh_square_transform(BposX[4], BposY[4], 100, 100, 0, CreditButton.scale, CreditButton.rotate, CreditButton.translate, CreditButton.transform, 0.0f, 0.8f, 0.3f, 0.0f, 1.0f);
-	AEGfxMeshDraw(CreditButton.pMesh, AE_GFX_MDM_TRIANGLES);
+	for (s32 i = 0; i < c_MaxButtons; ++i) {
+		button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
+	}
 
-
-	AEGfxPrint(g_Font, "PIXEL RUSH", -0.36f, 0.65f, 3.5f, 1.f, 1.f, 1.f, 1.f);
-	AEGfxPrint(g_Font, "------ Dash through the Puzzle! ------", -0.3f, 0.5f, 1.0f, 1.f, 1.f, 1.f, 1.f);
-	AEGfxPrint(g_Font, "Play", -0.06f, 0.20f, 1.5f, 1.f, 1.f, 1.f, 1.f);
-	AEGfxPrint(g_Font, "  Exit", -0.09f, -0.7f, 1.5f, 1.f, 1.f, 1.f, 1.f);
-	AEGfxPrint(g_Font, "Tutorial", -0.09f, -0.25f, 1.5f, 1.f, 1.f, 1.f, 1.f);
+	ss << "A Game by Team Pixel Jump";
+	Render::RenderFont(ss.str(), 1.f, g_WindowWidth, 18.f, Render::COLOUR::WHITE, Render::FONT_ALIGN::RIGHT);
 }
 
 /******************************************************************************/
@@ -161,13 +170,7 @@ void GameStateMainMenuDraw(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuFree(void) {
-	AEGfxMeshFree(PlayButton.pMesh);
-	AEGfxMeshFree(ExitButton.pMesh);
-	AEGfxMeshFree(TutorialButton.pMesh);
-	if (haveOptionButton) {
-		AEGfxMeshFree(OptionButton.pMesh);
-	}
-	AEGfxMeshFree(CreditButton.pMesh);
+
 }
 
 /******************************************************************************/

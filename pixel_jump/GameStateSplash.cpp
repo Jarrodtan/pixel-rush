@@ -16,7 +16,9 @@ void GameStateSplashInit() {
 }
 
 void GameStateSplashUpdate() {
-
+	if (AEInputCheckTriggered(AEVK_LBUTTON) || AEInputCheckTriggered(AEVK_SPACE)) {
+		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
+	}
 }
 
 void GameStateSplashDraw() {

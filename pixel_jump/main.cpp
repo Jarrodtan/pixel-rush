@@ -40,7 +40,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Render::Load();
 	AudioManager::Init();
 	// TODO: Change this to splash screen when level dev has been completed
-	GameStateManager::GameStateMgrInit(States::GS_CREDITS);
+	GameStateManager::GameStateMgrInit(States::GS_SPLASHSCREEN);
 	g_WindowWidth = static_cast<f32>(AEGfxGetWindowWidth());
 	g_WindowHeight = static_cast<f32>(AEGfxGetWindowHeight());
 
