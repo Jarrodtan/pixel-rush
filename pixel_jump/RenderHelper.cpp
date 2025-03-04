@@ -125,8 +125,9 @@ namespace Render {
 			case Objects::TYPE_OBJECT_WALL:
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			case Objects::TYPE_PRESSURE_PLATE:
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
@@ -184,8 +185,11 @@ namespace Render {
 			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
 			break;
 
-		case Objects::TYPE_PRESSURE_PLATE:
-			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 1.f);
+			break;
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:

@@ -33,6 +33,8 @@ namespace Objects {
 		TYPE_OBJECT_SHADOWSPIKE,
 		TYPE_OBJECT_MOVEABLE_LIGHTSPIKE,
 		TYPE_OBJECT_MOVEABLE_SHADOWSPIKE,
+		TYPE_OBJECT_PRESSURE_PLATE_LIGHT,
+		TYPE_OBJECT_PRESSURE_PLATE_DARK,
 
 		TYPE_MAX_OBJECT
 	};
@@ -110,6 +112,7 @@ namespace Objects {
 	void gameObjectInstanceDestroy(GameObjectInstance* p_Instance);
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT);
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT, GameObjectInstance*& r_Instance, f32& f_Time);
+	void PressurePlateResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player, float f_Time, bool interactable);
 }
 
 

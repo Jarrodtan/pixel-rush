@@ -55,6 +55,18 @@ public:
 struct SequenceCollection {
 	int sequenceCount;
 	Sequence* sequence;
+
+	inline Sequence* getSequence(SpecialSequence specialSeq) {
+		for (int x = 0; x < this->sequenceCount; ++x) {
+			Sequence* sequenceColl = this->sequence + x;
+			if (sequenceColl->getSequenceType() == specialSeq) {
+				return sequenceColl;
+			}
+		}
+
+		return nullptr;
+		
+	}
 };
 
 #endif

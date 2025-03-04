@@ -144,6 +144,76 @@ namespace Objects {
 		}
 	}
 
+	void PressurePlateResolution(GameObjectInstance *p_Instance, GameObjectInstance *p_Player, float f_Time, bool interactable) {
+
+
+		if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player->boundingBox, p_Player->currVelocity, f_Time)) {
+			Sequence& sequence = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_STEPPED));
+			Sequence& released = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_RELEASED));
+
+
+			if (p_Instance->boundingBox.min.x >= p_Player->boundingBox.max.x && p_Player->currVelocity.x > 0.0) { //CHECK LEFT
+				p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+			} if (p_Instance->boundingBox.max.x <= p_Player->boundingBox.min.x && p_Player->currVelocity.x < 0.0) { //CHECK RIGHT
+				p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+			}if (p_Instance->boundingBox.max.y <= p_Player->boundingBox.min.y) { //CHECK TOP
+				if (p_Player->currVelocity.y < 0.0f) {
+					p_Player->currVelocity.y = 0.0f;
+					p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y;
+				}
+
+				if (interactable) sequence.isRunning = true;
+
+			}
+
+			if (!interactable) {
+				if (released.isRunning && p_Instance->currPosition.y < released.targetValue) {
+					p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y;
+					std::cout << released.isFinished;
+				} else if(released.isFinished) {
+					p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y;
+					released.isFinished = false;
+					std::cout << released.isFinished;
+				}
+				return;
+			}
+			
+			if (sequence.targetValue < p_Instance->currPosition.y && sequence.isRunning && interactable) {
+				
+				f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
+				p_Instance->currPosition.y -= yVel;
+				p_Player->currPosition.y = p_Instance->currPosition.y + 1.0f;
+				released.isRunning = false;
+
+			}
+			if (sequence.targetValue >= p_Instance->currPosition.y && sequence.isRunning && interactable) {
+				sequence.isRunning = false;
+				Collision::SnapToCell(&p_Instance->currPosition.y);
+			}
+
+		}
+		else {
+
+			Sequence* sequence = p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_RELEASED);
+			
+			
+			if (p_Instance->currPosition.y < sequence->targetValue && interactable) {
+				f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
+				
+				p_Instance->currPosition.y += yVel;
+				p_Player->currPosition.y += yVel;
+				sequence->isRunning = true;
+			}
+			if (p_Instance->currPosition.y >= sequence->targetValue && interactable && sequence->isRunning) {
+					p_Instance->currPosition.y = sequence->targetValue;
+
+					sequence->isRunning = false;
+					sequence->isFinished = true;
+			}
+
+		}
+	}
+
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT, GameObjectInstance*& r_Instance, f32& f_Time) {
 		switch (p_Instance->state) {
 		case STATE_GOING_LEFT:
