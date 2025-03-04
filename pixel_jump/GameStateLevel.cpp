@@ -1038,9 +1038,10 @@ void GameStateLevelUpdate(void) {
 					}
 
 					if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
-						// --i_LightPlayerLives;
-						p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
-						p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+						if (p_LightPlayer->currVelocity.y > 0) {
+							p_LightPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+						}
 					}
 				}
 				else {
@@ -1061,9 +1062,10 @@ void GameStateLevelUpdate(void) {
 					}
 
 					if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
-						// --i_LightPlayerLives;
-						p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
-						p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+						if (p_LightPlayer->currVelocity.y < 0) {
+							p_LightPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+						}
 					}
 				}
 			}
@@ -1105,9 +1107,10 @@ void GameStateLevelUpdate(void) {
 					}
 
 					if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
-						// --i_ShadowPlayerLives;
-						p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-						p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+						if (p_ShadowPlayer->currVelocity.y > 0) {
+							p_ShadowPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
+						}
 					}
 				}
 				else {
@@ -1128,9 +1131,11 @@ void GameStateLevelUpdate(void) {
 					}
 
 					if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
-						// --i_LightPlayerLives;
-						p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-						p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+						if (p_ShadowPlayer->currVelocity.y < 0) {
+							p_ShadowPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
+							Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
+						}
+
 					}
 				}
 			}

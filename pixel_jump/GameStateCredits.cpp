@@ -15,13 +15,7 @@ namespace {
 	static Button button;
 	static const s32 i_ButtonWidth = 200;
 	static const s32 i_ButtonHeight = 75;
-	static bool b_Message = false;
-	static std::string s_Message;
 
-	void ButtonMessageHandler(std::string text) {
-		b_Message = true;
-		s_Message = text;
-	}
 }
 
 void GameStateCreditsLoad() {
@@ -29,7 +23,7 @@ void GameStateCreditsLoad() {
 }
 
 void GameStateCreditsInit() {
-	button.Init(g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Back", "Main Menu", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
+	button.Init(g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Back", "Main Menu", 0.4f, 0.4f, 1.f);
 
 	Lines.push_back("Credits:");
 	Lines.push_back("All Content (C) 2025 Digipen Institute of Technology Singaporee");

@@ -26,13 +26,7 @@ namespace {
 	static const f32 f_ButtonWidth = 200.f;
 	static const f32 f_ButtonHeight = 75.f;
 	static const f32 f_ButtonOffset = 25.f;
-	static std::string s_ButtonText = std::string{ "" };
-	static bool b_Message = false;
 
-	void ButtonMessageHandler(std::string text) {
-		b_Message = true;
-		s_ButtonText = text;
-	}
 }
 /******************************************************************************/
 /*!
@@ -52,10 +46,10 @@ void GameStateMainMenuInit(void) {
 	AESysSetWindowTitle("Main Menu");
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 
-	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
-	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
-	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
-	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", ButtonMessageHandler, 0.4f, 0.4f, 1.f);
+	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", 0.4f, 0.4f, 1.f);
+	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", 0.4f, 0.4f, 1.f);
+	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", 0.4f, 0.4f, 1.f);
+	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", 0.4f, 0.4f, 1.f);
 
 	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;

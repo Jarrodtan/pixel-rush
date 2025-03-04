@@ -18,17 +18,16 @@ namespace {
 Button::Button() :
 	state(STATE_IDLE), s_TextToDisplay(std::string{ "" }), s_Data(std::string{ "" }),
 	f_PositionX(0.f), f_PositionY(0.f), f_Width(0.f), f_Height(0.f),
-	f_RedStroke(0.f), f_GreenStroke(0.f), f_BlueStroke(0.f), p_Function(nullptr) 
+	f_RedStroke(0.f), f_GreenStroke(0.f), f_BlueStroke(0.f)
 {}
 
-void Button::Init(f32 f_InitPositionX, f32 f_InitPositionY, f32 f_InitWidth, f32 f_InitHeight, std::string s_Text, std::string s_InitData, void (*p_Next)(std::string), f32 f_R, f32 f_G, f32 f_B) {
+void Button::Init(f32 f_InitPositionX, f32 f_InitPositionY, f32 f_InitWidth, f32 f_InitHeight, std::string s_Text, std::string s_InitData,  f32 f_R, f32 f_G, f32 f_B) {
 	f_PositionX = f_InitPositionX;
 	f_PositionY = f_InitPositionY;
 	f_Width = f_InitWidth;
 	f_Height = f_InitHeight;
 	s_TextToDisplay = s_Text;
 	s_Data = s_InitData;
-	p_Function = p_Next;
 	f_RedStroke = f_R;
 	f_GreenStroke = f_G;
 	f_BlueStroke = f_B;
@@ -41,7 +40,6 @@ bool Button::Update(f32 f_MousePositionX, f32 f_MousePositionY, bool b_MouseTrig
 		}
 		else if (b_MouseReleased) {
 			state = STATE_IDLE;
-			p_Function(s_Data);
 		}
 	}
 	else {
