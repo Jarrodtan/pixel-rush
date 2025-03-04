@@ -1003,29 +1003,26 @@ void GameStateLevelUpdate(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
-			/*if (Collision::CollisionAABB(p_LightPlayer->boundingBox,
-				p_LightPlayer->currVelocity,
-				p_Instance->boundingBox,
-				p_Instance->currVelocity,
-				f_Time)) {
-
-				// Move player with platform
-				p_LightPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
-			}
-			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox,
-				p_ShadowPlayer->currVelocity,
-				p_Instance->boundingBox,
-				p_Instance->currVelocity,
-				f_Time)) {
-
-				// Move player with platform
-				p_ShadowPlayer->currPosition.x += p_Instance->currVelocity.x * g_dt;
-			}*/
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
-				isCollideMovingPlatform_L = true;
-				
-				
-					// Move player with platform
+				if (fabs(p_LightPlayer->currPosition.y - p_Instance->currPosition.y) <= TOLERANCE) {
+					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x > 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+					else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+						if (p_LightPlayer->currVelocity.x < 0) {
+							p_LightPlayer->currVelocity.x = 0;
+							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
+						}
+					}
+				}
+				else {
+
+				}
+
+				// Move player with platform
 				if (!isGravitySwitch_L) {
 					if (p_Instance->currPosition.y > 0) {
 						if (AEInputCheckCurr(AEVK_W)) {
@@ -1063,20 +1060,11 @@ void GameStateLevelUpdate(void) {
 					}
 				}
 				
-
-				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
-					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
-						if (p_LightPlayer->currVelocity.x > 0) {
-							p_LightPlayer->currVelocity.x = 0;
-							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
-						}
-					}
-					else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
-						if (p_LightPlayer->currVelocity.x < 0) {
-							p_LightPlayer->currVelocity.x = 0;
-							Collision::SnapToCell(&p_LightPlayer->currPosition.x);
-						}
-					}
+				// kill the light player if it is crushed by the moving platform
+				if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
+					--::i_LightPlayerLives;
+					p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
+					p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
 				}
 
 				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
@@ -1085,6 +1073,7 @@ void GameStateLevelUpdate(void) {
 						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 					}
 				}
+				isCollideMovingPlatform_L = true;
 			}
 			else {
 				isCollideMovingPlatform_L = false;
