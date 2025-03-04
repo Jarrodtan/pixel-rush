@@ -16,6 +16,7 @@
 #include "AEEngine.h"
 #include "math.h"
 
+#include "Button.h"
 #include "GameStateSplash.h"
 #include "GameStateCredits.h"
 #include "Camera.h"

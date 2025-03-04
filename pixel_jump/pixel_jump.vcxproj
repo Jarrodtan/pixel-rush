@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="FileReader.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="GameStateCredits.h" />
     <ClInclude Include="GameStateSplash.h" />
     <ClInclude Include="RenderHelper.h" />
