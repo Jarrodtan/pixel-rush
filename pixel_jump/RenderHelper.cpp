@@ -196,7 +196,7 @@ namespace Render {
 			break;
 
 		case Objects::TYPE_OBJECT_GATE:
-			AEGfxSetColorToAdd(0.f, 0.5f, 0.f, 1.f);
+			AEGfxSetColorToAdd(0.5f, 0.5f, 0.95f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
@@ -208,7 +208,7 @@ namespace Render {
 			break;
 
 		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
-			AEGfxSetColorToAdd(0.4f, 0.9f, 0.4f, 1.f);
+			AEGfxSetColorToAdd(0.2f, 0.3f, 0.8f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
@@ -228,11 +228,11 @@ namespace Render {
 			break;
 
 		case Objects::TYPE_OBJECT_TELEPORTOR:
-			AEGfxSetColorToAdd(0.6f, 0.f, 0.f, 0.6f);
+			AEGfxSetColorToAdd(0.6f, 0.25f, 0.5f, 0.6f);
 			break;
 
 		case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
-			AEGfxSetColorToAdd(0.f, 0.f, 0.3f, 0.6f);
+			AEGfxSetColorToAdd(0.1f, 0.8f, 0.7f, 0.6f);
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
