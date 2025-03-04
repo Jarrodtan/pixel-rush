@@ -68,7 +68,10 @@ const f32 ENEMY_MOVE_VELOCITY = 7.5f;
 const f64 ENEMY_IDLE_TIME = 2.0;
 const s32 PLAYER_LIVES = 3;
 
+const f32 PLATFORM_MOVE_SPEED = 1.f;
+
 const f32 TOLERANCE = 1.0f;
+const f32 PLATFORM_SNAPPING_TOLERANCE = 0.9f;
 const f32 CRUSH_TOLERANCE = 0.5f;
 
 // flags
