@@ -27,7 +27,7 @@ namespace {
 	static const f32 f_ButtonHeight = 75.f;
 	static const f32 f_ButtonOffset = 25.f;
 	
-	static const bool is_animatedTitle = false;
+	static const bool is_animatedTitle = true;
     static f32 a = 0.0f, delayduration = 0.15f;
 }
 /******************************************************************************/
