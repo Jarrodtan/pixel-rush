@@ -137,7 +137,7 @@ void GameStateMainMenuUpdate(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuDraw(void) {
-	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.8f);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);

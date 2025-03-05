@@ -1302,6 +1302,8 @@ void GameStateLevelDraw(void) {
 
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
+	AEGfxSetBackgroundColor(0.1f, 0.1f, 0.4f);
+
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxTextureSet(NULL, 0, 0);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -1323,10 +1325,10 @@ void GameStateLevelDraw(void) {
 			AEGfxSetTransform(FinalCellTransform.m);
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
-				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.68f, 0.85f, 0.90f, 1.f);
+				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.50f, 0.85f, 0.90f, 0.f);
 				break;
 			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.4f, 0.9f, 0.4f, 1.f);
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.2f, 0.3f, 0.8f, 1.f);
 				break;
 			default:
 				break;
