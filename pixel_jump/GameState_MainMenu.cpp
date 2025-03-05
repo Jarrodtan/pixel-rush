@@ -16,7 +16,7 @@ namespace {
 	};
 
 	static MainMenuText Title[] = { 'P', 'I', 'X', 'E', 'L', ' ', 'R', 'U', 'S', 'H' };
-	static const f32 f_FirstCharOffsetX = 550.f;
+	static const f32 f_FirstCharOffsetX = 575.f;
 	static const f32 f_CharOffsetX = 50.f;
 	static const f32 f_CharOffsetY = 20.f;
 	static const f32 f_TitleFallEffect = 10.f;
@@ -26,7 +26,7 @@ namespace {
 	static const f32 f_ButtonWidth = 200.f;
 	static const f32 f_ButtonHeight = 75.f;
 	static const f32 f_ButtonOffset = 25.f;
-
+	
 }
 /******************************************************************************/
 /*!
@@ -46,10 +46,10 @@ void GameStateMainMenuInit(void) {
 	AESysSetWindowTitle("Main Menu");
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 
-	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", 0.4f, 0.4f, 1.f);
-	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", 0.4f, 0.4f, 1.f);
-	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", 0.4f, 0.4f, 1.f);
-	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", 0.4f, 0.4f, 1.f);
+	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", 0.4f, 0.4f, 1.f);
+	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", 0.4f, 0.4f, 1.f);
+	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", 0.4f, 0.4f, 1.f);
+	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", 0.4f, 0.4f, 1.f);
 
 	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
@@ -84,9 +84,9 @@ void GameStateMainMenuUpdate(void) {
 		Title[i].f_VelocityY -= f_TitleFallEffect;
 
 		if (Title[i].b_Effect == false) {
-			if (Title[i].f_PositionY < g_WindowHeight * 0.6f) {
+			if (Title[i].f_PositionY < g_WindowHeight * 0.65f) {
 				Title[i].b_Effect = true;
-				Title[i].f_VelocityY = g_WindowHeight * 0.5f;
+				Title[i].f_VelocityY = g_WindowHeight * 0.65f;
 			}
 		}
 
@@ -143,7 +143,7 @@ void GameStateMainMenuDraw(void) {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(0.5f);
 
-	std::stringstream ss;
+	std::stringstream ss, sr;
 	for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		ss << Title[i].c_Char;
 		Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
@@ -156,6 +156,9 @@ void GameStateMainMenuDraw(void) {
 
 	ss << "A Game by Team Pixel Jump";
 	Render::RenderFont(ss.str(), 1.f, g_WindowWidth, 18.f, Render::COLOUR::WHITE, Render::FONT_ALIGN::RIGHT);
+
+	sr << "Seek life balance between Light and Shadow...";
+	Render::RenderFont(sr.str(), 1.f, g_WindowWidth * 0.70f, g_WindowHeight * 0.65f, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::RIGHT);
 }
 
 /******************************************************************************/

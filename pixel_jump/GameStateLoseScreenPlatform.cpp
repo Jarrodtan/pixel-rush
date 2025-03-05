@@ -28,7 +28,7 @@ namespace {
 	};
 
 	static LoseSceneText Title[] = { 'G', 'A', 'M', 'E', ' ', 'O', 'V', 'E', 'R', '!' };
-	static const f32 f_FirstCharOffsetX = 550.f;
+	static const f32 f_FirstCharOffsetX = 600.f;
 	static const f32 f_CharOffsetX = 50.f;
 	static const f32 f_CharOffsetY = 20.f;
 	static const f32 f_TitleFallEffect = 10.f;

@@ -28,7 +28,7 @@ namespace {
 	};
 
 	static WinSceneText Title[] = { 'Y', 'O', 'U', ' ', 'W', 'O', 'N', '!' };
-	static const f32 f_FirstCharOffsetX = 550.f;
+	static const f32 f_FirstCharOffsetX = 650.f;
 	static const f32 f_CharOffsetX = 50.f;
 	static const f32 f_CharOffsetY = 20.f;
 	static const f32 f_TitleFallEffect = 10.f;

@@ -1155,7 +1155,7 @@ void GameStateLevelUpdate(void) {
 					p_LightPlayer->currPosition.x = p_LightPlayer->currVelocity.x * f_Time + p_LightPlayer->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
 				}if (p_Instance->boundingBox.max.y <= p_LightPlayer->boundingBox.min.y) {
 
-					//p_LightPlayer->currVelocity.y = p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
+					
 					if (p_LightPlayer->currVelocity.y <= 0.0f) {
 						p_LightPlayer->currVelocity.y = 0.0f;
 						p_LightPlayer->currPosition.y = p_LightPlayer->prevPosition.y; //SNAP PLAYER BACK VIA X AXIS
@@ -1186,7 +1186,7 @@ void GameStateLevelUpdate(void) {
 
 
 			}
-			else if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, f_Time)) {
+			/*else if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, f_Time)) {
 				if (p_Instance->boundingBox.min.x >= p_ShadowPlayer->boundingBox.max.x && p_ShadowPlayer->currVelocity.x > 0.0) {
 					p_ShadowPlayer->currPosition.x = p_ShadowPlayer->currVelocity.x * f_Time + p_ShadowPlayer->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
 				}
@@ -1224,7 +1224,7 @@ void GameStateLevelUpdate(void) {
 				}
 
 
-			}
+			}*/
 			else {
 				for (i = 0; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
 					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
@@ -1239,7 +1239,7 @@ void GameStateLevelUpdate(void) {
 							sequence.currentValue += yVel;
 							p_Instance->currPosition.y += yVel;
 							p_LightPlayer->currPosition.y += yVel;
-							p_ShadowPlayer->currPosition.y += yVel;
+							//p_ShadowPlayer->currPosition.y += yVel;
 						}
 						else {
 							p_Instance->currPosition.y = sequence.targetValue;
@@ -1249,27 +1249,6 @@ void GameStateLevelUpdate(void) {
 				}
 			}
 			
-			/*
-			else {
-				for (int i{}; i < p_Instance->sequenceCollection.sequenceCount; ++i) {
-					Sequence& sequence = *(p_Instance->sequenceCollection.sequence + i);
-
-					if (sequence.getSequenceType() == SpecialSequence::PRESSURE_PLATE_RELEASED) {
-						Sequence& prevSeq = *(p_Instance->sequenceCollection.sequence + 1);
-						unlockDoor = false;
-						if (p_Instance->currPosition.y < sequence.targetValue) {
-							f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
-							sequence.currentValue += yVel;
-							p_Instance->currPosition.y += yVel;
-							p_ShadowPlayer->currPosition.y += yVel;
-						}
-						else {
-							p_Instance->currPosition.y = sequence.targetValue;
-						}
-
-					}
-				}
-			}*/
 			break;
 		
 
