@@ -27,6 +27,8 @@ namespace {
 	static const f32 f_ButtonHeight = 75.f;
 	static const f32 f_ButtonOffset = 25.f;
 	
+	static const bool is_animatedTitle = false;
+    static f32 a = 0.0f, delayduration = 0.15f;
 }
 /******************************************************************************/
 /*!
@@ -55,6 +57,8 @@ void GameStateMainMenuInit(void) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
 		Title[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
 	}
+
+	::a = 0.f;
 }
 
 /******************************************************************************/
@@ -101,32 +105,38 @@ void GameStateMainMenuUpdate(void) {
 	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
 	i_MousePosY = static_cast<s32>(g_WindowHeight) - i_MousePosY;
 
-	for (s32 j = 0; j < c_MaxButtons; ++j) {
-		switch (j) {
-		case 0:
-			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
-				GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-			}
-			break;
+	//if (::a >= ::delayduration) {
+		for (s32 j = 0; j < c_MaxButtons; ++j) {
+			switch (j) {
+			case 0:
+				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
+					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+				}
+				break;
 
-		case 1:
-			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
-				// GameStateManager::g_GameStateNext = States::GS_TUTORIAL;
-			}
-			break;
+			case 1:
+				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
+					// GameStateManager::g_GameStateNext = States::GS_TUTORIAL;
+				}
+				break;
 
-		case 2:
-			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
-				GameStateManager::g_GameStateNext = States::GS_CREDITS;
-			}
-			break;
+			case 2:
+				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
+					GameStateManager::g_GameStateNext = States::GS_CREDITS;
+				}
+				break;
 
-		case 3:
-			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
-				GameStateManager::g_GameStateNext = States::GS_QUIT;
+			case 3:
+				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
+					GameStateManager::g_GameStateNext = States::GS_QUIT;
+				}
+				break;
 			}
-			break;
 		}
+	//}
+
+	if (::a < ::delayduration) {
+		::a += 0.01f;
 	}
 	
 }
@@ -143,11 +153,17 @@ void GameStateMainMenuDraw(void) {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(0.5f);
 
-	std::stringstream ss, sr;
-	for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
-		ss << Title[i].c_Char;
-		Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
-		ss.str("");
+	std::stringstream ss, sr, sc;
+	if (is_animatedTitle) {
+		for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
+			ss << Title[i].c_Char;
+			Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
+			ss.str("");
+		}
+	}
+	else {
+		sc << "PIXEL JUMP";
+		Render::RenderFont(sc.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.75f, Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
 	}
 
 	for (s32 i = 0; i < c_MaxButtons; ++i) {

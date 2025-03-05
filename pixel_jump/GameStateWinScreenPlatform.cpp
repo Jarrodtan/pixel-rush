@@ -39,6 +39,7 @@ namespace {
 	static const f32 f_ButtonHeight = 75.f;
 	static const f32 f_ButtonOffset = 25.f;
 
+	static const bool is_animatedTitle = false;
 }
 /******************************************************************************/
 /*!
@@ -182,13 +183,18 @@ void GameStateWinDraw(void) {
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(0.5f);
 
-	std::stringstream ss;
-	for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
-		ss << Title[i].c_Char;
-		Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::CENTER);
-		ss.str("");
+	std::stringstream ss, sr;
+	if (is_animatedTitle) {
+		for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
+			ss << Title[i].c_Char;
+			Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::CENTER);
+			ss.str("");
+		}
 	}
-
+	else {
+		sr << "You Won!";
+		Render::RenderFont(sr.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.65f, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::CENTER);
+	}
 	for (s32 i = 0; i < c_MaxButtons; ++i) {
 		button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
 	}
