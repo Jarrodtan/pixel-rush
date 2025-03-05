@@ -45,6 +45,11 @@ namespace {
 	Objects::GameObjectInstance* p_ShadowPlayer;
 	s32 i_Jump;
 
+	// TRACK SPECIAL GAMEOBJECTS
+	s32 i_ID{};
+	std::vector<std::pair<Objects::Index, Objects::Index>> metaContainer;
+	std::string s_metaLoc;
+
 	//CAMERA VARIABLES
 	s32 deltaWheel{};
 	s32 currentDeltaWheel{};
@@ -94,6 +99,8 @@ void GameStateLevelLoad(void) {
 	powerUpFlag = 0;
 
 	Objects::GameObject* p_Object{};
+
+	metaContainer = std::vector<std::pair<Objects::Index, Objects::Index>>{};
 
 	// create the black cell
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
@@ -151,13 +158,17 @@ void GameStateLevelLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE;
 
-	// create the pressure plate
+	// create the light pressure plate
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT;
 
-	// create the pressure plate
+	// create the dark pressure plate
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK;
+
+	// create the door
+	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_DOOR;
 
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
@@ -172,6 +183,7 @@ void GameStateLevelLoad(void) {
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_PLATFORM_LVL1:
 		s_FilePath = "Assets/Maps/Test1.txt";
+		s_metaLoc = "Assets/MapMetaData/1.txt";
 		break;
 		
 	case States::GS_PLATFORM_LVL2:
@@ -286,7 +298,6 @@ void GameStateLevelInit(void) {
 			case Objects::TYPE_OBJECT_SHADOWSPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
-
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
 				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				// Add movement sequence
@@ -299,7 +310,8 @@ void GameStateLevelInit(void) {
 				break;
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT: 
 				{
-					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
+					p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
 					int count = p_Instance->sequenceCollection.sequenceCount = 2;
 
 					p_Instance->sequenceCollection.sequence = new Sequence[count]{
@@ -328,7 +340,10 @@ void GameStateLevelInit(void) {
 
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK: 
 				{
-					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+
+					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
+					p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
+					
 					int count = p_Instance->sequenceCollection.sequenceCount = 2;
 
 					p_Instance->sequenceCollection.sequence = new Sequence[count];
@@ -353,11 +368,70 @@ void GameStateLevelInit(void) {
 				}
 
 				break;
+			case Objects::TYPE_OBJECT_DOOR: {
+
+				
+				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_DOOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{i, j});
+				p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
+				p_Instance->sequenceCollection.sequenceCount = 2;
+				p_Instance->sequenceCollection.sequence = new Sequence[2];
+				p_Instance->sequenceCollection.sequence[0] = Sequence{
+						false,
+						false,
+						Position.y - Scale.y,
+						0.0f,
+						0.0f,
+						SpecialSequence::OPEN
+				};
+
+				p_Instance->sequenceCollection.sequence[1] = Sequence{
+					false,
+					false,
+					Position.y,
+					0.0f,
+					0.0f,
+					SpecialSequence::CLOSE
+				};
+			}
+				break;
 			}
 		}
 	}
 
-}
+	
+	FileReader::readMeta(s_metaLoc, metaContainer);
+	std::cout << metaContainer[0].second.x;
+
+	for (FileReader::MetaData &data : metaContainer) {
+
+		for (int i{}; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
+			Objects::GameObjectInstance* p_Instance = ::p_GameObjectInstanceList + i;
+			if ((p_Instance->u_Flag & FLAG_ACTIVE) != 0 && p_Instance->p_GameObject->u_Type != Objects::TYPE_OBJECT_DOOR) continue;
+			
+			if (data.second == p_Instance->idx) {
+				for (int x{}; x < GAME_OBJECT_INST_NUM_MAX; ++x) {
+					Objects::GameObjectInstance* p_secondInst = ::p_GameObjectInstanceList + x;
+					if ((p_secondInst->u_Flag & FLAG_ACTIVE) != 0 && (p_secondInst->p_GameObject->u_Type != Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK && p_secondInst->p_GameObject->u_Type != Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT)) continue;
+
+					if (data.first == p_secondInst->idx) {
+						p_Instance->otherGameObj = p_secondInst;
+						break;
+					}
+
+				}
+			}
+
+
+			}
+		
+	}
+	
+	
+	
+	}
+
+
+
 
 /******************************************************************************/
 /*!
@@ -485,7 +559,6 @@ void GameStateLevelUpdate(void) {
 			}
 		}
 		else { // basic jump
-			std::cout << "HEY";
 			if (p_ShadowPlayer->currVelocity.y == 0) {
 				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
 
@@ -593,7 +666,7 @@ void GameStateLevelUpdate(void) {
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 
-		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0 || p_Instance->p_GameObject->u_Type == Objects::TYPE_PRESSURE_PLATE || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK || p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT) continue;
+		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0 || (p_Instance->u_Flag & FLAG_NON_COLLIDABLE) > 0) continue;
 
 		p_Instance->i_gridCollisionFlag = Collision::CheckInstanceBinaryMapCollision(::p_BinaryCollisionArray, p_Instance->currPosition.x, p_Instance->currPosition.y, p_Instance->scale.x, p_Instance->scale.y);
 
@@ -792,12 +865,19 @@ void GameStateLevelUpdate(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
-			Objects::PressurePlateResolution(p_Instance, p_ShadowPlayer, f_Time, true);
-			Objects::PressurePlateResolution(p_Instance, p_LightPlayer, f_Time, false);
+			Objects::pressurePlateResolution(p_Instance, p_ShadowPlayer, f_Time, true);
+			Objects::pressurePlateResolution(p_Instance, p_LightPlayer, f_Time, false);
 			break;
 		case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
-			Objects::PressurePlateResolution(p_Instance, p_LightPlayer, f_Time, true);
-			Objects::PressurePlateResolution(p_Instance, p_ShadowPlayer, f_Time, false);
+			Objects::pressurePlateResolution(p_Instance, p_LightPlayer, f_Time, true);
+			Objects::pressurePlateResolution(p_Instance, p_ShadowPlayer, f_Time, false);
+			break;
+		case Objects::TYPE_OBJECT_DOOR:
+			Objects::doorResolution(p_Instance, p_LightPlayer);
+			Objects::doorResolution(p_Instance, p_ShadowPlayer);
+
+			Objects::doorExecuteSequence(p_Instance, p_LightPlayer, p_ShadowPlayer);
+
 			break;
 
 		}

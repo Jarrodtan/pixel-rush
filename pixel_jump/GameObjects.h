@@ -35,6 +35,7 @@ namespace Objects {
 		TYPE_OBJECT_MOVEABLE_SHADOWSPIKE,
 		TYPE_OBJECT_PRESSURE_PLATE_LIGHT,
 		TYPE_OBJECT_PRESSURE_PLATE_DARK,
+		TYPE_OBJECT_DOOR,
 
 		TYPE_MAX_OBJECT
 	};
@@ -56,6 +57,16 @@ namespace Objects {
 		INNER_STATE_ON_EXIT,
 
 		INNER_STATE_MAX
+	};
+
+	struct Index {
+		s32 x;
+		s32 y;
+
+		bool operator==(Index const& secondIdx) {
+			return x == secondIdx.x && y == secondIdx.y;
+
+		}
 	};
 
 	struct GameObject {
@@ -102,17 +113,26 @@ namespace Objects {
 		f64 f_Counter;
 		SequenceCollection sequenceCollection;
 
+		// FOR GAMEOBJECTS THAT DEPEND ON EACH OTHER
+		GameObjectInstance* otherGameObj;
+		Index idx;
+
 	};
+
+
+
 	/******************************************************************************/
 	/*!
 		Non-member functions for GameObjectInstance
 	*/
 	/******************************************************************************/
-	GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, GameObjectInstance* p_GameObjectInstanceList, u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState);
+	GameObjectInstance* gameObjectInstanceCreate(GameObject* p_GameObjectList, GameObjectInstance* p_GameObjectInstanceList, u32 type, AEVec2* scale, AEVec2* position, AEVec2* velocity, f32 direction, STATE startState, Index idx = {0, 0});
 	void gameObjectInstanceDestroy(GameObjectInstance* p_Instance);
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT);
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT, GameObjectInstance*& r_Instance, f32& f_Time);
-	void PressurePlateResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player, float f_Time, bool interactable);
+	void pressurePlateResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player, float f_Time, bool interactable);
+	void doorResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player);
+	void doorExecuteSequence(GameObjectInstance* p_Instance, GameObjectInstance* p_Player1, GameObjectInstance* p_Player2);
 }
 
 

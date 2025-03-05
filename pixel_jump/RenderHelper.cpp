@@ -128,6 +128,7 @@ namespace Render {
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
+			case Objects::TYPE_OBJECT_DOOR:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
@@ -218,6 +219,9 @@ namespace Render {
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.6f);
+			break;
+		case Objects::TYPE_OBJECT_DOOR:
+			AEGfxSetColorToAdd(0.6f, 0.6f, 0.6f, 1.0f);
 			break;
 		}
 
