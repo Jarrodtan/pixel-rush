@@ -3,7 +3,7 @@
 
 #include "AEEngine.h"
 
-enum SpecialSequence { PRESSURE_PLATE_STEPPED, PRESSURE_PLATE_RELEASED, MOVE_LEFT, MOVE_RIGHT};
+enum SpecialSequence { PRESSURE_PLATE_STEPPED, PRESSURE_PLATE_RELEASED, MOVE_LEFT, MOVE_RIGHT, OPEN, CLOSE};
 
 class Sequence {
 public:
@@ -55,6 +55,19 @@ public:
 struct SequenceCollection {
 	int sequenceCount;
 	Sequence* sequence;
+	bool finished;
+
+	inline Sequence* getSequence(SpecialSequence specialSeq) {
+		for (int x = 0; x < this->sequenceCount; ++x) {
+			Sequence* sequenceColl = this->sequence + x;
+			if (sequenceColl->getSequenceType() == specialSeq) {
+				return sequenceColl;
+			}
+		}
+
+		return nullptr;
+		
+	}
 };
 
 #endif

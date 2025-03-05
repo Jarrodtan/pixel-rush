@@ -7,6 +7,8 @@
 
 //-----------------------------------------------------------------------------/
 namespace FileReader {
+
+
 	s32 ImportMapDataFromFile(std::string s_FileName, 
 							  s32& r_BINARY_MAP_WIDTH, 
 							  s32& r_BINARY_MAP_HEIGHT, 
@@ -55,6 +57,30 @@ namespace FileReader {
 		}
 		file.close();
 		return 1;
+	}
+
+	void readMeta(std::string fileName, std::vector<MetaData> &container) {
+		std::fstream input{ fileName, std::ios_base::in };
+
+		std::string buffer{};
+		char stagingChar{};
+
+		while (input && !input.eof()) {
+
+			Objects::Index idx1{};
+			input >> idx1.x;
+			input >> stagingChar;
+			input >> idx1.y;
+
+			Objects::Index idx2{};
+			input >> idx2.x;
+			input >> stagingChar;
+			input >> idx2.y;
+
+			container.push_back(MetaData{idx1, idx2});
+			
+
+		}
 	}
 
 	void FreeMapData(s32& r_BINARY_MAP_WIDTH, s32**& r_MapData, s32**& r_BinaryCollisionArray) {
