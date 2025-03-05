@@ -31,7 +31,7 @@ void GameStateCreditsInit() {
 	Lines.push_back(" ");
 
 	Lines.push_back("A game by Team Pixel Jump");
-	Lines.push_back("AxeWhy");
+	Lines.push_back("Xiang Yang");
 	Lines.push_back("Wei Liang");
 	Lines.push_back("Marco");
 	Lines.push_back("Tristen");
