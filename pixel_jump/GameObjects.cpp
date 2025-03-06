@@ -39,7 +39,7 @@ namespace Objects {
 												 AEVec2* scale,
 												 AEVec2* position,
 												 AEVec2* velocity,
-												 f32 direction, STATE startState) {
+												 f32 direction, STATE startState, Index idx) {
 		AEVec2 zero;
 		AEVec2Zero(&zero);
 
@@ -62,6 +62,8 @@ namespace Objects {
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				p_Instance->f_Counter = 0;
 				p_Instance->sequenceCollection.sequence = nullptr;
+				p_Instance->otherGameObj = nullptr;
+				p_Instance->idx = idx;
 				// return the new instance
 				return p_Instance;
 			}
@@ -141,6 +143,159 @@ namespace Objects {
 				break;
 			}
 			break;
+		}
+	}
+
+	void doorResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player) {
+		float f_Time{};
+		if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player->boundingBox, p_Player->currVelocity, f_Time)) {
+			Sequence& sequence = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::OPEN));
+
+			if (!sequence.isFinished) {
+				if (p_Instance->boundingBox.min.x >= p_Player->boundingBox.max.x && p_Player->currVelocity.x > 0.0) { //CHECK LEFT
+					p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+				} if (p_Instance->boundingBox.max.x <= p_Player->boundingBox.min.x && p_Player->currVelocity.x < 0.0) { //CHECK RIGHT
+					p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+
+				} if (p_Instance->boundingBox.max.y <= p_Player->boundingBox.min.y) { //CHECK TOP
+					if (p_Player->currVelocity.y < 0.0f) {
+						p_Player->currVelocity.y = 0.0f;
+						p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y; //SNAP PLAYER BACK VIA Y AXIS
+					}
+
+
+				}
+			}
+			
+
+
+		}
+	}
+
+	void doorExecuteSequence(GameObjectInstance* p_Instance, GameObjectInstance* p_Player1, GameObjectInstance* p_Player2) {
+		Sequence& sequence = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::OPEN));
+		Sequence& released = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::CLOSE));
+		
+		if (p_Instance->otherGameObj) {
+			if (p_Instance->otherGameObj->sequenceCollection.finished) { //CHECK IF PRESSURE PLATE IS FULLY STEPPED ON
+				if (sequence.targetValue < p_Instance->currPosition.y) {
+					sequence.isRunning = true;
+					f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
+					p_Instance->currPosition.y -= yVel;
+
+				}
+				if (sequence.targetValue >= p_Instance->currPosition.y && sequence.isRunning) {
+					sequence.isRunning = false;
+					sequence.isFinished = true;
+					Collision::SnapToCell(&p_Instance->currPosition.y);
+				}
+			} else {
+
+				f32 f_Time{};
+				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player2->boundingBox, p_Player2->currVelocity, f_Time)) {
+					if (p_Instance->boundingBox.max.y <= p_Player2->boundingBox.min.y && p_Instance->boundingBox.max.x > p_Player2->boundingBox.min.x && p_Instance->boundingBox.min.x < p_Player2->boundingBox.max.x) { //CHECK TOP
+						return;
+					}
+				}
+				
+				// f32 f_Time2{};
+				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player1->boundingBox, p_Player1->currVelocity, f_Time)) {
+					if (p_Instance->boundingBox.max.y <= p_Player1->boundingBox.min.y && p_Instance->boundingBox.max.x > p_Player1->boundingBox.min.x && p_Instance->boundingBox.min.x < p_Player1->boundingBox.max.x) { //CHECK TOP
+						return;
+					}
+				}
+
+				if (p_Instance->currPosition.y < released.targetValue) {
+					f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
+					sequence.isFinished = false;
+
+					p_Instance->currPosition.y += yVel;
+					released.isRunning = true;
+				}
+				if (p_Instance->currPosition.y >= released.targetValue && released.isRunning) {
+					p_Instance->currPosition.y = released.targetValue;
+
+					released.isRunning = false;
+					released.isFinished = true;
+				}
+			}
+		}
+		
+		
+	}
+
+	void pressurePlateResolution(GameObjectInstance *p_Instance, GameObjectInstance *p_Player, float f_Time, bool interactable) {
+
+
+		if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player->boundingBox, p_Player->currVelocity, f_Time)) {
+			Sequence& sequence = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_STEPPED));
+			Sequence& released = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_RELEASED));
+
+
+			if (p_Instance->boundingBox.min.y >= p_Player->boundingBox.max.y) {
+				return;
+			}
+
+
+			if (p_Instance->boundingBox.min.x >= p_Player->boundingBox.max.x && p_Player->currVelocity.x > 0.0) { //CHECK LEFT
+				p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+			} if (p_Instance->boundingBox.max.x <= p_Player->boundingBox.min.x && p_Player->currVelocity.x < 0.0) { //CHECK RIGHT
+				p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
+			}if ((p_Instance->boundingBox.max.y <= p_Player->boundingBox.min.y && p_Instance->boundingBox.max.x > p_Player->boundingBox.min.x && p_Instance->boundingBox.min.x < p_Player->boundingBox.max.x)) { //CHECK TOP
+				if (p_Player->currVelocity.y < 0.0f) {
+					p_Player->currVelocity.y = 0.0f;
+					p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y;
+				}
+
+				if (interactable) sequence.isRunning = true;
+
+			}
+
+			if (!interactable) {
+				if (released.isRunning && p_Instance->currPosition.y < released.targetValue) {
+					p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y;
+				} else if(released.isFinished) {
+					p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y;
+					released.isFinished = false;
+				}
+				return;
+			}
+			
+			if (sequence.targetValue < p_Instance->currPosition.y && sequence.isRunning && interactable) {
+				
+				f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
+				p_Instance->currPosition.y -= yVel;
+				p_Player->currPosition.y = p_Instance->currPosition.y + 1.0f;
+				released.isRunning = false;
+
+			}
+			if (sequence.targetValue >= p_Instance->currPosition.y && sequence.isRunning && interactable) {
+				sequence.isRunning = false;
+				p_Instance->sequenceCollection.finished = true;
+				Collision::SnapToCell(&p_Instance->currPosition.y);
+			}
+
+		}
+		else {
+
+			Sequence* sequence = p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_RELEASED);
+			
+			
+			if (p_Instance->currPosition.y < sequence->targetValue && interactable) {
+				f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
+				
+				p_Instance->currPosition.y += yVel;
+				p_Player->currPosition.y += yVel;
+				sequence->isRunning = true;
+			}
+			if (p_Instance->currPosition.y >= sequence->targetValue && interactable && sequence->isRunning) {
+					p_Instance->sequenceCollection.finished = false;
+					p_Instance->currPosition.y = sequence->targetValue;
+
+					sequence->isRunning = false;
+					sequence->isFinished = true;
+			}
+
 		}
 	}
 

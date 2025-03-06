@@ -127,11 +127,14 @@ namespace Render {
 			case Objects::TYPE_OBJECT_WALL:
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			case Objects::TYPE_PRESSURE_PLATE:
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE:
 			case Objects::TYPE_OBJECT_GATE:
 			case Objects::TYPE_OBJECT_SHADOW_DOOR:
 			case Objects::TYPE_OBJECT_LIGHT_DOOR:
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
+			case Objects::TYPE_OBJECT_DOOR:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 
@@ -191,8 +194,11 @@ namespace Render {
 			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
 			break;
 
-		case Objects::TYPE_PRESSURE_PLATE:
-			AEGfxSetColorToAdd(0.f, 1.f, 1.f, 1.f);
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
+			AEGfxSetColorToAdd(1.f, 1.f, 1.f, 1.f);
+			break;
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
+			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 1.f);
 			break;
 
 		case Objects::TYPE_OBJECT_GATE:
@@ -241,6 +247,9 @@ namespace Render {
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.6f);
+			break;
+		case Objects::TYPE_OBJECT_DOOR:
+			AEGfxSetColorToAdd(0.6f, 0.6f, 0.6f, 1.0f);
 			break;
 		}
 

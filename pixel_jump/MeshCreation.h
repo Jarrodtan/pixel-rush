@@ -1,3 +1,15 @@
+/**********************************************************/
+/*!
+	File:	MeshCreation.h
+	Author:
+	Email:
+
+	Brief:
+
+	Copyright © 2025 DigiPen, All rights reserved.
+*/
+/**********************************************************/
+
 #ifndef MESHCREATION_HEADER
 #define MESHCREATION_HEADER
 
@@ -20,5 +32,6 @@ public:
 	void RenderSquareMesh();
 	void RenderCircleMesh();
 };
+//-------------------------------------------------------------------------/
 
 #endif // MESHCREATION_HEADER

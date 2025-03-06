@@ -143,7 +143,7 @@ void GameStateLoseUpdate(void) {
 		switch (j) {
 		case 0:
 			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
-				GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+				GameStateManager::g_GameStateNext = GameStateManager::g_GameStatePrev;
 			}
 			break;
 
