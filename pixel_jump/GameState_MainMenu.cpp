@@ -142,7 +142,7 @@ void GameStateMainMenuUpdate(void) {
 
 			case 1:
 				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
-					// GameStateManager::g_GameStateNext = States::GS_TUTORIAL;
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
 				}
 				break;
 

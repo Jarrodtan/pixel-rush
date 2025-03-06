@@ -224,14 +224,21 @@ void GameStateLevelLoad(void) {
 
 	std::string s_FilePath{};
 	switch (GameStateManager::g_GameStateCurr) {
-	case States::GS_PLATFORM_LVL1:
+	case States::GS_TUTORIAL_LVL1:
 		s_FilePath = "Assets/Maps/Tutorial.txt";
 		s_metaLoc = "Assets/MapMetaData/1.txt";
 		break;
-		
+
+	case States::GS_PLATFORM_LVL1:
+		s_FilePath = "Assets/Maps/Level1.txt";
+		break;
+
 	case States::GS_PLATFORM_LVL2:
-		// TODO: Change this to the path of the second level when available
-		// s_FilePath = Path to file
+		s_FilePath = "Assets/Maps/Level2.txt";
+		break;
+		
+	case States::GS_PLATFORM_LVL3:
+		s_FilePath = "Assets/Maps/Level3.txt";
 		break;
 	}
 
@@ -902,6 +909,13 @@ void GameStateLevelUpdate(void) {
 				}
 				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
 					if (p_LightPlayer->currVelocity.y < 0) {
+						if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
+							p_LightPlayer->currPosition.x -= .1f;
+						}
+						else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x) {
+							p_LightPlayer->currPosition.x += .1f;
+						}
+
 						p_LightPlayer->currVelocity.y = 0;
 						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 					}
@@ -938,6 +952,12 @@ void GameStateLevelUpdate(void) {
 
 				if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
 					if (p_ShadowPlayer->currVelocity.y < 0) {
+						if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
+							p_ShadowPlayer->currPosition.x -= .1f;
+						}
+						else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x) {
+							p_ShadowPlayer->currPosition.x += .1f;
+						}
 						p_ShadowPlayer->currVelocity.y = 0;
 						Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 					}
@@ -1164,14 +1184,15 @@ void GameStateLevelUpdate(void) {
 								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 							}
 						}
-					}
 
-					if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
-						if (p_LightPlayer->currVelocity.y > 0) {
-							p_LightPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
-							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+						if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
+							if (p_LightPlayer->currVelocity.y > 0) {
+								p_LightPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
+								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+							}
 						}
 					}
+
 				}
 				else {
 					if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_LightPlayer->prevPosition.y - p_Instance->prevPosition.y) >= (1.f - PLATFORM_SNAPPING_TOLERANCE)) {
@@ -1188,12 +1209,12 @@ void GameStateLevelUpdate(void) {
 								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 							}
 						}
-					}
 
-					if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
-						if (p_LightPlayer->currVelocity.y < 0) {
-							p_LightPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
-							Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+						if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
+							if (p_LightPlayer->currVelocity.y < 0) {
+								p_LightPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
+								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+							}
 						}
 					}
 				}
