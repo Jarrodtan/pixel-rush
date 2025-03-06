@@ -199,7 +199,7 @@ void GameStateLevelLoad(void) {
 	std::string s_FilePath{};
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_PLATFORM_LVL1:
-		s_FilePath = "Assets/Maps/Test1.txt";
+		s_FilePath = "Assets/Maps/Tutorial.txt";
 		break;
 		
 	case States::GS_PLATFORM_LVL2:
@@ -779,6 +779,12 @@ void GameStateLevelUpdate(void) {
 				}
 				if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
 					if (p_LightPlayer->currVelocity.y < 0) {
+						p_LightPlayer->currVelocity.y = 0;
+						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+					}
+				}
+				if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y) {
+					if (p_LightPlayer->currVelocity.y > 0) {
 						p_LightPlayer->currVelocity.y = 0;
 						Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 					}
