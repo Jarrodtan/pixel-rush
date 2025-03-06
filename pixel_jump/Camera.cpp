@@ -1,6 +1,23 @@
+/**********************************************************/
+/*!
+	File:	Camera.cpp
+	Author:
+	Email:
+
+	Brief:
+
+	Copyright © 2025 DigiPen, All rights reserved.
+*/
+/**********************************************************/
+
+/******************************************************************************/
+/*!
+	Include Files
+*/
+/******************************************************************************/
 #include "Camera.h"
-#include "AEEngine.h"
-#include <iostream>
+#include "main.h"
+//-------------------------------------------------------------------------/
 
 void Camera::applyCameraTransform(AEMtx33& concatTo, f32 anchorX, f32 anchorY) {
 

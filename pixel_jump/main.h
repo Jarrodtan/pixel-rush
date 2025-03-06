@@ -1,3 +1,15 @@
+/**********************************************************/
+/*!
+	File:	main.h
+	Author:	
+	Email:	
+
+	Brief:	
+
+	Copyright © 2025 DigiPen, All rights reserved.
+*/
+/**********************************************************/
+
 #ifndef HEADER_MAIN_H
 #define HEADER_MAIN_H
 
@@ -12,6 +24,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <memory>
 
 #include "AEEngine.h"
 #include "math.h"

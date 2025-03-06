@@ -1,10 +1,31 @@
+/**********************************************************/
+/*!
+	File:	AudioManager.cpp
+	Author:
+	Email:
+
+	Brief:
+
+	Copyright © 2025 DigiPen, All rights reserved.
+*/
+/**********************************************************/
+
+/**************************************************************************/
+/*!
+	Include Files
+*/
+/**************************************************************************/
 #include "AudioManager.h"
 #include <fmod.hpp>
 #include <map>
-#include "AEEngine.h"
 #include "main.h"
-#include <vector>
+//-------------------------------------------------------------------------/
 
+/**************************************************************************/
+/*!
+	Anonymous Namespace
+*/
+/**************************************************************************/
 namespace {
 	static const s32 s_MaxChannels = 32;
 	static const f32 f_MinVolume = 0.f, f_MaxVolume = 1.f;
@@ -16,7 +37,13 @@ namespace {
 
 	bool playBGMAudio = true;
 }
+//-------------------------------------------------------------------------/
 
+/**************************************************************************/
+/*!
+	Namespace for Audio Manager
+*/
+/**************************************************************************/
 namespace AudioManager {
 	static std::map<std::string, FMOD::Sound*> SoundMap;
 	static std::vector<FMOD::Channel*> sfxList;
@@ -274,3 +301,4 @@ namespace AudioManager {
 		f_SfxVolume = f_Percentage;
 	}
 }
+//-------------------------------------------------------------------------/
