@@ -16,11 +16,16 @@ namespace {
 	};
 
 	static MainMenuText Title[] = { 'P', 'I', 'X', 'E', 'L', ' ', 'R', 'U', 'S', 'H' };
+	static MainMenuText TagLine[] = { 'S', 'E', 'E', 'K', ' ', 'B', 'A', 'L', 'A','N','C','E', ' ', 'B','E','T','W', 'E', 'E','N', ' ', 'L', 'I','G','H','T',' ','&',' ', 'S','H', 'A', 'D', 'O', 'W' };
 	static const f32 f_FirstCharOffsetX = 550.f;
 	static const f32 f_CharOffsetX = 50.f;
 	static const f32 f_CharOffsetY = 20.f;
 	static const f32 f_TitleFallEffect = 10.f;
 
+	static const f32 f_FirstCharOffsetX_TagLine = 250.f;
+	static const f32 f_TagLineCharOffsetX = 35.f;
+	static const f32 f_TagLineFallEffect = 11.f;
+	
 	static const s8 c_MaxButtons = 4;
 	static Button button[c_MaxButtons];
 	static const f32 f_ButtonWidth = 200.f;
@@ -54,6 +59,11 @@ void GameStateMainMenuInit(void) {
 	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
 		Title[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
+	}
+
+	for (s32 i = 0; i < sizeof(TagLine) / sizeof(*TagLine); ++i) {
+		TagLine[i].f_PositionX = f_FirstCharOffsetX_TagLine + f_TagLineCharOffsetX * i;
+		TagLine[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
 	}
 }
 
@@ -93,6 +103,21 @@ void GameStateMainMenuUpdate(void) {
 		if (Title[i].f_PositionY < 0) {
 			Title[i].f_PositionY = g_WindowHeight;
 			Title[i].b_Effect = false;
+		}
+	}
+
+	for (s32 i = 0; i < sizeof(TagLine) / sizeof(*TagLine); ++i) {
+		TagLine[i].f_PositionY += TagLine[i].f_VelocityY * g_dt;
+		TagLine[i].f_VelocityY -= f_TagLineFallEffect;
+		if (TagLine[i].b_Effect == false) {
+			if (TagLine[i].f_PositionY < g_WindowHeight * 0.5f) {
+				TagLine[i].b_Effect = true;
+				TagLine[i].f_VelocityY = g_WindowHeight * 0.5f;
+			}
+		}
+		if (TagLine[i].f_PositionY < 0) {
+			TagLine[i].f_PositionY = g_WindowHeight;
+			TagLine[i].b_Effect = false;
 		}
 	}
 		
@@ -147,6 +172,12 @@ void GameStateMainMenuDraw(void) {
 	for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		ss << Title[i].c_Char;
 		Render::RenderFont(ss.str(), 2.5f, Title[i].f_PositionX, Title[i].f_PositionY, Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
+		ss.str("");
+	}
+
+	for (u32 i = 0; i < sizeof(TagLine) / sizeof(*TagLine); ++i) {
+		ss << TagLine[i].c_Char;
+		Render::RenderFont(ss.str(), 0.8f, TagLine[i].f_PositionX, TagLine[i].f_PositionY, Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
 		ss.str("");
 	}
 
