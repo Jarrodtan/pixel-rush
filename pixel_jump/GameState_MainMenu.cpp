@@ -16,8 +16,6 @@ namespace {
 	};
 
 	static MainMenuText Title[] = { 'P', 'I', 'X', 'E', 'L', ' ', 'R', 'U', 'S', 'H' };
-
-	static const f32 f_FirstCharOffsetX = 575.f;
 	static MainMenuText TagLine[] = { 'S', 'E', 'E', 'K', ' ', 'B', 'A', 'L', 'A','N','C','E', ' ', 'B','E','T','W', 'E', 'E','N', ' ', 'L', 'I','G','H','T',' ','&',' ', 'S','H', 'A', 'D', 'O', 'W' };
 	static const f32 f_FirstCharOffsetX = 550.f;
 	static const f32 f_CharOffsetX = 50.f;

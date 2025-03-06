@@ -1278,7 +1278,7 @@ void GameStateLevelUpdate(void) {
 
 			break;
 
-		case Objects::TYPE_PRESSURE_PLATE:
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE:
 
 			if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, f_Time)) {
 				if (p_Instance->boundingBox.min.x >= p_LightPlayer->boundingBox.max.x && p_LightPlayer->currVelocity.x > 0.0) {
