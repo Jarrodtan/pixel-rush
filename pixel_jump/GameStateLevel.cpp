@@ -1394,6 +1394,18 @@ void GameStateLevelDraw(void) {
 		Render::RenderShapes(p_Instance, FinalTransform);
 	}
 
+	// TODO: Render text for each levels if needed
+	switch (GameStateManager::g_GameStateCurr) {
+	case States::GS_TUTORIAL_LVL1:
+		break;
+	case States::GS_PLATFORM_LVL1:
+		break;
+	case States::GS_PLATFORM_LVL2:
+		break;
+	case States::GS_PLATFORM_LVL3:
+		break;
+	}
+
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
 	
