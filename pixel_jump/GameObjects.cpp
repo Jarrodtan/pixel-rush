@@ -198,7 +198,7 @@ namespace Objects {
 					}
 				}
 				
-				f32 f_Time2{};
+				// f32 f_Time2{};
 				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player1->boundingBox, p_Player1->currVelocity, f_Time)) {
 					if (p_Instance->boundingBox.max.y <= p_Player1->boundingBox.min.y && p_Instance->boundingBox.max.x > p_Player1->boundingBox.min.x && p_Instance->boundingBox.min.x < p_Player1->boundingBox.max.x) { //CHECK TOP
 						return;
