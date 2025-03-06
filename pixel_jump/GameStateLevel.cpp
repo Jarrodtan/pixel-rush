@@ -1,3 +1,15 @@
+/**********************************************************/
+/*!
+	File:	GameStateLevel.cpp
+	Author:
+	Email:
+
+	Brief:
+
+	Copyright © 2025 DigiPen, All rights reserved.
+*/
+/**********************************************************/
+
 /******************************************************************************/
 /*!
 	Include Files and static variables
@@ -152,7 +164,7 @@ void GameStateLevelLoad(void) {
 
 	// create the pressure plate
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
-	p_Object->u_Type = Objects::TYPE_PRESSURE_PLATE;
+	p_Object->u_Type = Objects::TYPE_OBJECT_PRESSURE_PLATE;
 
 	// create the moving platform
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;

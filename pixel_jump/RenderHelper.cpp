@@ -127,7 +127,7 @@ namespace Render {
 			case Objects::TYPE_OBJECT_WALL:
 			case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			case Objects::TYPE_OBJECT_SHADOWPLAYER:
-			case Objects::TYPE_PRESSURE_PLATE:
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE:
 			case Objects::TYPE_OBJECT_GATE:
 			case Objects::TYPE_OBJECT_SHADOW_DOOR:
 			case Objects::TYPE_OBJECT_LIGHT_DOOR:

@@ -1,3 +1,15 @@
+/**********************************************************/
+/*!
+	File:	GameStateLevel.h
+	Author:
+	Email:
+
+	Brief:
+
+	Copyright © 2025 DigiPen, All rights reserved.
+*/
+/**********************************************************/
+
 #ifndef GAME_STATE_PLATFORM_LEVEL1_H
 #define GAME_STATE_PLATFORM_LEVEL1_H
 
