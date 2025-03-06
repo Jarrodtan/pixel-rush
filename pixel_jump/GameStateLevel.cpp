@@ -826,7 +826,7 @@ void GameStateLevelUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 	}
 
-	if (::i_LightPlayerLives == 0 || ::i_ShadowPlayerLives == 0 || ::i_Time == 0) {
+	if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
@@ -879,12 +879,12 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--::i_LightPlayerLives;
-				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
-				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+				//p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
+				//p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
 			}
 			break;
 		case Objects::TYPE_OBJECT_SHADOW_DOOR:
-			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) ) {
 
 				if (p_LightPlayer->currPosition.y == p_Instance->currPosition.y) {
 					if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x) {
@@ -919,7 +919,7 @@ void GameStateLevelUpdate(void) {
 			}
 			break;
 		case Objects::TYPE_OBJECT_LIGHT_DOOR:
-			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) ) {
 
 				if (p_ShadowPlayer->currPosition.y == p_Instance->currPosition.y) {
 					if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x) {
@@ -1012,8 +1012,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_ShadowPlayerLives;
-				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+				//p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				//p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
 
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
@@ -1050,8 +1050,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_LightPlayerLives;
-				p_LightPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-				p_LightPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+				//p_LightPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				//p_LightPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
 
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
@@ -1089,8 +1089,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_ShadowPlayerLives;
-				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+				//p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
+				//p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
 			}
 			break;
 		// teleport the respective LIGHT / SHADOW player to be together once again
