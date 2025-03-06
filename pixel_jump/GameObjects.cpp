@@ -5,7 +5,10 @@
 /******************************************************************************/
 #include "main.h"
 
-//------------------------------------------------------------------------------
+namespace {
+	static const f32 PLATFORM_MOVE_TIME = 10.f;
+	static f32 f_PlatformCounter;
+}
 
 namespace Objects {
 	/******************************************************************************/
@@ -88,6 +91,28 @@ namespace Objects {
 		}
 
 		p_Instance->u_Flag = 0;
+	}
+
+	void MovingPlatformStateMachine(GameObjectInstance* p_Instance) {
+		static f32 f_PlatformTimer = PLATFORM_MOVE_TIME;
+		f_PlatformCounter += g_dt;
+		if (f_PlatformCounter >= 1.f) {
+			--f_PlatformTimer;;
+			f_PlatformCounter = 0;
+		}
+		
+		if (f_PlatformTimer > 5) {
+			p_Instance->currVelocity.y = PLATFORM_MOVE_SPEED;
+		}
+		else if (f_PlatformTimer <= 5) {
+			p_Instance->currVelocity.y = -PLATFORM_MOVE_SPEED;
+		}
+
+	
+		if (f_PlatformTimer <= 0) {
+			f_PlatformTimer = PLATFORM_MOVE_TIME;
+		}
+	
 	}
 
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT) {

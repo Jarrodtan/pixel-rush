@@ -134,6 +134,7 @@ namespace Objects {
 	void gameObjectInstanceDestroy(GameObjectInstance* p_Instance);
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT);
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT, GameObjectInstance*& r_Instance, f32& f_Time);
+	void MovingPlatformStateMachine(GameObjectInstance* p_Instance);
 	void pressurePlateResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player, float f_Time, bool interactable);
 	void doorResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player);
 	void doorExecuteSequence(GameObjectInstance* p_Instance, GameObjectInstance* p_Player1, GameObjectInstance* p_Player2);
