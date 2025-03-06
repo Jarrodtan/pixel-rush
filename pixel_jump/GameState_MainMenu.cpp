@@ -53,10 +53,10 @@ void GameStateMainMenuInit(void) {
 	AESysSetWindowTitle("Main Menu");
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 
-	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", 0.4f, 0.4f, 1.f);
-	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", 0.4f, 0.4f, 1.f);
-	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", 0.4f, 0.4f, 1.f);
-	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.55f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", 0.4f, 0.4f, 1.f);
+	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", 0.4f, 0.4f, 1.f);
+	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Tutorial", "Tutorial", 0.4f, 0.4f, 1.f);
+	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Credits", "Credits", 0.4f, 0.4f, 1.f);
+	button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", 0.4f, 0.4f, 1.f);
 
 	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
@@ -204,9 +204,6 @@ void GameStateMainMenuDraw(void) {
 
 	ss << "A Game by Team Pixel Jump";
 	Render::RenderFont(ss.str(), 1.f, g_WindowWidth, 18.f, Render::COLOUR::WHITE, Render::FONT_ALIGN::RIGHT);
-
-	sr << "Seek life balance between Light and Shadow...";
-	Render::RenderFont(sr.str(), 1.f, g_WindowWidth * 0.70f, g_WindowHeight * 0.65f, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::RIGHT);
 }
 
 /******************************************************************************/
