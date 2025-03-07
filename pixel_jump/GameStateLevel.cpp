@@ -229,6 +229,11 @@ void GameStateLevelLoad(void) {
 		s_metaLoc = "Assets/MapMetaData/1.txt";
 		break;
 
+	case States::GS_TUTORIAL_LVL2:
+		s_FilePath = "Assets/Maps/Tutorial2.txt";
+		s_metaLoc = "Assets/MapMetaData/2.txt";
+		break;
+
 	case States::GS_PLATFORM_LVL1:
 		s_FilePath = "Assets/Maps/Level1.txt";
 		break;
