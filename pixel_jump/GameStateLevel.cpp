@@ -1424,7 +1424,7 @@ void GameStateLevelDraw(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_LIGHTSHARD:
-			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, 0.5f, 0.5f, 0.5f);
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, 0.75f, 0.75f, 0.75f);
 			break;
 
 		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
