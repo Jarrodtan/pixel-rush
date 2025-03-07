@@ -56,8 +56,7 @@ void GameStateCreditsInit() {
 	Lines.push_back(" ");
 
 	Lines.push_back("Art Assets from:");
-	// TODO: Add art asset credits here
-	// Lines.push_back(... add art assets credits...);
+	Lines.push_back("https://kenney.nl/assets/pixel-platformer");
 	Lines.push_back("Sounds from Digipen Libary");
 	Lines.push_back("Using AEngine");
 	Lines.push_back("Audio Engine: FMOD Studio by Firelight Technologies Pty Ltd.");
