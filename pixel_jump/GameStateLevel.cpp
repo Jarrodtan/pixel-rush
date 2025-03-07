@@ -376,7 +376,7 @@ void GameStateLevelInit(void) {
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GRAVITYSWITCHER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
 			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
-				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_UP);
 				// Add movement sequence
 				platform->sequenceCollection.sequenceCount = 2;
 				platform->sequenceCollection.sequence = new Sequence[2]{

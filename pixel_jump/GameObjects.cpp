@@ -5,10 +5,6 @@
 /******************************************************************************/
 #include "main.h"
 
-namespace {
-	static const f32 PLATFORM_MOVE_TIME = 10.f;
-	static f32 f_PlatformCounter;
-}
 
 namespace Objects {
 	/******************************************************************************/
@@ -94,25 +90,58 @@ namespace Objects {
 	}
 
 	void MovingPlatformStateMachine(GameObjectInstance* p_Instance) {
-		static f32 f_PlatformTimer = PLATFORM_MOVE_TIME;
-		f_PlatformCounter += g_dt;
-		if (f_PlatformCounter >= 1.f) {
-			--f_PlatformTimer;;
-			f_PlatformCounter = 0;
-		}
-		
-		if (f_PlatformTimer > 5) {
-			p_Instance->currVelocity.y = PLATFORM_MOVE_SPEED;
-		}
-		else if (f_PlatformTimer <= 5) {
-			p_Instance->currVelocity.y = -PLATFORM_MOVE_SPEED;
-		}
+		static const f32 INITIAL_Y = p_Instance->currPosition.y;
+		static const f32 FINAL_Y = p_Instance->currPosition.y + PLATFORM_MOVE_DISTANCE;
 
-	
-		if (f_PlatformTimer <= 0) {
-			f_PlatformTimer = PLATFORM_MOVE_TIME;
+		switch (p_Instance->state) {
+		case STATE_GOING_UP:
+			switch (p_Instance->innerState) {
+			case INNER_STATE_ON_UPDATE:
+				if (p_Instance->currPosition.y >= FINAL_Y) {
+					p_Instance->f_Counter = PLATFORM_IDLE_TIME;
+					p_Instance->innerState = INNER_STATE_ON_EXIT;
+					p_Instance->currVelocity.y = 0;
+					Collision::SnapToCell(&p_Instance->currPosition.y);
+				}
+				else {
+					p_Instance->currVelocity.y = PLATFORM_MOVE_SPEED;
+				}
+				break;
+
+			case INNER_STATE_ON_EXIT:
+				p_Instance->f_Counter -= g_dt;
+				if (p_Instance->f_Counter < 0) {
+					p_Instance->state = STATE_GOING_DOWN;
+					p_Instance->innerState = INNER_STATE_ON_UPDATE;
+				}
+				break;
+			}
+			break;
+
+		case STATE_GOING_DOWN:
+			switch (p_Instance->innerState) {
+			case INNER_STATE_ON_UPDATE:
+				if (p_Instance->currPosition.y <= INITIAL_Y) {
+					p_Instance->f_Counter = PLATFORM_IDLE_TIME;
+					p_Instance->innerState = INNER_STATE_ON_EXIT;
+					p_Instance->currVelocity.y = 0;
+					Collision::SnapToCell(&p_Instance->currPosition.y);
+				}
+				else {
+					p_Instance->currVelocity.y = -PLATFORM_MOVE_SPEED;
+				}
+				break;
+
+			case INNER_STATE_ON_EXIT:
+				p_Instance->f_Counter -= g_dt;
+				if (p_Instance->f_Counter < 0) {
+					p_Instance->state = STATE_GOING_UP;
+					p_Instance->innerState = INNER_STATE_ON_UPDATE;
+				}
+				break;
+			}
+			break;
 		}
-	
 	}
 
 	void EnemyStateMachine(GameObjectInstance* p_Instance, s32**& r_BinaryCollisionArray, s32& r_BINARY_MAP_WIDTH, s32& r_BINARY_MAP_HEIGHT) {
