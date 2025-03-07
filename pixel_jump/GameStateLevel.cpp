@@ -520,10 +520,6 @@ void GameStateLevelInit(void) {
 */
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
-	if (AEInputCheckTriggered(AEVK_2)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-	}
-
 	// Time counter
 	if (haveTiming) {
 		static f32 f_TimeCounter{};
