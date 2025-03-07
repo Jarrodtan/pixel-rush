@@ -138,9 +138,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\Assets\Maps\Test1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="..\Assets\Maps\Level1.txt">
       <Filter>Resource Files</Filter>
     </Text>
@@ -150,7 +147,10 @@
     <Text Include="..\Assets\Maps\Level3.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="..\Assets\Maps\Tutorial.txt">
+    <Text Include="..\Assets\Maps\Tutorial1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="..\Assets\Maps\Tutorial2.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
