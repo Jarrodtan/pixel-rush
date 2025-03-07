@@ -817,7 +817,23 @@ void GameStateLevelUpdate(void) {
 	// check if all shadow fragments & light shards are collected
 	if (::i_TotalLightShard == 0 && ::i_TotalShadowFragment == 0) {
 		// TODO: Go to the next level
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+		switch (GameStateManager::g_GameStateCurr) {
+		case States::GS_TUTORIAL_LVL1:
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+			break;
+
+		case States::GS_TUTORIAL_LVL2:
+			GameStateManager::g_GameStateNext = States::GS_MAINMENU;
+			break;
+
+		case States::GS_PLATFORM_LVL1:
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+			break;
+
+		case States::GS_PLATFORM_LVL2:
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+			break;
+		}
 	}
 
 	if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
