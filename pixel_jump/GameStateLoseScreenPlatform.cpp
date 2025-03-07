@@ -212,8 +212,6 @@ void GameStateLoseDraw(void) {
 		button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
 	}
 
-	ss << "A Game by Team Pixel Jump";
-	Render::RenderFont(ss.str(), 1.f, g_WindowWidth, 18.f, Render::COLOUR::WHITE, Render::FONT_ALIGN::RIGHT);
 }
 
 /******************************************************************************/
