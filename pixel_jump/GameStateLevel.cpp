@@ -225,7 +225,7 @@ void GameStateLevelLoad(void) {
 	std::string s_FilePath{};
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
-		s_FilePath = "Assets/Maps/Tutorial.txt";
+		s_FilePath = "Assets/Maps/Tutorial1.txt";
 		s_metaLoc = "Assets/MapMetaData/1.txt";
 		break;
 
