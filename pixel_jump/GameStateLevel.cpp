@@ -522,6 +522,10 @@ void GameStateLevelInit(void) {
 */
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
+	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
+		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
+	}
+
 	// Time counter
 	if (haveTiming) {
 		static f32 f_TimeCounter{};
@@ -570,8 +574,6 @@ void GameStateLevelUpdate(void) {
 			p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
 		}
 	}*/
-
-	std::cout << "Jump counter: " << doubleJumpCounter_S << std::endl;
 
 	if (AEInputCheckTriggered(AEVK_UP)) {
 		if (!isGravitySwitch_S) {
