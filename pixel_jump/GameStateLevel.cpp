@@ -1375,11 +1375,11 @@ void GameStateLevelDraw(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_SPIKE:
-			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE);
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE, 1.f, 0.f, 0.f);
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
-			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE);
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE, 1.f, 0.f, 0.f);
 			break;
 
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
@@ -1399,7 +1399,7 @@ void GameStateLevelDraw(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_LIGHTSHARD:
-			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, 0.75f, 0.75f, 0.75f);
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, 0.8f, 0.8f, 0.8f);
 			break;
 
 		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
