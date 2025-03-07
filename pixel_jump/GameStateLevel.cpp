@@ -1369,7 +1369,7 @@ void GameStateLevelDraw(void) {
 				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.50f, 0.85f, 0.90f, 0.f);
 				break;
 			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, 0.2f, 0.3f, 0.8f, 1.f);
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
 				break;
 			default:
 				break;
@@ -1391,7 +1391,49 @@ void GameStateLevelDraw(void) {
 		}
 		AEGfxSetTransform(FinalTransform.m);
 
-		Render::RenderShapes(p_Instance, FinalTransform);
+		switch (p_Instance->p_GameObject->u_Type) {
+		case Objects::TYPE_OBJECT_LIGHTPLAYER:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::LIGHT_PLAYER, 0.5f, 0.5f, 0.5f);
+			break;
+		case Objects::TYPE_OBJECT_SHADOWPLAYER:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SHADOW_PLAYER, -0.6f, -0.6f, -0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_SPIKE:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE);
+			break;
+
+		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE);
+			break;
+
+		case Objects::TYPE_OBJECT_LIGHTSPIKE:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE, 0.5f, 0.5f, 0.5f);
+			break;
+
+		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE, 0.5f, 0.5f, 0.5f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWSPIKE:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE, -0.6f, -0.6f, -0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE, -0.6f, -0.6f, -0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_LIGHTSHARD:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, 0.5f, 0.5f, 0.5f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, -0.6f, -0.6f, -0.6f);
+			break;
+		default:
+			Render::RenderShapes(p_Instance, FinalTransform);
+			break;
+		}
 	}
 
 	// TODO: Render text for each levels if needed

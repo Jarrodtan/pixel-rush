@@ -70,7 +70,13 @@ namespace Render {
 		// TODO: Load all textures here
 		g_Texture[TEXTURE::SPLASHSCREEN] = AEGfxTextureLoad("Assets/Art/DigiPen_Singapore_WEB_WHITE.png");
 		g_Texture[TEXTURE::FMODSCREEN] = AEGfxTextureLoad("Assets/Art/FMOD-Logo.png");
-
+		g_Texture[TEXTURE::LIGHT_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
+		g_Texture[TEXTURE::SHADOW_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
+		g_Texture[TEXTURE::TILE_FLOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0026.png");
+		g_Texture[TEXTURE::SPIKE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0068.png");
+		g_Texture[TEXTURE::MOVEABLE_SPIKE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0180.png");
+		g_Texture[TEXTURE::TOKEN]= AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0067.png");
+		g_Texture[TEXTURE::PLATFORM] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0146.png");
 	}
 
 	/******************************************************************************/
@@ -134,23 +140,17 @@ namespace Render {
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
 			case Objects::TYPE_OBJECT_DOOR:
-				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
-				break;
-
-			case Objects::TYPE_OBJECT_LIGHTSHARD:
-			case Objects::TYPE_OBJECT_TELEPORTOR:
-			case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
-			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
-				p_Object->p_Mesh = g_Shapes[SHAPES::CIRCLE];
-				break;
-
 			case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			case Objects::TYPE_OBJECT_SPIKE:
-				p_Object->p_Mesh = g_Shapes[SHAPES::TRIANGLE];
+			case Objects::TYPE_OBJECT_LIGHTSHARD:
+			case Objects::TYPE_OBJECT_TELEPORTOR:
+			case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
+			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
+				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
 				break;
 			}
 		}
