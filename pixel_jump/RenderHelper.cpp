@@ -73,6 +73,9 @@ namespace Render {
 		g_Texture[TEXTURE::LIGHT_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
 		g_Texture[TEXTURE::SHADOW_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
 		g_Texture[TEXTURE::TILE_FLOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0026.png");
+		g_Texture[TEXTURE::TILE_FOREGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0000.png");
+		g_Texture[TEXTURE::TILE_MIDDLEGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0009.png");
+		g_Texture[TEXTURE::TILE_BACKGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0017.png");
 		g_Texture[TEXTURE::SPIKE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0068.png");
 		g_Texture[TEXTURE::MOVEABLE_SPIKE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0180.png");
 		g_Texture[TEXTURE::TOKEN]= AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0067.png");

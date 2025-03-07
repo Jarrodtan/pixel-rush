@@ -1355,7 +1355,6 @@ void GameStateLevelDraw(void) {
 		camMidpoint_Y = (p_LightPlayer->currPosition.y + p_ShadowPlayer->currPosition.y) / 2; // find Y midpoint for camera Transform between two players Y positions
 	}
 
-
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
 			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
@@ -1364,6 +1363,7 @@ void GameStateLevelDraw(void) {
 				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
 			}
 			AEGfxSetTransform(FinalCellTransform.m);
+
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
 				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.50f, 0.85f, 0.90f, 0.f);
