@@ -1430,6 +1430,30 @@ void GameStateLevelDraw(void) {
 		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::TOKEN, -0.6f, -0.6f, -0.6f);
 			break;
+
+		case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::PLATFORM);
+			break;
+
+		case Objects::TYPE_OBJECT_DOOR:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::DOOR);
+			break;
+
+		case Objects::TYPE_OBJECT_LIGHT_DOOR:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::DOOR, 0.5f, 0.5f, 0.5f);
+			break;
+
+		case Objects::TYPE_OBJECT_SHADOW_DOOR:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::DOOR, -0.6f, -0.6f, -0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::PRESSURE_PLATE, 0.5f, 0.5f, 0.5f);
+			break;
+
+		case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::PRESSURE_PLATE, -0.6f, -0.6f, -0.6f);
+			break;
 		default:
 			Render::RenderShapes(p_Instance, FinalTransform);
 			break;
