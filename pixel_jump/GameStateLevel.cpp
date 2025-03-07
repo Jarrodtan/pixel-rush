@@ -520,29 +520,6 @@ void GameStateLevelInit(void) {
 */
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
-	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
-		GameStateManager::g_GameStateNext = States::GS_QUIT;
-	}
-	else if (AEInputCheckTriggered(AEVK_1)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-	}
-	else if (AEInputCheckTriggered(AEVK_2)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-	}
-	else if (AEInputCheckTriggered(AEVK_3)) {
-		GameStateManager::g_GameStateNext = States::GS_WIN;
-	}
-	else if (AEInputCheckTriggered(AEVK_4)) {
-		GameStateManager::g_GameStateNext = States::GS_LOSE;
-	}
-
-	/*AEInputMouseWheelDelta(&currentDeltaWheel);
-	if (currentDeltaWheel != deltaWheel) {
-		deltaWheel = currentDeltaWheel;
-		camera.changeZoomVal(deltaWheel);
-
-	}*/
-
 	// Time counter
 	if (haveTiming) {
 		static f32 f_TimeCounter{};

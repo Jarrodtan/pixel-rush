@@ -78,22 +78,6 @@ void GameStateMainMenuInit(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuUpdate(void) {
-	if (AEInputCheckTriggered(AEVK_Q)) {
-		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
-	}
-	else if (AEInputCheckTriggered(AEVK_1)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-	}
-	else if (AEInputCheckTriggered(AEVK_2)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-	}
-	else if (AEInputCheckTriggered(AEVK_3)) {
-		GameStateManager::g_GameStateNext = States::GS_WIN;
-	}
-	else if (AEInputCheckTriggered(AEVK_4)) {
-		GameStateManager::g_GameStateNext = States::GS_LOSE;
-	}
-
 	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		Title[i].f_PositionY += Title[i].f_VelocityY * g_dt;
 		Title[i].f_VelocityY -= f_TitleFallEffect;
