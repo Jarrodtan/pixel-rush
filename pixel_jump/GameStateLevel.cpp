@@ -1387,8 +1387,14 @@ void GameStateLevelDraw(void) {
 
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
-				Render::RenderShapes(::p_BlackCell, FinalCellTransform, 0.50f, 0.85f, 0.90f, 0.f);
+				if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) == j) 
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_MIDDLEGROUND);
+				else if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) > j) 
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_BACKGROUND);
+				else
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_FOREGROUND);
 				break;
+
 			case Objects::TYPE_OBJECT_WALL:
 				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
 				break;
