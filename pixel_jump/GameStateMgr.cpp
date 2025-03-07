@@ -44,6 +44,7 @@ namespace GameStateManager {
 		case States::GS_PLATFORM_LVL2:
 		case States::GS_PLATFORM_LVL3:
 		case States::GS_TUTORIAL_LVL1:
+		case States::GS_TUTORIAL_LVL2:
 			GameStateLoad = GameStateLevelLoad;
 			GameStateInit = GameStateLevelInit;
 			GameStateUpdate = GameStateLevelUpdate;

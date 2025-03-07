@@ -231,7 +231,7 @@ void GameStateLevelLoad(void) {
 
 	case States::GS_TUTORIAL_LVL2:
 		s_FilePath = "Assets/Maps/Tutorial2.txt";
-		s_metaLoc = "Assets/MapMetaData/2.txt";
+		s_metaLoc = "Assets/MapMetaData/1.txt";
 		break;
 
 	case States::GS_PLATFORM_LVL1:
@@ -520,6 +520,10 @@ void GameStateLevelInit(void) {
 */
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
+	if (AEInputCheckTriggered(AEVK_2)) {
+		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+	}
+
 	// Time counter
 	if (haveTiming) {
 		static f32 f_TimeCounter{};
