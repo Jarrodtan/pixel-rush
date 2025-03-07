@@ -29,6 +29,8 @@ namespace {
 	s32 i_ShadowPlayerInitialY;
 	s32 i_TotalLightShard;
 	s32 i_TotalShadowFragment;
+	bool b_IsLightPlayerGrounded;
+	bool b_IsShadowPlayerGrounded;
 
 	// Timer Features
 	s32 i_Time;
@@ -569,82 +571,40 @@ void GameStateLevelUpdate(void) {
 		}
 	}*/
 
-	
-	if (AEInputCheckTriggered(AEVK_W)) {
+	std::cout << "Jump counter: " << doubleJumpCounter_S << std::endl;
 
-		// double jump
-		if (haveDoubleJump_L) {
-			::doubleJumpCounter_L++;
-
-			if ((p_LightPlayer->i_gridCollisionFlag || ::jumpEnabled_L) && ::doubleJumpCounter_L >= 2)
-			{
-				::doubleJumpCounter_L = 0;
+	if (AEInputCheckTriggered(AEVK_UP)) {
+		if (!isGravitySwitch_S) {
+			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2) {
+				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
+				++doubleJumpCounter_S;
+				b_IsShadowPlayerGrounded = false;
 			}
-
-			if (::doubleJumpCounter_L < 2) {
-				if (!isGravitySwitch_L) {
-					p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
-				}
-				else {
-					p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
-				}
-				// Sound effect
-				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
-			}
-
 		}
-		else { // basic jump
-			if (p_LightPlayer->currVelocity.y == 0) {
-				if (!isGravitySwitch_L) {
-					p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
-				}
-				else {
-					p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
-				}
-				// Sound effect
-				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
+		else {
+			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2) {
+				p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
+				++doubleJumpCounter_S;
+				b_IsShadowPlayerGrounded = false;
 			}
 		}
 	}
 
-	if (AEInputCheckTriggered(AEVK_UP)) {
-
-		// double jump
-		if (haveDoubleJump_S) {
-			
-			::doubleJumpCounter_S++;
-
-			if ((p_ShadowPlayer->i_gridCollisionFlag || ::jumpEnabled_S) && ::doubleJumpCounter_S >= 2)
-			{
-				::doubleJumpCounter_S = 0;
-			}
-
-			if (::doubleJumpCounter_S < 2) {
-				if (!isGravitySwitch_S) {
-					p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
-				}
-				else {
-					p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
-				}
-
-				// Sound effect
-				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
+	if (AEInputCheckTriggered(AEVK_W)) {
+		if (!isGravitySwitch_L) {
+			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2) {
+				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				++doubleJumpCounter_L;
+				b_IsLightPlayerGrounded = false;
 			}
 		}
-		else { // basic jump
-			if (p_ShadowPlayer->currVelocity.y == 0) {
-				if (!isGravitySwitch_S) {
-					p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
-				}
-				else {
-					p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
-				}
-
-				// Sound effect
-				AudioManager::PlayAudio("Assets/AudioSFX/Jump_retro_up.wav", AudioManager::f_JumpVolume);
+		else {
+			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2) {
+				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				++doubleJumpCounter_L;
+				b_IsLightPlayerGrounded = false;
 			}
 		}
-
 	}
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
@@ -754,21 +714,28 @@ void GameStateLevelUpdate(void) {
 
 		p_Instance->i_gridCollisionFlag = Collision::CheckInstanceBinaryMapCollision(::p_BinaryCollisionArray, p_Instance->currPosition.x, p_Instance->currPosition.y, p_Instance->scale.x, p_Instance->scale.y);
 
-		if (p_Instance)
-
 		if (p_Instance->i_gridCollisionFlag & COLLISION_BOTTOM) { 
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
+			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER) {
+				doubleJumpCounter_L = 0;
+				b_IsLightPlayerGrounded = true;
+			}
+			
+			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
+				doubleJumpCounter_S = 0;
+				b_IsShadowPlayerGrounded = true;
+			}
 		}
 		if (p_Instance->i_gridCollisionFlag & COLLISION_TOP) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
 		}
 
-
-		if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SPIKE || 
-			p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE ||
-			p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE) {
+		switch (p_Instance->p_GameObject->u_Type) {
+		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
+		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
+		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT && p_Instance->currVelocity.x < 0) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
@@ -777,8 +744,9 @@ void GameStateLevelUpdate(void) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
-		}
-		else {
+			break;
+
+		default:
 			if (p_Instance->i_gridCollisionFlag & COLLISION_LEFT) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
@@ -787,6 +755,7 @@ void GameStateLevelUpdate(void) {
 				Collision::SnapToCell(&p_Instance->currPosition.x);
 				p_Instance->currVelocity.x = 0;
 			}
+			break;
 		}
 	}
 	
