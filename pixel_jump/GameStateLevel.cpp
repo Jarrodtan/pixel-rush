@@ -120,6 +120,7 @@ namespace {
 	std::vector<TipsText> Tips{};
 	std::vector<TipsText> TipsTutorial1{};
 	std::vector<TipsText> TipsTutorial2{};
+	std::vector<TipsText> TipsTutorial3{};
 	static f32 f_TipsScreenTime;
 	static const f32 f_TipsScreenUnchangedTime = 2.f;
 	static const f32 f_MaxTipsSreenTime = 1.5f;
@@ -242,12 +243,16 @@ void GameStateLevelLoad(void) {
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
 		s_FilePath = "Assets/Maps/Tutorial1.txt";
-		s_metaLoc = "Assets/MapMetaData/1.txt";
+		s_metaLoc = "";
 		break;
 
 	case States::GS_TUTORIAL_LVL2:
 		s_FilePath = "Assets/Maps/Tutorial2.txt";
-		s_metaLoc = "Assets/MapMetaData/1.txt";
+		s_metaLoc = "";
+		break;
+	case States::GS_TUTORIAL_LVL3:
+		s_FilePath = "Assets/Maps/Tutorial3.txt";
+		s_metaLoc = "Assets/MapMetaData/Tutorial3_Meta.txt";
 		break;
 
 	case States::GS_PLATFORM_LVL1:
@@ -410,6 +415,7 @@ void GameStateLevelInit(void) {
 				break;
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT: 
 				{
+
 					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
 					p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
 					int count = p_Instance->sequenceCollection.sequenceCount = 2;
@@ -427,7 +433,7 @@ void GameStateLevelInit(void) {
 						Sequence {
 							false,
 							false,
-							Position.y - Scale.y,
+							Position.y - (Scale.y - PLAYER_BOUNDINGBOX_TOLERANCE),
 							0.0f,
 							0.0f,
 							SpecialSequence::PRESSURE_PLATE_STEPPED
@@ -460,7 +466,7 @@ void GameStateLevelInit(void) {
 					p_Instance->sequenceCollection.sequence[1] = Sequence{
 						false,
 						false,
-						Position.y - Scale.y,
+						Position.y - (Scale.y - PLAYER_BOUNDINGBOX_TOLERANCE),
 						0.0f,
 						0.0f,
 						SpecialSequence::PRESSURE_PLATE_STEPPED
@@ -535,6 +541,8 @@ void GameStateLevelInit(void) {
 	TipsTutorial2.push_back({ "Tip: Avoid the Red Spike!", false, 1.0f });
 	TipsTutorial2.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
 
+	TipsTutorial3.push_back({ "Tip: You can jump on the pressure plate to open doors", true, 1.f });
+
 	Tips.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
 	Tips.push_back({ "Tip: Shadow player can only touch shadow fragments", false, 1.0f });
 	Tips.push_back({ "Tip: Light player can safely go through light spikes", false, 1.0f });
@@ -543,6 +551,7 @@ void GameStateLevelInit(void) {
 	Tips.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
 	Tips.push_back({ "Tip: Avoid the Red Spike!", false, 1.0f });
 	Tips.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
+	Tips.push_back({ "Tip: You can jump on the pressure plate to open doors", true, 1.f });
 }
 
 
@@ -572,6 +581,9 @@ void GameStateLevelUpdate(void) {
 	}
 	else if (AEInputCheckCurr(AEVK_5)) {
 		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+	}
+	else if (AEInputCheckCurr(AEVK_F)) {
+		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
 	}
 	else if (AEInputCheckCurr(AEVK_0)) {
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
@@ -1392,9 +1404,6 @@ void GameStateLevelDraw(void) {
 					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_FOREGROUND);
 				break;
 
-			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
-				break;
 			default:
 				break;
 			}
@@ -1525,12 +1534,49 @@ void GameStateLevelDraw(void) {
 			}
 		}
 		break;
+	case States::GS_TUTORIAL_LVL3:
+		for (s32 i = 0; i < static_cast<s32>(TipsTutorial3.size()); ++i) {
+			if (!TipsTutorial3[i].b_IsActive) continue;
+
+			TipsTutorial3[i].f_Alpha = TipsTutorial3[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(TipsTutorial3[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+			if (TipsTutorial3[i].f_Alpha <= 0.f) {
+				TipsTutorial3[i].f_Alpha = 1.f;
+				TipsTutorial3[i].b_IsActive = false;
+				f_TipsScreenTime = 0.f;
+
+				TipsTutorial3[(i + 1) % TipsTutorial3.size()].b_IsActive = true;
+			}
+		}
+
 	case States::GS_PLATFORM_LVL1:
 		break;
 	case States::GS_PLATFORM_LVL2:
 		break;
 	case States::GS_PLATFORM_LVL3:
 		break;
+	}
+
+	//Render wall last to hide objects in the scene
+	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
+		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
+			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
+			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
+			if (dynamicCamFeature) {
+				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
+			}
+			AEGfxSetTransform(FinalCellTransform.m);
+
+			switch (::p_BinaryCollisionArray[i][j]) {
+
+			case Objects::TYPE_OBJECT_WALL:
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
