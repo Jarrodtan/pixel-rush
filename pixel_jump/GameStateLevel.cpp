@@ -573,6 +573,12 @@ void GameStateLevelUpdate(void) {
 	else if (AEInputCheckCurr(AEVK_5)) {
 		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
 	}
+	else if (AEInputCheckCurr(AEVK_0)) {
+		GameStateManager::g_GameStateNext = States::GS_LOSE;
+	}
+	else if (AEInputCheckCurr(AEVK_9)) {
+		GameStateManager::g_GameStateNext = States::GS_WIN;
+	}
 
 	// Time counter
 	if (haveTiming) {
@@ -826,23 +832,7 @@ void GameStateLevelUpdate(void) {
 	// check if all shadow fragments & light shards are collected
 	if (::i_TotalLightShard == 0 && ::i_TotalShadowFragment == 0) {
 		// TODO: Go to the next level
-		switch (GameStateManager::g_GameStateCurr) {
-		case States::GS_TUTORIAL_LVL1:
-			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-			break;
-
-		case States::GS_TUTORIAL_LVL2:
-			GameStateManager::g_GameStateNext = States::GS_MAINMENU;
-			break;
-
-		case States::GS_PLATFORM_LVL1:
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-			break;
-
-		case States::GS_PLATFORM_LVL2:
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
-			break;
-		}
+		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 
 	if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {

@@ -30,6 +30,7 @@ AEGfxTexture** g_Texture;
 AEGfxVertexList** g_Shapes;
 f32 g_WindowWidth;
 f32 g_WindowHeight;
+s32 saveprevlevel;
 //-------------------------------------------------------------------------/
 
 /******************************************************************************/
