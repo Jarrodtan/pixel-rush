@@ -624,14 +624,14 @@ void GameStateLevelUpdate(void) {
 
 	if (AEInputCheckTriggered(AEVK_UP)) {
 		if (!isGravitySwitch_S) {
-			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2) {
+			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2 || jumpEnabled_S) {
 				p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
 				++doubleJumpCounter_S;
 				b_IsShadowPlayerGrounded = false;
 			}
 		}
 		else {
-			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2) {
+			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2 || jumpEnabled_S) {
 				p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
 				++doubleJumpCounter_S;
 				b_IsShadowPlayerGrounded = false;
@@ -641,14 +641,14 @@ void GameStateLevelUpdate(void) {
 
 	if (AEInputCheckTriggered(AEVK_W)) {
 		if (!isGravitySwitch_L) {
-			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2) {
+			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2 || jumpEnabled_L) {
 				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
 				++doubleJumpCounter_L;
 				b_IsLightPlayerGrounded = false;
 			}
 		}
 		else {
-			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2) {
+			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2 || jumpEnabled_L) {
 				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
 				++doubleJumpCounter_L;
 				b_IsLightPlayerGrounded = false;
@@ -747,10 +747,10 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			p_Instance->boundingBox.min.x = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x + PLAYER_BOUNDINGBOX_TOLERANCE;
-			p_Instance->boundingBox.min.y = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y;
+			p_Instance->boundingBox.min.y = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y + PLAYER_BOUNDINGBOX_TOLERANCE;
 
 			p_Instance->boundingBox.max.x = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x - PLAYER_BOUNDINGBOX_TOLERANCE;
-			p_Instance->boundingBox.max.y = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y;
+			p_Instance->boundingBox.max.y = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y - PLAYER_BOUNDINGBOX_TOLERANCE;
 			break;
 
 		default:
@@ -1220,7 +1220,6 @@ void GameStateLevelUpdate(void) {
 							else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x + CRUSH_TOLERANCE) {
 								p_LightPlayer->currPosition.x += .01f;
 							}
-
 							if (p_LightPlayer->currVelocity.y > 0) {
 								p_LightPlayer->currVelocity.y = 0;
 								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
@@ -1239,7 +1238,6 @@ void GameStateLevelUpdate(void) {
 			else {
 				isCollideMovingPlatform_L = false;
 			}
-
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
 				isCollideMovingPlatform_S = true;
 				if (fabs(p_ShadowPlayer->currPosition.y - p_Instance->currPosition.y) <= TOLERANCE) {
