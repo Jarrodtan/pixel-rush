@@ -31,6 +31,7 @@ namespace {
 	s32 i_TotalShadowFragment;
 	bool b_IsLightPlayerGrounded;
 	bool b_IsShadowPlayerGrounded;
+	const f32 PLAYER_BOUNDINGBOX_TOLERANCE = 0.1f;
 
 	// Timer Features
 	s32 i_Time;
@@ -742,12 +743,25 @@ void GameStateLevelUpdate(void) {
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
-		p_Instance->boundingBox.min.x = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x; 
-		p_Instance->boundingBox.min.y = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y; 
+		switch (p_Instance->p_GameObject->u_Type) {
+		case Objects::TYPE_OBJECT_LIGHTPLAYER:
+		case Objects::TYPE_OBJECT_SHADOWPLAYER:
+			p_Instance->boundingBox.min.x = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x + PLAYER_BOUNDINGBOX_TOLERANCE;
+			p_Instance->boundingBox.min.y = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y;
 
-		p_Instance->boundingBox.max.x = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x; 
-		p_Instance->boundingBox.max.y = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y; 
-		
+			p_Instance->boundingBox.max.x = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x - PLAYER_BOUNDINGBOX_TOLERANCE;
+			p_Instance->boundingBox.max.y = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y;
+			break;
+
+		default:
+			p_Instance->boundingBox.min.x = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x;
+			p_Instance->boundingBox.min.y = -BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y;
+
+			p_Instance->boundingBox.max.x = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.x + p_Instance->prevPosition.x;
+			p_Instance->boundingBox.max.y = BOUNDING_RECT_SIZE / 2 * p_Instance->scale.y + p_Instance->prevPosition.y;
+			break;
+		}
+
 		AEVec2 displacement{};
 		AEVec2Scale(&displacement, &p_Instance->currVelocity, g_dt);
 		AEVec2Add(&p_Instance->currPosition, &p_Instance->currPosition, &displacement);
@@ -1474,6 +1488,10 @@ void GameStateLevelDraw(void) {
 
 		case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::PRESSURE_PLATE, -0.6f, -0.6f, -0.6f);
+			break;
+
+		case Objects::TYPE_OBJECT_TELEPORTOR:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::PORTAL);
 			break;
 		default:
 			Render::RenderShapes(p_Instance, FinalTransform);
