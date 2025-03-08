@@ -109,6 +109,17 @@ namespace {
 
 	//GRAVITY SWITCHER
 	bool isGravitySwitch_S, isGravitySwitch_L;
+
+	struct TipsText {
+		std::string s_Text;
+		bool b_IsActive;
+		f32 f_Alpha;	
+	};
+
+	std::vector<TipsText> Tips{};
+	static f32 f_TipsScreenTime;
+	static const f32 f_TipsScreenUnchangedTime = 2.f;
+	static const f32 f_MaxTipsSreenTime = 1.5f;
 }
 
 /******************************************************************************/
@@ -270,6 +281,8 @@ void GameStateLevelLoad(void) {
 void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Level 1");
 	
+	f_TipsScreenTime = 0.f;
+
 	::p_LightPlayer = 0;
 	::p_ShadowPlayer = 0;
 	::p_BlackCell = 0;
@@ -508,9 +521,12 @@ void GameStateLevelInit(void) {
 		}
 
 	}
-	
-	
-	
+	Tips.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
+	Tips.push_back({ "Tip: Shadow player can only touch shadow fragments", false, 1.0f });
+	Tips.push_back({ "Tip: Light player can safely go through light spikes", false, 1.0f });
+	Tips.push_back({ "Tip: Shadow player can safely go through shadow spikes", false, 1.0f });
+	Tips.push_back({ "Tip: Light Door can only be access by Light Player", false, 1.0f });
+	Tips.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
 }
 
 
@@ -1435,9 +1451,28 @@ void GameStateLevelDraw(void) {
 		}
 	}
 
+	f_TipsScreenTime += g_dt;
+	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
+	
 	// TODO: Render text for each levels if needed
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
+		for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {
+			if (!Tips[i].b_IsActive) continue;
+
+			Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(Tips[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+			if (Tips[i].f_Alpha <= 0.f) {
+				Tips[i].f_Alpha = 1.f;
+				Tips[i].b_IsActive = false;
+				f_TipsScreenTime = 0.f;
+
+				Tips[(i + 1) % Tips.size()].b_IsActive = true;
+			}
+		}
+		break;
+	case States::GS_TUTORIAL_LVL2:
 		break;
 	case States::GS_PLATFORM_LVL1:
 		break;
@@ -1479,6 +1514,10 @@ void GameStateLevelFree(void) {
 			}
 			gameObjectInstanceDestroy(p_Instance);
 		}
+	}
+
+	for (auto& tip : Tips) {
+		tip.b_IsActive = false;
 	}
 }
 
