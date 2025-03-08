@@ -531,7 +531,8 @@ void GameStateLevelInit(void) {
 	TipsTutorial1.push_back({ "Tip: Light Door can only be access by Light Player", false, 1.0f });
 	TipsTutorial1.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
 
-	TipsTutorial2.push_back({ "Tip: Avoid the Red Spike!", true, 1.0f });
+	TipsTutorial2.push_back({ "Tip: You can block your coloured blade", true, 1.f });
+	TipsTutorial2.push_back({ "Tip: Avoid the Red Spike!", false, 1.0f });
 	TipsTutorial2.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
 
 	Tips.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
