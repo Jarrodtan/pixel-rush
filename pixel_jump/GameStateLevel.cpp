@@ -117,6 +117,8 @@ namespace {
 	};
 
 	std::vector<TipsText> Tips{};
+	std::vector<TipsText> TipsTutorial1{};
+	std::vector<TipsText> TipsTutorial2{};
 	static f32 f_TipsScreenTime;
 	static const f32 f_TipsScreenUnchangedTime = 2.f;
 	static const f32 f_MaxTipsSreenTime = 1.5f;
@@ -521,12 +523,24 @@ void GameStateLevelInit(void) {
 		}
 
 	}
+	TipsTutorial1.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
+	TipsTutorial1.push_back({ "Tip: Shadow player can only touch shadow fragments", false, 1.0f });
+	TipsTutorial1.push_back({ "Tip: Light player can safely go through light spikes", false, 1.0f });
+	TipsTutorial1.push_back({ "Tip: Shadow player can safely go through shadow spikes", false, 1.0f });
+	TipsTutorial1.push_back({ "Tip: Light Door can only be access by Light Player", false, 1.0f });
+	TipsTutorial1.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
+
+	TipsTutorial2.push_back({ "Tip: Avoid the Red Spike!", true, 1.0f });
+	TipsTutorial2.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
+
 	Tips.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
 	Tips.push_back({ "Tip: Shadow player can only touch shadow fragments", false, 1.0f });
 	Tips.push_back({ "Tip: Light player can safely go through light spikes", false, 1.0f });
 	Tips.push_back({ "Tip: Shadow player can safely go through shadow spikes", false, 1.0f });
 	Tips.push_back({ "Tip: Light Door can only be access by Light Player", false, 1.0f });
 	Tips.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
+	Tips.push_back({ "Tip: Avoid the Red Spike!", false, 1.0f });
+	Tips.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
 }
 
 
@@ -540,6 +554,25 @@ void GameStateLevelInit(void) {
 void GameStateLevelUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
+	}
+	else if (AEInputCheckTriggered(AEVK_H)) {
+		// TODO: implement a help screen
+	}
+	// debugging purposes (remove this after testing)
+	else if (AEInputCheckTriggered(AEVK_1)) {
+		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+	}
+	else if (AEInputCheckCurr(AEVK_2)) {
+		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+	}
+	else if (AEInputCheckCurr(AEVK_3)) {
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+	}
+	else if (AEInputCheckCurr(AEVK_4)) {
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+	}
+	else if (AEInputCheckCurr(AEVK_5)) {
+		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
 	}
 
 	// Time counter
@@ -1457,22 +1490,36 @@ void GameStateLevelDraw(void) {
 	// TODO: Render text for each levels if needed
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
-		for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {
-			if (!Tips[i].b_IsActive) continue;
+		for (s32 i = 0; i < static_cast<s32>(TipsTutorial1.size()); ++i) {
+			if (!TipsTutorial1[i].b_IsActive) continue;
 
-			Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(Tips[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			TipsTutorial1[i].f_Alpha = TipsTutorial1[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(TipsTutorial1[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
-			if (Tips[i].f_Alpha <= 0.f) {
-				Tips[i].f_Alpha = 1.f;
-				Tips[i].b_IsActive = false;
+			if (TipsTutorial1[i].f_Alpha <= 0.f) {
+				TipsTutorial1[i].f_Alpha = 1.f;
+				TipsTutorial1[i].b_IsActive = false;
 				f_TipsScreenTime = 0.f;
 
-				Tips[(i + 1) % Tips.size()].b_IsActive = true;
+				TipsTutorial1[(i + 1) % TipsTutorial1.size()].b_IsActive = true;
 			}
 		}
 		break;
 	case States::GS_TUTORIAL_LVL2:
+		for (s32 i = 0; i < static_cast<s32>(TipsTutorial2.size()); ++i) {
+			if (!TipsTutorial2[i].b_IsActive) continue;
+
+			TipsTutorial2[i].f_Alpha = TipsTutorial2[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(TipsTutorial2[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+			if (TipsTutorial2[i].f_Alpha <= 0.f) {
+				TipsTutorial2[i].f_Alpha = 1.f;
+				TipsTutorial2[i].b_IsActive = false;
+				f_TipsScreenTime = 0.f;
+
+				TipsTutorial2[(i + 1) % TipsTutorial2.size()].b_IsActive = true;
+			}
+		}
 		break;
 	case States::GS_PLATFORM_LVL1:
 		break;
@@ -1517,6 +1564,14 @@ void GameStateLevelFree(void) {
 	}
 
 	for (auto& tip : Tips) {
+		tip.b_IsActive = false;
+	}
+
+	for (auto& tip : TipsTutorial1) {
+		tip.b_IsActive = false;
+	}
+
+	for (auto& tip : TipsTutorial2) {
 		tip.b_IsActive = false;
 	}
 }
