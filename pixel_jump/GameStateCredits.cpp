@@ -73,9 +73,6 @@ void GameStateCreditsUpdate() {
 		b_CreditsState = 0;
 	}
 
-	s32 s_MouseX, s_MouseY;
-	AEInputGetCursorPosition(&s_MouseX, &s_MouseY);
-
 	s32 i_MousePosX, i_MousePosY;
 	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
 	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);

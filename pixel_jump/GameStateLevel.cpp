@@ -281,7 +281,7 @@ void GameStateLevelLoad(void) {
 */
 /******************************************************************************/
 void GameStateLevelInit(void) {
-	AESysSetWindowTitle("Level 1");
+	AESysSetWindowTitle("Pixel Rush");
 	
 	f_TipsScreenTime = 0.f;
 
@@ -554,9 +554,6 @@ void GameStateLevelInit(void) {
 void GameStateLevelUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
-	}
-	else if (AEInputCheckTriggered(AEVK_H)) {
-		// TODO: implement a help screen
 	}
 	// debugging purposes (remove this after testing)
 	else if (AEInputCheckTriggered(AEVK_1)) {
