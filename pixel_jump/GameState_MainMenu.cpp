@@ -228,6 +228,17 @@ void GameStateMainMenuFree(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuUnload(void) {
+	// reset the tagline and the title
+	for (u32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
+		Title[i].f_PositionY = 0.f;
+		Title[i].f_VelocityY = 0.f;
+		Title[i].b_Effect = false;
+	}
 
+	for (u32 i = 0; i < sizeof(TagLine) / sizeof(*TagLine); ++i) {
+		TagLine[i].f_PositionY = 0.f;
+		TagLine[i].f_VelocityY = 0.f;
+		TagLine[i].b_Effect = false;
+	}
 }
 

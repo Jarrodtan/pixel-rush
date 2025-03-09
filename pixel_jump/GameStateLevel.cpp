@@ -124,6 +124,7 @@ namespace {
 	static f32 f_TipsScreenTime;
 	static const f32 f_TipsScreenUnchangedTime = 2.f;
 	static const f32 f_MaxTipsSreenTime = 1.5f;
+	bool b_TipActive;
 }
 
 /******************************************************************************/
@@ -290,6 +291,7 @@ void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Pixel Rush");
 	
 	f_TipsScreenTime = 0.f;
+	b_TipActive = false;
 
 	::p_LightPlayer = 0;
 	::p_ShadowPlayer = 0;
@@ -549,6 +551,7 @@ void GameStateLevelInit(void) {
 	Tips.push_back({ "Tip: Shadow player can safely go through shadow spikes", false, 1.0f });
 	Tips.push_back({ "Tip: Light Door can only be access by Light Player", false, 1.0f });
 	Tips.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
+	Tips.push_back({ "Tip: You can block your coloured blade", true, 1.f });
 	Tips.push_back({ "Tip: Avoid the Red Spike!", false, 1.0f });
 	Tips.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
 	Tips.push_back({ "Tip: You can jump on the pressure plate to open doors", true, 1.f });
@@ -565,6 +568,9 @@ void GameStateLevelInit(void) {
 void GameStateLevelUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
+	}
+	else if (AEInputCheckTriggered(AEVK_H)) {
+		b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
 	else if (AEInputCheckTriggered(AEVK_1)) {
@@ -1534,6 +1540,7 @@ void GameStateLevelDraw(void) {
 			}
 		}
 		break;
+
 	case States::GS_TUTORIAL_LVL3:
 		for (s32 i = 0; i < static_cast<s32>(TipsTutorial3.size()); ++i) {
 			if (!TipsTutorial3[i].b_IsActive) continue;
@@ -1549,12 +1556,27 @@ void GameStateLevelDraw(void) {
 				TipsTutorial3[(i + 1) % TipsTutorial3.size()].b_IsActive = true;
 			}
 		}
+		break;
 
 	case States::GS_PLATFORM_LVL1:
-		break;
 	case States::GS_PLATFORM_LVL2:
-		break;
 	case States::GS_PLATFORM_LVL3:
+		if (b_TipActive) {
+			for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {
+				if (!Tips[i].b_IsActive) continue;
+
+				Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+				Render::RenderFont(Tips[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+				if (Tips[i].f_Alpha <= 0.f) {
+					Tips[i].f_Alpha = 1.f;
+					Tips[i].b_IsActive = false;
+					f_TipsScreenTime = 0.f;
+
+					Tips[(i + 1) % Tips.size()].b_IsActive = true;
+				}
+			}
+		}
 		break;
 	}
 
