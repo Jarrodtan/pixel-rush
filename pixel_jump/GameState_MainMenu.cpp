@@ -145,6 +145,9 @@ void GameStateMainMenuUpdate(void) {
 					case -2:
 						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
 						break;
+					case -3:
+						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+						break;
 
 					}
 				}

@@ -82,7 +82,7 @@ void GameStateWinUpdate(void) {
 		}
 	}
 
-	if (GameStateManager::g_GameStatePrev == States::GS_TUTORIAL_LVL2 || GameStateManager::g_GameStatePrev == States::GS_PLATFORM_LVL3) {
+	if (GameStateManager::g_GameStatePrev == States::GS_TUTORIAL_LVL3 || GameStateManager::g_GameStatePrev == States::GS_PLATFORM_LVL3) {
 		hideExitButton = true;
 	}
 	else {
@@ -101,9 +101,12 @@ void GameStateWinUpdate(void) {
 		saveprevlevel = 1;
 		break;
 	case States::GS_TUTORIAL_LVL1:
-		saveprevlevel = -2;
+		saveprevlevel = -3;
 		break;
 	case States::GS_TUTORIAL_LVL2:
+		saveprevlevel = -2;
+		break;
+	case States::GS_TUTORIAL_LVL3:
 		saveprevlevel = -1;
 		break;
 	}
@@ -122,6 +125,9 @@ void GameStateWinUpdate(void) {
 				case States::GS_TUTORIAL_LVL1:
 					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
 					break;
+				case States::GS_TUTORIAL_LVL2:
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+					break;
 				case States::GS_PLATFORM_LVL1:
 					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
 					break;
@@ -136,6 +142,9 @@ void GameStateWinUpdate(void) {
 				switch (GameStateManager::g_GameStatePrev) {
 				case States::GS_TUTORIAL_LVL2:
 					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+					break;
+				case States::GS_TUTORIAL_LVL3:
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
 					break;
 				case States::GS_PLATFORM_LVL3:
 					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;

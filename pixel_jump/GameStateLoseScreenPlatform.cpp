@@ -99,6 +99,8 @@ void GameStateLoseUpdate(void) {
 		break;
 	case States::GS_TUTORIAL_LVL2:
 		saveprevlevel = -2;
+	case States::GS_TUTORIAL_LVL3:
+		saveprevlevel = -3;
 		break;
 	}
 
