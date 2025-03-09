@@ -101,5 +101,8 @@ void GameStateCreditsFree() {
 }
 
 void GameStateCreditsUnload() {
-
+	// reset the credits scroll
+	f_CreditsScroll = 0.f;
+	f_CreditsScrollTime = 0.f;
+	b_CreditsState = 0;
 }
