@@ -153,5 +153,8 @@
     <Text Include="..\Assets\Maps\Tutorial2.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\Assets\Maps\Tutorial3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
