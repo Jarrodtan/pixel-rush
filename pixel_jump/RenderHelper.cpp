@@ -81,7 +81,7 @@ namespace Render {
 		g_Texture[TEXTURE::TOKEN]= AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0067.png");
 		g_Texture[TEXTURE::PLATFORM] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0146.png");
 		g_Texture[TEXTURE::PRESSURE_PLATE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0107.png");
-		g_Texture[TEXTURE::DOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0150.png");
+		g_Texture[TEXTURE::DOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0095.png");
 		g_Texture[TEXTURE::PORTAL] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0181.png");
 		//g_Texture[TEXTURE::GRAVITY_TOKEN]
 	}

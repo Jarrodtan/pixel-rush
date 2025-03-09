@@ -24,13 +24,14 @@ namespace {
 	static const f32 f_CharOffsetY = 20.f;
 	static const f32 f_TitleFallEffect = 10.f;
 
-	static const s8 c_MaxButtons = 4;
+	static const s8 c_MaxButtons = 4, e_MaxButtons = 3;
 	static Button button[c_MaxButtons];
 	static const f32 f_ButtonWidth = 200.f;
 	static const f32 f_ButtonHeight = 75.f;
 	static const f32 f_ButtonOffset = 25.f;
 
 	static const bool is_animatedTitle = false;
+	static bool hideExitButton = false;
 }
 /******************************************************************************/
 /*!
@@ -48,9 +49,10 @@ void GameStateWinLoad(void) {
 */
 /******************************************************************************/
 void GameStateWinInit(void) {
-	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Replay", "Replay", 0.4f, 0.4f, 1.f);
-	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Home", "Home", 0.4f, 0.4f, 1.f);
-
+	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Next", "Next", 0.4f, 0.4f, 1.f);
+	button[1].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset), f_ButtonWidth, f_ButtonHeight, "Replay", "Replay", 0.4f, 0.4f, 1.f);
+	button[2].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 2, f_ButtonWidth, f_ButtonHeight, "Home", "Home", 0.4f, 0.4f, 1.f);
+	//button[3].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f - (f_ButtonHeight + f_ButtonOffset) * 3, f_ButtonWidth, f_ButtonHeight, "Quit", "Quit", 0.4f, 0.4f, 1.f);
 	for (s32 i = 0; i < sizeof(Title) / sizeof(*Title); ++i) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
 		Title[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
@@ -80,6 +82,32 @@ void GameStateWinUpdate(void) {
 		}
 	}
 
+	if (GameStateManager::g_GameStatePrev == States::GS_TUTORIAL_LVL2 || GameStateManager::g_GameStatePrev == States::GS_PLATFORM_LVL3) {
+		hideExitButton = true;
+	}
+	else {
+		hideExitButton = false;
+	}
+
+	switch (GameStateManager::g_GameStatePrev) {
+	default:
+	case States::GS_PLATFORM_LVL1:
+		saveprevlevel = 2;
+		break;
+	case States::GS_PLATFORM_LVL2:
+		saveprevlevel = 3;
+		break;
+	case States::GS_PLATFORM_LVL3:
+		saveprevlevel = 1;
+		break;
+	case States::GS_TUTORIAL_LVL1:
+		saveprevlevel = -2;
+		break;
+	case States::GS_TUTORIAL_LVL2:
+		saveprevlevel = -1;
+		break;
+	}
+
 	s32 i_MousePosX, i_MousePosY;
 	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
 	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
@@ -88,12 +116,35 @@ void GameStateWinUpdate(void) {
 	for (s32 j = 0; j < c_MaxButtons; ++j) {
 		switch (j) {
 		case 0:
-			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
-				GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && !hideExitButton) {
+
+				switch (GameStateManager::g_GameStatePrev) {
+				case States::GS_TUTORIAL_LVL1:
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+					break;
+				case States::GS_PLATFORM_LVL1:
+					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+					break;
+				case States::GS_PLATFORM_LVL2:
+					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+					break;
+				}
+			}
+			break;
+		case 1:
+			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && hideExitButton) {
+				switch (GameStateManager::g_GameStatePrev) {
+				case States::GS_TUTORIAL_LVL2:
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+					break;
+				case States::GS_PLATFORM_LVL3:
+					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+					break;
+				}
 			}
 			break;
 
-		case 1:
+		case 2:
 			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
 				GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 			}
@@ -127,9 +178,18 @@ void GameStateWinDraw(void) {
 		sr << "You Won!";
 		Render::RenderFont(sr.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.65f, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::CENTER);
 	}
-	for (s32 i = 0; i < c_MaxButtons; ++i) {
-		button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
+	if (!hideExitButton) {
+		for (s32 i = 0; i < e_MaxButtons;) {
+			button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
+			i += 2;
+		}
 	}
+	else {
+		for (s32 i = 1; i < e_MaxButtons; ++i) {
+			button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
+		}
+	}
+
 }
 
 /******************************************************************************/

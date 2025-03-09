@@ -115,18 +115,38 @@ void GameStateMainMenuUpdate(void) {
 	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
 	i_MousePosY = static_cast<s32>(g_WindowHeight) - i_MousePosY;
 
-	//if (::a >= ::delayduration) {
+	if (::a >= ::delayduration) {
 		for (s32 j = 0; j < c_MaxButtons; ++j) {
 			switch (j) {
 			case 0:
 				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
-					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+					switch (saveprevlevel) {
+					default:
+					case 1:
+						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+						break;
+					case 2:
+						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+						break;
+					case 3:
+						GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+						break;
+					}
 				}
 				break;
 
 			case 1:
 				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
-					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+					switch (saveprevlevel) {
+					default:
+					case -1:
+						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+						break;
+					case -2:
+						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+						break;
+
+					}
 				}
 				break;
 
@@ -143,7 +163,7 @@ void GameStateMainMenuUpdate(void) {
 				break;
 			}
 		}
-	//}
+	}
 
 	if (::a < ::delayduration) {
 		::a += 0.01f;

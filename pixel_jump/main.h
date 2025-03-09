@@ -60,6 +60,7 @@ extern AEGfxTexture** g_Texture;
 extern AEGfxVertexList** g_Shapes;
 extern f32 g_WindowWidth;
 extern f32 g_WindowHeight;
+extern s32 saveprevlevel;
 //-------------------------------------------------------------------------/
 
 /**************************************************************************/

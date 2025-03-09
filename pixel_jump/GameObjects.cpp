@@ -206,18 +206,9 @@ namespace Objects {
 			Sequence& sequence = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::OPEN));
 
 			if (!sequence.isFinished) {
-				if (p_Instance->boundingBox.min.x >= p_Player->boundingBox.max.x && p_Player->currVelocity.x > 0.0) { //CHECK LEFT
-					p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
-				} if (p_Instance->boundingBox.max.x <= p_Player->boundingBox.min.x && p_Player->currVelocity.x < 0.0) { //CHECK RIGHT
-					p_Player->currPosition.x = p_Player->currVelocity.x * f_Time + p_Player->prevPosition.x; //SNAP PLAYER BACK VIA X AXIS
-
-				} if (p_Instance->boundingBox.max.y <= p_Player->boundingBox.min.y) { //CHECK TOP
-					if (p_Player->currVelocity.y < 0.0f) {
-						p_Player->currVelocity.y = 0.0f;
-						p_Player->currPosition.y = p_Instance->currPosition.y + p_Instance->scale.y; //SNAP PLAYER BACK VIA Y AXIS
-					}
-
-
+				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player->boundingBox, p_Player->currVelocity, f_Time)) {
+					p_Player->currVelocity.x = 0.0f;
+					Collision::SnapToCell(&p_Player->currPosition.x);
 				}
 			}
 			
@@ -246,15 +237,15 @@ namespace Objects {
 			} else {
 
 				f32 f_Time{};
-				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player2->boundingBox, p_Player2->currVelocity, f_Time)) {
-					if (p_Instance->boundingBox.max.y <= p_Player2->boundingBox.min.y && p_Instance->boundingBox.max.x > p_Player2->boundingBox.min.x && p_Instance->boundingBox.min.x < p_Player2->boundingBox.max.x) { //CHECK TOP
+				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player2->boundingBox, p_Player2->currVelocity, f_Time)) { 
+					if (p_Instance->boundingBox.max.y <= p_Player2->boundingBox.min.y + 0.1f && p_Instance->boundingBox.max.x > p_Player2->boundingBox.min.x+0.1f && p_Instance->boundingBox.min.x < p_Player2->boundingBox.max.x + 0.1f) { //CHECK TOP
 						return;
 					}
 				}
 				
 				// f32 f_Time2{};
-				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player1->boundingBox, p_Player1->currVelocity, f_Time)) {
-					if (p_Instance->boundingBox.max.y <= p_Player1->boundingBox.min.y && p_Instance->boundingBox.max.x > p_Player1->boundingBox.min.x && p_Instance->boundingBox.min.x < p_Player1->boundingBox.max.x) { //CHECK TOP
+				if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player1->boundingBox, p_Player1->currVelocity, f_Time)) { 
+					if (p_Instance->boundingBox.max.y <= p_Player1->boundingBox.min.y +0.1f && p_Instance->boundingBox.max.x > p_Player1->boundingBox.min.x+0.1f && p_Instance->boundingBox.min.x < p_Player1->boundingBox.max.x + 0.1f) { //CHECK TOP
 						return;
 					}
 				}
@@ -319,14 +310,14 @@ namespace Objects {
 				
 				f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
 				p_Instance->currPosition.y -= yVel;
-				p_Player->currPosition.y = p_Instance->currPosition.y + 1.0f;
+				p_Player->currPosition.y = p_Instance->currPosition.y + 0.9f;
 				released.isRunning = false;
 
 			}
 			if (sequence.targetValue >= p_Instance->currPosition.y && sequence.isRunning && interactable) {
 				sequence.isRunning = false;
 				p_Instance->sequenceCollection.finished = true;
-				Collision::SnapToCell(&p_Instance->currPosition.y);
+				p_Instance->currPosition.y = sequence.targetValue;
 			}
 
 		}

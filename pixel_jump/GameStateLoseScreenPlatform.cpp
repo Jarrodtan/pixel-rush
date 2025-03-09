@@ -83,6 +83,26 @@ void GameStateLoseUpdate(void) {
 		}
 	}
 
+	switch (GameStateManager::g_GameStatePrev) {
+	default:
+	case States::GS_PLATFORM_LVL1:
+		saveprevlevel = 1;
+		break;
+	case States::GS_PLATFORM_LVL2:
+		saveprevlevel = 2;
+		break;
+	case States::GS_PLATFORM_LVL3:
+		saveprevlevel = 3;
+		break;
+	case States::GS_TUTORIAL_LVL1:
+		saveprevlevel = -1;
+		break;
+	case States::GS_TUTORIAL_LVL2:
+		saveprevlevel = -2;
+		break;
+	}
+
+
 	s32 i_MousePosX, i_MousePosY;
 	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
 	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
