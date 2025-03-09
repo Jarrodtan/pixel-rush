@@ -101,10 +101,10 @@ void GameStateWinUpdate(void) {
 		saveprevlevel = 1;
 		break;
 	case States::GS_TUTORIAL_LVL1:
-		saveprevlevel = -3;
+		saveprevlevel = -2;
 		break;
 	case States::GS_TUTORIAL_LVL2:
-		saveprevlevel = -2;
+		saveprevlevel = -3;
 		break;
 	case States::GS_TUTORIAL_LVL3:
 		saveprevlevel = -1;
@@ -140,11 +140,11 @@ void GameStateWinUpdate(void) {
 		case 1:
 			if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && hideExitButton) {
 				switch (GameStateManager::g_GameStatePrev) {
-				case States::GS_TUTORIAL_LVL2:
+				/*case States::GS_TUTORIAL_LVL2:
 					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
-					break;
+					break;*/
 				case States::GS_TUTORIAL_LVL3:
-					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
 					break;
 				case States::GS_PLATFORM_LVL3:
 					GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;

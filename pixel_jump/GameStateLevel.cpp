@@ -258,6 +258,7 @@ void GameStateLevelLoad(void) {
 
 	case States::GS_PLATFORM_LVL1:
 		s_FilePath = "Assets/Maps/Level1.txt";
+		s_metaLoc = "";
 		break;
 
 	case States::GS_PLATFORM_LVL2:
