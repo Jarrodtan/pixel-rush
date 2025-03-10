@@ -545,6 +545,7 @@ void GameStateLevelInit(void) {
 	TipsTutorial2.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
 
 	TipsTutorial3.push_back({ "Tip: You can jump on the pressure plate to open doors", true, 1.f });
+	TipsTutorial3.push_back({ "Tip: Invert gravity with gravity token", true, 1.f });
 
 	Tips.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
 	Tips.push_back({ "Tip: Shadow player can only touch shadow fragments", false, 1.0f });
@@ -1504,9 +1505,30 @@ void GameStateLevelDraw(void) {
 		}
 	}
 
+	//Render wall last to hide objects in the scene
+	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
+		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
+			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
+			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
+			if (dynamicCamFeature) {
+				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
+			}
+			AEGfxSetTransform(FinalCellTransform.m);
+
+			switch (::p_BinaryCollisionArray[i][j]) {
+
+			case Objects::TYPE_OBJECT_WALL:
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	f_TipsScreenTime += g_dt;
 	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
-	
+
 	// TODO: Render text for each levels if needed
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
@@ -1579,27 +1601,6 @@ void GameStateLevelDraw(void) {
 			}
 		}
 		break;
-	}
-
-	//Render wall last to hide objects in the scene
-	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
-		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
-			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
-			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
-			if (dynamicCamFeature) {
-				camera.applyCameraTransform(FinalCellTransform, camMidpoint_X, camMidpoint_Y);
-			}
-			AEGfxSetTransform(FinalCellTransform.m);
-
-			switch (::p_BinaryCollisionArray[i][j]) {
-
-			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
-				break;
-			default:
-				break;
-			}
-		}
 	}
 
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
