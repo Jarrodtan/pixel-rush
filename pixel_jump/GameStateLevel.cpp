@@ -1499,6 +1499,10 @@ void GameStateLevelDraw(void) {
 		case Objects::TYPE_OBJECT_TELEPORTOR:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::PORTAL);
 			break;
+
+		case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
+			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::GRAVITY_TOKEN);
+			break;
 		default:
 			Render::RenderShapes(p_Instance, FinalTransform);
 			break;
