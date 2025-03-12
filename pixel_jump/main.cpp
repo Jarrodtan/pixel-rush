@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 #endif
 
 	// Initialize the system
-	AESysInit(instanceH, show, 1600, 900, 1, 60, false, NULL);
+	AESysInit(instanceH, show, 1600, 900, 0, 60, false, NULL);
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	Render::Load();
 	AudioManager::Init();

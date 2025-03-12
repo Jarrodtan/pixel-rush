@@ -553,10 +553,10 @@ void GameStateLevelInit(void) {
 	Tips.push_back({ "Tip: Shadow player can safely go through shadow spikes", false, 1.0f });
 	Tips.push_back({ "Tip: Light Door can only be access by Light Player", false, 1.0f });
 	Tips.push_back({ "Tip: Shadow Door can only be access by Shadow Player", false, 1.0f });
-	Tips.push_back({ "Tip: You can block your coloured blade", true, 1.f });
+	Tips.push_back({ "Tip: You can block your coloured blade", false, 1.f });
 	Tips.push_back({ "Tip: Avoid the Red Spike!", false, 1.0f });
 	Tips.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
-	Tips.push_back({ "Tip: You can jump on the pressure plate to open doors", true, 1.f });
+	Tips.push_back({ "Tip: You can jump on the pressure plate to open doors", false, 1.f });
 }
 
 
@@ -575,30 +575,30 @@ void GameStateLevelUpdate(void) {
 		b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
-	else if (AEInputCheckTriggered(AEVK_1)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
-	}
-	else if (AEInputCheckCurr(AEVK_2)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-	}
-	else if (AEInputCheckCurr(AEVK_3)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-	}
-	else if (AEInputCheckCurr(AEVK_4)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-	}
-	else if (AEInputCheckCurr(AEVK_5)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
-	}
-	else if (AEInputCheckCurr(AEVK_F)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
-	}
-	else if (AEInputCheckCurr(AEVK_0)) {
-		GameStateManager::g_GameStateNext = States::GS_LOSE;
-	}
-	else if (AEInputCheckCurr(AEVK_9)) {
-		GameStateManager::g_GameStateNext = States::GS_WIN;
-	}
+	//else if (AEInputCheckTriggered(AEVK_1)) {
+	//	GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+	//}
+	//else if (AEInputCheckCurr(AEVK_2)) {
+	//	GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+	//}
+	//else if (AEInputCheckCurr(AEVK_3)) {
+	//	GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+	//}
+	//else if (AEInputCheckCurr(AEVK_4)) {
+	//	GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+	//}
+	//else if (AEInputCheckCurr(AEVK_5)) {
+	//	GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+	//}
+	//else if (AEInputCheckCurr(AEVK_F)) {
+	//	GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+	//}
+	//else if (AEInputCheckCurr(AEVK_0)) {
+	//	GameStateManager::g_GameStateNext = States::GS_LOSE;
+	//}
+	//else if (AEInputCheckCurr(AEVK_9)) {
+	//	GameStateManager::g_GameStateNext = States::GS_WIN;
+	//}
 
 	// Time counter
 	if (haveTiming) {
