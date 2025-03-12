@@ -243,20 +243,28 @@ void GameStateLevelLoad(void) {
 	std::string s_FilePath{};
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
+		::i_Time = -100;
+		haveTiming = false;
 		s_FilePath = "Assets/Maps/Tutorial1.txt";
 		s_metaLoc = "";
 		break;
 
 	case States::GS_TUTORIAL_LVL2:
+		::i_Time = -100;
+		haveTiming = false;
 		s_FilePath = "Assets/Maps/Tutorial2.txt";
 		s_metaLoc = "";
 		break;
 	case States::GS_TUTORIAL_LVL3:
+		::i_Time = -100;
+		haveTiming = false;
 		s_FilePath = "Assets/Maps/Tutorial3.txt";
 		s_metaLoc = "Assets/MapMetaData/Tutorial3_Meta.txt";
 		break;
 
 	case States::GS_PLATFORM_LVL1:
+		::i_Time = 30;
+		haveTiming = true;
 		s_FilePath = "Assets/Maps/Level1.txt";
 		s_metaLoc = "";
 		break;
@@ -301,7 +309,6 @@ void GameStateLevelInit(void) {
 	::doubleJumpCounter_S = 0;
 	::doubleJumpCounter_L = 0;
 
-	::i_Time = 20;
 	unlockDoor = false;
 	jumpEnabled_S = false;
 	jumpEnabled_L = false;
@@ -1547,6 +1554,9 @@ void GameStateLevelDraw(void) {
 	case States::GS_PLATFORM_LVL1:
 	case States::GS_PLATFORM_LVL2:
 	case States::GS_PLATFORM_LVL3:
+		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
+		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+
 		if (b_TipActive) {
 			for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {
 				if (!Tips[i].b_IsActive) continue;
@@ -1572,9 +1582,6 @@ void GameStateLevelDraw(void) {
 	const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
 	const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
 
-	const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
-
-	Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
 	Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
 	Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
 	Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
