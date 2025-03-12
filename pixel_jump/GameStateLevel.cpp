@@ -1185,31 +1185,20 @@ void GameStateLevelUpdate(void) {
 
 				if (!isGravitySwitch_L) {
 					if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y && fabs(p_LightPlayer->prevPosition.y - p_Instance->prevPosition.y) >= PLATFORM_SNAPPING_TOLERANCE) {
-						if (AEInputCheckTriggered(AEVK_W)) {
-							p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
-						}
-						else {
-							p_LightPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
-						}
+						p_LightPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
 
 						if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y) {
-							if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x - CRUSH_TOLERANCE) {
-								p_LightPlayer->currPosition.x -= .01f;
-							}
-							else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x + CRUSH_TOLERANCE) {
-								p_LightPlayer->currPosition.x += .01f;
-							}
-
+							b_IsLightPlayerGrounded = true;
+							doubleJumpCounter_L = 0;
 							if (p_LightPlayer->currVelocity.y < 0) {
 								p_LightPlayer->currVelocity.y = 0;
-								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 							}
 						}
 
 						if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
 							if (p_LightPlayer->currVelocity.y > 0) {
 								p_LightPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
-								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
+								
 							}
 						}
 					}
@@ -1217,30 +1206,20 @@ void GameStateLevelUpdate(void) {
 				}
 				else {
 					if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_LightPlayer->prevPosition.y - p_Instance->prevPosition.y) >= (1.f - PLATFORM_SNAPPING_TOLERANCE)) {
-						if (AEInputCheckTriggered(AEVK_W)) {
-							p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
-						}
-						else {
-							p_LightPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
-						}
+						p_LightPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
 
 						if (p_LightPlayer->currPosition.y < p_Instance->currPosition.y) {
-							if (p_LightPlayer->currPosition.x < p_Instance->currPosition.x - CRUSH_TOLERANCE) {
-								p_LightPlayer->currPosition.x -= .01f;
-							}
-							else if (p_LightPlayer->currPosition.x > p_Instance->currPosition.x + CRUSH_TOLERANCE) {
-								p_LightPlayer->currPosition.x += .01f;
-							}
+							b_IsLightPlayerGrounded = true;
+							doubleJumpCounter_L = 0;
+
 							if (p_LightPlayer->currVelocity.y > 0) {
 								p_LightPlayer->currVelocity.y = 0;
-								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 							}
 						}
 
 						if (p_LightPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
 							if (p_LightPlayer->currVelocity.y < 0) {
 								p_LightPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
-								Collision::SnapToCell(&p_LightPlayer->currPosition.y);
 							}
 						}
 					}
@@ -1268,31 +1247,21 @@ void GameStateLevelUpdate(void) {
 				
 				if (!isGravitySwitch_S) {
 					if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y && fabs(p_ShadowPlayer->prevPosition.y - p_Instance->prevPosition.y) >= PLATFORM_SNAPPING_TOLERANCE) {
-						if (AEInputCheckTriggered(AEVK_UP)) {
-							p_ShadowPlayer->currVelocity.y = JUMP_VELOCITY;
-						}
-						else {
-							p_ShadowPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
-						}
+						p_ShadowPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
+
 
 						if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y) {
-							if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x - CRUSH_TOLERANCE) {
-								p_ShadowPlayer->currPosition.x -= .01f;
-							}
-							else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x + CRUSH_TOLERANCE) {
-								p_ShadowPlayer->currPosition.x += .01f;
-							}
+							b_IsShadowPlayerGrounded = true;
+							doubleJumpCounter_S = 0;
 
 							if (p_ShadowPlayer->currVelocity.y < 0) {
 								p_ShadowPlayer->currVelocity.y = 0;
-								Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 							}
 						}
 
 						if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y - CRUSH_TOLERANCE) {
 							if (p_ShadowPlayer->currVelocity.y > 0) {
 								p_ShadowPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
-								Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 							}
 						}
 					}
@@ -1300,30 +1269,20 @@ void GameStateLevelUpdate(void) {
 				}
 				else {
 					if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_ShadowPlayer->prevPosition.y - p_Instance->prevPosition.y) >= (1.f - PLATFORM_SNAPPING_TOLERANCE)) {
-						if (AEInputCheckTriggered(AEVK_UP)) {
-							p_ShadowPlayer->currVelocity.y = -JUMP_VELOCITY;
-						}
-						else {
-							p_ShadowPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
-						}
+						p_ShadowPlayer->currVelocity.y = -PLATFORM_MOVE_SPEED;
 
 						if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y) {
-							if (p_ShadowPlayer->currPosition.x < p_Instance->currPosition.x - CRUSH_TOLERANCE) {
-								p_ShadowPlayer->currPosition.x -= .01f;
-							}
-							else if (p_ShadowPlayer->currPosition.x > p_Instance->currPosition.x + CRUSH_TOLERANCE) {
-								p_ShadowPlayer->currPosition.x += .01f;
-							}
+							b_IsShadowPlayerGrounded = true;
+							doubleJumpCounter_S = 0;
+
 							if (p_ShadowPlayer->currVelocity.y > 0) {
 								p_ShadowPlayer->currVelocity.y = 0;
-								Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 							}
 						}
 
 						if (p_ShadowPlayer->currPosition.y > p_Instance->currPosition.y + CRUSH_TOLERANCE) {
 							if (p_ShadowPlayer->currVelocity.y < 0) {
 								p_ShadowPlayer->currVelocity.y = PLATFORM_MOVE_SPEED;
-								Collision::SnapToCell(&p_ShadowPlayer->currPosition.y);
 							}
 						}
 					}
