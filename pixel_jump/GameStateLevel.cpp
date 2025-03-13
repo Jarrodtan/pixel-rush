@@ -1652,16 +1652,21 @@ void GameStateLevelDraw(void) {
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
 	
-	const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
-	const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
+	//const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
+	//const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
 
-	const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
+	const std::string s_PlayersLives = "Players Lives: " + std::to_string(::i_PlayerLives);
 
-	Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+	if (saveprevlevel >= 3) {
+		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
+		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+	}
+
 	Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
 	Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
-	Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
-	Render::RenderFont(s_ShadowPlayerLives, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.85f, Render::COLOUR::YELLOW);
+	Render::RenderFont(s_PlayersLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::RED);
+	//Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
+	//Render::RenderFont(s_ShadowPlayerLives, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.85f, Render::COLOUR::YELLOW);
 
 }
 
