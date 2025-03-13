@@ -28,7 +28,9 @@ namespace {
 	s32 i_ShadowPlayerInitialX;
 	s32 i_ShadowPlayerInitialY;
 	s32 i_TotalLightShard;
+	s32 i_PlayerLives;
 	s32 i_TotalShadowFragment;
+	bool deduct_PlayerLives = false;
 	bool b_IsLightPlayerGrounded;
 	bool b_IsShadowPlayerGrounded;
 	const f32 PLAYER_BOUNDINGBOX_TOLERANCE = 0.1f;
@@ -573,6 +575,27 @@ void GameStateLevelInit(void) {
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
+		switch (GameStateManager::g_GameStateCurr) {
+		default:
+		case States::GS_PLATFORM_LVL1:
+			saveprevlevel = 1;
+			break;
+		case States::GS_PLATFORM_LVL2:
+			saveprevlevel = 2;
+			break;
+		case States::GS_PLATFORM_LVL3:
+			saveprevlevel = 3;
+			break;
+		case States::GS_TUTORIAL_LVL1:
+			saveprevlevel = -1;
+			break;
+		case States::GS_TUTORIAL_LVL2:
+			saveprevlevel = -2;
+			break;
+		case States::GS_TUTORIAL_LVL3:
+			saveprevlevel = -3;
+			break;
+		}
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 	else if (AEInputCheckTriggered(AEVK_H)) {
@@ -852,6 +875,11 @@ void GameStateLevelUpdate(void) {
 		}
 	}
 	
+	// use bool instead cuz worried it will double deduct lives sometimes
+	if (deduct_PlayerLives) {
+		--::i_PlayerLives;
+		deduct_PlayerLives = false;
+	}
 
 	// check if all shadow fragments & light shards are collected
 	if (::i_TotalLightShard == 0 && ::i_TotalShadowFragment == 0) {
@@ -859,7 +887,8 @@ void GameStateLevelUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 
-	if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
+	//if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
+	if (::i_PlayerLives <= 0 || ::i_Time <= 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
@@ -891,10 +920,6 @@ void GameStateLevelUpdate(void) {
 				++::i_Time;
 				
 			}
-			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && puzzle1) {
-					gameObjectInstanceDestroy(p_Instance);
-					--i_ShadowPlayerLives;
-			}
 			break;
 
 		case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
@@ -903,17 +928,14 @@ void GameStateLevelUpdate(void) {
 				--::i_TotalShadowFragment;
 				++::i_Time;
 			}
-			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && puzzle1) {
-				gameObjectInstanceDestroy(p_Instance);
-				--i_LightPlayerLives;
-			}
 			break;
 
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--::i_LightPlayerLives;
 				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY + 0.5f);
+				deduct_PlayerLives = true; 
+
 			}
 			break;
 		case Objects::TYPE_OBJECT_SHADOW_DOOR:
@@ -1057,9 +1079,10 @@ void GameStateLevelUpdate(void) {
 			
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--i_ShadowPlayerLives;
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY + 0.5f);
+				deduct_PlayerLives = true;
+
 			}
 
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
@@ -1095,9 +1118,10 @@ void GameStateLevelUpdate(void) {
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--i_LightPlayerLives;
 				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY + 0.5f);
+				deduct_PlayerLives = true;
+
 			}
 
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
@@ -1134,9 +1158,10 @@ void GameStateLevelUpdate(void) {
 
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--i_ShadowPlayerLives;
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY + 0.5f);
+				deduct_PlayerLives = true;
+
 			}
 			break;
 		// teleport the respective LIGHT / SHADOW player to be together once again
@@ -1166,14 +1191,15 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 		case Objects::TYPE_OBJECT_SPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--::i_LightPlayerLives;
+				deduct_PlayerLives = true;
 				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
 				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY + 0.5f);
 			}
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--i_ShadowPlayerLives;
+				deduct_PlayerLives = true;
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
 				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY + 0.5f);
+
 			}
 			break;
 
@@ -1382,10 +1408,6 @@ void GameStateLevelDraw(void) {
 				else
 					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_FOREGROUND);
 				break;
-
-			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
-				break;
 			default:
 				break;
 			}
@@ -1484,7 +1506,7 @@ void GameStateLevelDraw(void) {
 	}
 
 	//Render wall last to hide objects in the scene
-	/*for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
+	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
 			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
 			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
@@ -1502,7 +1524,7 @@ void GameStateLevelDraw(void) {
 				break;
 			}
 		}
-	}*/
+	}
 
 	f_TipsScreenTime += g_dt;
 	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
@@ -1587,13 +1609,21 @@ void GameStateLevelDraw(void) {
 	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
 	
-	const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
-	const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
+	//const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
+	//const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
+
+	const std::string s_PlayersLives = "Players Lives: " + std::to_string(::i_PlayerLives);
+
+	if (saveprevlevel >= 3) {
+		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
+		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+	}
 
 	Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
 	Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
-	Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
-	Render::RenderFont(s_ShadowPlayerLives, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.85f, Render::COLOUR::YELLOW);
+	Render::RenderFont(s_PlayersLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::RED);
+	//Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
+	//Render::RenderFont(s_ShadowPlayerLives, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.85f, Render::COLOUR::YELLOW);
 
 }
 
