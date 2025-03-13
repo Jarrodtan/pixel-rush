@@ -329,11 +329,8 @@ void GameStateLevelInit(void) {
 	::p_WhiteCell->u_Flag ^= FLAG_VISIBLE;
 	::p_WhiteCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
-	//::i_LightPlayerLives = PLAYER_LIVES;
-	//::i_ShadowPlayerLives = PLAYER_LIVES;
-	// for testing purposes only
-	::i_LightPlayerLives = 3;
-	::i_ShadowPlayerLives = 3;
+	::i_LightPlayerLives = PLAYER_LIVES;
+	::i_ShadowPlayerLives = PLAYER_LIVES;
 
 	// reset the total values for both to avoid double count for each of them
 	::i_TotalLightShard = 0;
