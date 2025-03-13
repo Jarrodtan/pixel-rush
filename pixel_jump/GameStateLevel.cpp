@@ -37,7 +37,7 @@ namespace {
 
 	f32 i_LightPlayerStartPosX, i_LightPlayerStartPosY;
 	f32 i_ShadowPlayerStartPosX, i_ShadowPlayerStartPosY;
-	bool resetPlayersPos = true;
+	bool resetPlayersPos;
 
 	// Timer Features
 	s32 i_Time;
@@ -330,6 +330,7 @@ void GameStateLevelInit(void) {
 	isCollideMovingPlatform_L = false;
 	isGravitySwitch_S = false;
 	isGravitySwitch_L = false;
+	resetPlayersPos = true;
 
 	AEVec2 Scale = { 1.0f, 1.0f };
 	::p_BlackCell = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_EMPTY, &Scale, 0, 0, 0.0f, Objects::STATE_NONE); 
