@@ -332,8 +332,8 @@ void GameStateLevelInit(void) {
 	//::i_LightPlayerLives = PLAYER_LIVES;
 	//::i_ShadowPlayerLives = PLAYER_LIVES;
 	// for testing purposes only
-	::i_LightPlayerLives = 1;
-	::i_ShadowPlayerLives = 1;
+	::i_LightPlayerLives = 3;
+	::i_ShadowPlayerLives = 3;
 
 	// reset the total values for both to avoid double count for each of them
 	::i_TotalLightShard = 0;
@@ -915,6 +915,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--::i_LightPlayerLives;
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY + 0.5f);
 			}
 			break;
 		case Objects::TYPE_OBJECT_SHADOW_DOOR:
@@ -1059,6 +1061,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_ShadowPlayerLives;
+				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
+				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY + 0.5f);
 			}
 
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
@@ -1095,6 +1099,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_LightPlayerLives;
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY + 0.5f);
 			}
 
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) && (p_Instance->currVelocity.x == 0.f)) {
@@ -1132,6 +1138,8 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_ShadowPlayerLives;
+				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
+				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY + 0.5f);
 			}
 			break;
 		// teleport the respective LIGHT / SHADOW player to be together once again
@@ -1162,13 +1170,13 @@ void GameStateLevelUpdate(void) {
 		case Objects::TYPE_OBJECT_SPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--::i_LightPlayerLives;
-				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX);
-				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY);
+				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
+				p_LightPlayer->currPosition.y = static_cast<f32>(i_LightPlayerInitialY + 0.5f);
 			}
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				--i_ShadowPlayerLives;
-				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX);
-				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY);
+				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
+				p_ShadowPlayer->currPosition.y = static_cast<f32>(i_ShadowPlayerInitialY + 0.5f);
 			}
 			break;
 
@@ -1378,6 +1386,9 @@ void GameStateLevelDraw(void) {
 					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_FOREGROUND);
 				break;
 
+			case Objects::TYPE_OBJECT_WALL:
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
+				break;
 			default:
 				break;
 			}
@@ -1476,7 +1487,7 @@ void GameStateLevelDraw(void) {
 	}
 
 	//Render wall last to hide objects in the scene
-	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
+	/*for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
 			AEMtx33Trans(&CellTranslation, static_cast<f32>(i + 0.5f), static_cast<f32>(j + 0.5f));
 			AEMtx33Concat(&FinalCellTransform, &::MapTransform, &CellTranslation);
@@ -1494,7 +1505,7 @@ void GameStateLevelDraw(void) {
 				break;
 			}
 		}
-	}
+	}*/
 
 	f_TipsScreenTime += g_dt;
 	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
