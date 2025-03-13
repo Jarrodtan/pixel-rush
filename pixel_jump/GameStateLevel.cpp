@@ -331,8 +331,9 @@ void GameStateLevelInit(void) {
 	::p_WhiteCell->u_Flag ^= FLAG_VISIBLE;
 	::p_WhiteCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
-	::i_LightPlayerLives = PLAYER_LIVES;
-	::i_ShadowPlayerLives = PLAYER_LIVES;
+	//::i_LightPlayerLives = PLAYER_LIVES;
+	//::i_ShadowPlayerLives = PLAYER_LIVES;
+	::i_PlayerLives = PLAYER_LIVES;
 
 	// reset the total values for both to avoid double count for each of them
 	::i_TotalLightShard = 0;
@@ -888,7 +889,7 @@ void GameStateLevelUpdate(void) {
 	}
 
 	//if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
-	if (::i_PlayerLives <= 0 || ::i_Time <= 0) {
+	if (::i_PlayerLives <= 0 || ::i_Time == 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
