@@ -33,6 +33,11 @@ namespace {
 	static const bool is_animatedTitle = false;
 }
 
+AEMtx33 scaleBG3 = { 0 };
+AEMtx33 rotateBG3 = { 0 };
+AEMtx33 translateBG3 = { 0 };
+AEMtx33 transformBG3 = { 0 };
+
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object
@@ -57,7 +62,12 @@ void GameStateLoseInit(void) {
 		Title[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
 	}
 	
-	
+	//background image
+	AEMtx33Scale(&scaleBG3, g_WindowWidth, g_WindowHeight);
+	AEMtx33Rot(&rotateBG3, 0);
+	AEMtx33Trans(&translateBG3, 0.f, 0.f);
+	AEMtx33Concat(&transformBG3, &rotateBG3, &scaleBG3);
+	AEMtx33Concat(&transformBG3, &translateBG3, &transformBG3);
 }
 
 /******************************************************************************/
@@ -137,6 +147,7 @@ void GameStateLoseUpdate(void) {
 /******************************************************************************/
 void GameStateLoseDraw(void) {
 	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.8f);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG3, Render::TEXTURE::TITLE_LOSE, 0, 0, 0, 1);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -151,8 +162,8 @@ void GameStateLoseDraw(void) {
 		}
 	}
 	else {
-		sr << "Game Over!";
-		Render::RenderFont(sr.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.65f, Render::COLOUR::RED, Render::FONT_ALIGN::CENTER);
+		//sr << "Game Over!";
+		//Render::RenderFont(sr.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.65f, Render::COLOUR::RED, Render::FONT_ALIGN::CENTER);
 	}
 	for (s32 i = 0; i < c_MaxButtons; ++i) {
 		button[i].Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);

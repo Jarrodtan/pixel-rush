@@ -599,7 +599,7 @@ void GameStateLevelUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 	else if (AEInputCheckTriggered(AEVK_H)) {
-		b_TipActive = !b_TipActive;
+		//b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
 	else if (AEInputCheckTriggered(AEVK_1)) {
