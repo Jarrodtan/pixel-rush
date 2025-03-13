@@ -575,6 +575,27 @@ void GameStateLevelInit(void) {
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
 	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
+		switch (GameStateManager::g_GameStateCurr) {
+		default:
+		case States::GS_PLATFORM_LVL1:
+			saveprevlevel = 1;
+			break;
+		case States::GS_PLATFORM_LVL2:
+			saveprevlevel = 2;
+			break;
+		case States::GS_PLATFORM_LVL3:
+			saveprevlevel = 3;
+			break;
+		case States::GS_TUTORIAL_LVL1:
+			saveprevlevel = -1;
+			break;
+		case States::GS_TUTORIAL_LVL2:
+			saveprevlevel = -2;
+			break;
+		case States::GS_TUTORIAL_LVL3:
+			saveprevlevel = -3;
+			break;
+		}
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 	else if (AEInputCheckTriggered(AEVK_H)) {
