@@ -28,10 +28,16 @@ namespace {
 	s32 i_ShadowPlayerInitialX;
 	s32 i_ShadowPlayerInitialY;
 	s32 i_TotalLightShard;
+	s32 i_PlayerLives;
 	s32 i_TotalShadowFragment;
+	bool deduct_PlayerLives = false;
 	bool b_IsLightPlayerGrounded;
 	bool b_IsShadowPlayerGrounded;
 	const f32 PLAYER_BOUNDINGBOX_TOLERANCE = 0.1f;
+
+	f32 i_LightPlayerStartPosX, i_LightPlayerStartPosY;
+	f32 i_ShadowPlayerStartPosX, i_ShadowPlayerStartPosY;
+	bool resetPlayersPos = true;
 
 	// Timer Features
 	s32 i_Time;
@@ -325,8 +331,9 @@ void GameStateLevelInit(void) {
 	//::i_LightPlayerLives = PLAYER_LIVES;
 	//::i_ShadowPlayerLives = PLAYER_LIVES;
 	// for testing purposes only
-	::i_LightPlayerLives = 1;
-	::i_ShadowPlayerLives = 1;
+	//::i_LightPlayerLives = 1;
+	//::i_ShadowPlayerLives = 1;
+	::i_PlayerLives = 3;
 
 	// reset the total values for both to avoid double count for each of them
 	::i_TotalLightShard = 0;
@@ -599,6 +606,15 @@ void GameStateLevelUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 
+	// Get both players initially xy position from start once only
+	if (resetPlayersPos) {
+		i_LightPlayerStartPosX = p_LightPlayer->currPosition.x;
+		i_LightPlayerStartPosY = p_LightPlayer->currPosition.y;
+		i_ShadowPlayerStartPosX = p_ShadowPlayer->currPosition.x;
+		i_ShadowPlayerStartPosY = p_ShadowPlayer->currPosition.y;
+		resetPlayersPos = false;
+	}
+
 	// Time counter
 	if (haveTiming) {
 		static f32 f_TimeCounter{};
@@ -847,6 +863,11 @@ void GameStateLevelUpdate(void) {
 		}
 	}
 	
+	// use bool instead cuz worried it will double deduct lives sometimes
+	if (deduct_PlayerLives) {
+		--::i_PlayerLives;
+		deduct_PlayerLives = false;
+	}
 
 	// check if all shadow fragments & light shards are collected
 	if (::i_TotalLightShard == 0 && ::i_TotalShadowFragment == 0) {
@@ -854,7 +875,8 @@ void GameStateLevelUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 
-	if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
+	//if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
+	if (::i_PlayerLives <= 0 || ::i_Time <= 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
@@ -906,7 +928,11 @@ void GameStateLevelUpdate(void) {
 
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
-				--::i_LightPlayerLives;
+				//--::i_LightPlayerLives;
+				//--::i_PlayerLives;
+				deduct_PlayerLives = true; 
+				p_LightPlayer->currPosition.x = i_LightPlayerStartPosX;
+				p_LightPlayer->currPosition.y = i_LightPlayerStartPosY;
 			}
 			break;
 		case Objects::TYPE_OBJECT_SHADOW_DOOR:
