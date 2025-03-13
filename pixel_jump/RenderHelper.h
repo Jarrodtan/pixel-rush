@@ -42,6 +42,7 @@ namespace Render {
 		TITLE_CREDIT,
 		TITLE_WIN,
 		TITLE_LOSE,
+		LEVEL_BASIC,
 		TOKEN,
 		SPIKE,
 		MOVEABLE_SPIKE,

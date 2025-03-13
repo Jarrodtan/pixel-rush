@@ -89,6 +89,7 @@ namespace Render {
 		g_Texture[TEXTURE::TITLE_CREDIT] = AEGfxTextureLoad("Assets/Art/creditbg.png");
 		g_Texture[TEXTURE::TITLE_WIN] = AEGfxTextureLoad("Assets/Art/winbg.png");
 		g_Texture[TEXTURE::TITLE_LOSE] = AEGfxTextureLoad("Assets/Art/losebg.png");
+		g_Texture[TEXTURE::LEVEL_BASIC] = AEGfxTextureLoad("Assets/Art/levelbasicbg.png");
 		//g_Texture[TEXTURE::GRAVITY_TOKEN]
 	}
 

@@ -1461,7 +1461,7 @@ void GameStateLevelDraw(void) {
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
 	AEGfxSetBackgroundColor(0.1f, 0.1f, 0.4f);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGL, Render::TEXTURE::TILE_BACKGROUND, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGL, Render::TEXTURE::LEVEL_BASIC, 0, 0, 0, 1);
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxTextureSet(NULL, 0, 0);
