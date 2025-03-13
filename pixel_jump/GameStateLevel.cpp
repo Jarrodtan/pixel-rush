@@ -133,6 +133,11 @@ namespace {
 	bool b_TipActive;
 }
 
+AEMtx33 scaleBGL = { 0 };
+AEMtx33 rotateBGL = { 0 };
+AEMtx33 translateBGL = { 0 };
+AEMtx33 transformBGL = { 0 };
+
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object
@@ -296,6 +301,13 @@ void GameStateLevelLoad(void) {
 /******************************************************************************/
 void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Pixel Rush");
+
+	//background level image
+	AEMtx33Scale(&scaleBGL, g_WindowWidth, g_WindowHeight);
+	AEMtx33Rot(&rotateBGL, 0);
+	AEMtx33Trans(&translateBGL, 0.f, 0.f);
+	AEMtx33Concat(&transformBGL, &rotateBGL, &scaleBGL);
+	AEMtx33Concat(&transformBGL, &translateBGL, &transformBGL);
 	
 	f_TipsScreenTime = 0.f;
 	b_TipActive = false;
@@ -602,7 +614,7 @@ void GameStateLevelUpdate(void) {
 		//b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
-	else if (AEInputCheckTriggered(AEVK_1)) {
+	/*else if (AEInputCheckTriggered(AEVK_1)) {
 		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
 	}
 	else if (AEInputCheckCurr(AEVK_2)) {
@@ -625,7 +637,7 @@ void GameStateLevelUpdate(void) {
 	}
 	else if (AEInputCheckCurr(AEVK_9)) {
 		GameStateManager::g_GameStateNext = States::GS_WIN;
-	}
+	}*/
 
 	// Get both players initially xy position from start once only
 	if (resetPlayersPos) {
@@ -1449,6 +1461,7 @@ void GameStateLevelDraw(void) {
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
 	AEGfxSetBackgroundColor(0.1f, 0.1f, 0.4f);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGL, Render::TEXTURE::TILE_BACKGROUND, 0, 0, 0, 1);
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxTextureSet(NULL, 0, 0);
