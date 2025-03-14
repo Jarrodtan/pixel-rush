@@ -18,6 +18,11 @@ namespace {
 
 }
 
+AEMtx33 scaleBG2 = { 0 };
+AEMtx33 rotateBG2 = { 0 };
+AEMtx33 translateBG2 = { 0 };
+AEMtx33 transformBG2 = { 0 };
+
 void GameStateCreditsLoad() {
 
 }
@@ -61,7 +66,12 @@ void GameStateCreditsInit() {
 	Lines.push_back("Using AEngine");
 	Lines.push_back("Audio Engine: FMOD Studio by Firelight Technologies Pty Ltd.");
 
-
+	//background image
+	AEMtx33Scale(&scaleBG2, g_WindowWidth, g_WindowHeight);
+	AEMtx33Rot(&rotateBG2, 0);
+	AEMtx33Trans(&translateBG2, 0.f, 0.f);
+	AEMtx33Concat(&transformBG2, &rotateBG2, &scaleBG2);
+	AEMtx33Concat(&transformBG2, &translateBG2, &transformBG2);
 }
 
 void GameStateCreditsUpdate() {
@@ -85,6 +95,7 @@ void GameStateCreditsUpdate() {
 
 void GameStateCreditsDraw() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG2, Render::TEXTURE::TITLE_CREDIT, 0, 0, 0, 1);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);

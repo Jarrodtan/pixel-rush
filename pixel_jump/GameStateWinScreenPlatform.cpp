@@ -33,6 +33,12 @@ namespace {
 	static const bool is_animatedTitle = false;
 	static bool hideExitButton = false;
 }
+
+AEMtx33 scaleBG4 = { 0 };
+AEMtx33 rotateBG4 = { 0 };
+AEMtx33 translateBG4 = { 0 };
+AEMtx33 transformBG4 = { 0 };
+
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object
@@ -57,6 +63,13 @@ void GameStateWinInit(void) {
 		Title[i].f_PositionX = f_FirstCharOffsetX + f_CharOffsetX * i;
 		Title[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
 	}
+
+	//background image
+	AEMtx33Scale(&scaleBG4, g_WindowWidth, g_WindowHeight);
+	AEMtx33Rot(&rotateBG4, 0);
+	AEMtx33Trans(&translateBG4, 0.f, 0.f);
+	AEMtx33Concat(&transformBG4, &rotateBG4, &scaleBG4);
+	AEMtx33Concat(&transformBG4, &translateBG4, &transformBG4);
 }
 
 /******************************************************************************/
@@ -170,6 +183,7 @@ void GameStateWinUpdate(void) {
 /******************************************************************************/
 void GameStateWinDraw(void) {
 	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.8f);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG4, Render::TEXTURE::TITLE_WIN, 0, 0, 0, 1);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -184,8 +198,8 @@ void GameStateWinDraw(void) {
 		}
 	}
 	else {
-		sr << "You Won!";
-		Render::RenderFont(sr.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.65f, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::CENTER);
+		//sr << "You Won!";
+		//Render::RenderFont(sr.str(), 2.5f, g_WindowWidth * 0.50f, g_WindowHeight * 0.65f, Render::COLOUR::LIGHT_BLUE, Render::FONT_ALIGN::CENTER);
 	}
 	if (!hideExitButton) {
 		for (s32 i = 0; i < e_MaxButtons;) {

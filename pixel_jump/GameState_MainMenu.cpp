@@ -35,6 +35,13 @@ namespace {
 	static const bool is_animatedTitle = true;
     static f32 a = 0.0f, delayduration = 0.15f;
 }
+
+
+AEMtx33 scaleBG = { 0 };
+AEMtx33 rotateBG = { 0 };
+AEMtx33 translateBG = { 0 };
+AEMtx33 transformBG = { 0 };
+
 /******************************************************************************/
 /*!
 	"Load" function of this state
@@ -70,6 +77,12 @@ void GameStateMainMenuInit(void) {
 		TagLine[i].f_PositionY = g_WindowHeight + f_CharOffsetY * i;
 	}
 
+	//background image
+	AEMtx33Scale(&scaleBG, g_WindowWidth, g_WindowHeight);
+	AEMtx33Rot(&rotateBG, 0);
+	AEMtx33Trans(&translateBG, 0.f, 0.f);
+	AEMtx33Concat(&transformBG, &rotateBG, &scaleBG);
+	AEMtx33Concat(&transformBG, &translateBG, &transformBG);
 }
 
 /******************************************************************************/
@@ -181,6 +194,9 @@ void GameStateMainMenuUpdate(void) {
 /******************************************************************************/
 void GameStateMainMenuDraw(void) {
 	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.8f);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG, Render::TEXTURE::TITLE_MAINMENU, 0, 0, 0, 1);
+	//RenderShapes(SHAPES shape, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a);
+
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -211,6 +227,8 @@ void GameStateMainMenuDraw(void) {
 
 	ss << "A Game by Team Pixel Jump";
 	Render::RenderFont(ss.str(), 1.f, g_WindowWidth, 18.f, Render::COLOUR::WHITE, Render::FONT_ALIGN::RIGHT);
+
+	
 }
 
 /******************************************************************************/
