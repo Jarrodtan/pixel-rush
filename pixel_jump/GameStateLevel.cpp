@@ -319,7 +319,7 @@ void GameStateLevelInit(void) {
 	AEMtx33Concat(&transformBGL, &rotateBGL, &scaleBGL);
 	AEMtx33Concat(&transformBGL, &translateBGL, &transformBGL);
 
-	//background UI top image
+	//background UI player stats container
 	AEMtx33Scale(&scaleBGU1, 300.0f, 250.0f);
 	AEMtx33Rot(&rotateBGU1, 0);
 	AEMtx33Trans(&translateBGU1, -600, 300);
@@ -346,6 +346,13 @@ void GameStateLevelInit(void) {
 	AEMtx33Trans(&translateBGUI[2], -650, 235);
 	AEMtx33Concat(&transformBGUI[2], &rotateBGUI[2], &scaleBGUI[2]);
 	AEMtx33Concat(&transformBGUI[2], &translateBGUI[2], &transformBGUI[2]);
+
+	//background UI Tips Container
+	AEMtx33Scale(&scaleBGUI[3], g_WindowWidth * 0.75f, g_WindowHeight * 0.15f);
+	AEMtx33Rot(&rotateBGUI[3], 0);
+	AEMtx33Trans(&translateBGUI[3], 0, -370);
+	AEMtx33Concat(&transformBGUI[3], &rotateBGUI[3], &scaleBGUI[3]);
+	AEMtx33Concat(&transformBGUI[3], &translateBGUI[3], &transformBGUI[3]);
 	
 	f_TipsScreenTime = 0.f;
 	b_TipActive = false;
@@ -625,35 +632,36 @@ void GameStateLevelInit(void) {
 */
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
-	if (AEInputCheckTriggered(AEVK_ESCAPE)) {
-		switch (GameStateManager::g_GameStateCurr) {
-		default:
-		case States::GS_PLATFORM_LVL1:
-			saveprevlevel = 1;
-			break;
-		case States::GS_PLATFORM_LVL2:
-			saveprevlevel = 2;
-			break;
-		case States::GS_PLATFORM_LVL3:
-			saveprevlevel = 3;
-			break;
-		case States::GS_TUTORIAL_LVL1:
-			saveprevlevel = -1;
-			break;
-		case States::GS_TUTORIAL_LVL2:
-			saveprevlevel = -2;
-			break;
-		case States::GS_TUTORIAL_LVL3:
-			saveprevlevel = -3;
-			break;
-		}
+	switch (GameStateManager::g_GameStateCurr) {
+	default:
+	case States::GS_PLATFORM_LVL1:
+		saveprevlevel = 1;
+		break;
+	case States::GS_PLATFORM_LVL2:
+		saveprevlevel = 2;
+		break;
+	case States::GS_PLATFORM_LVL3:
+		saveprevlevel = 3;
+		break;
+	case States::GS_TUTORIAL_LVL1:
+		saveprevtut = -1;
+		break;
+	case States::GS_TUTORIAL_LVL2:
+		saveprevtut = -2;
+		break;
+	case States::GS_TUTORIAL_LVL3:
+		saveprevtut = -3;
+		break;
+	}
+	if (AEInputCheckTriggered(AEVK_ESCAPE)) 
+	{
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 	else if (AEInputCheckTriggered(AEVK_H)) {
 		//b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
-	/*else if (AEInputCheckTriggered(AEVK_1)) {
+	else if (AEInputCheckTriggered(AEVK_1)) {
 		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
 	}
 	else if (AEInputCheckCurr(AEVK_2)) {
@@ -676,7 +684,7 @@ void GameStateLevelUpdate(void) {
 	}
 	else if (AEInputCheckCurr(AEVK_9)) {
 		GameStateManager::g_GameStateNext = States::GS_WIN;
-	}*/
+	}
 
 	// Get both players initially xy position from start once only
 	if (resetPlayersPos) {
@@ -1624,83 +1632,6 @@ void GameStateLevelDraw(void) {
 		}
 	}
 
-	f_TipsScreenTime += g_dt;
-	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
-	
-	// TODO: Render text for each levels if needed
-	switch (GameStateManager::g_GameStateCurr) {
-	case States::GS_TUTORIAL_LVL1:
-		for (s32 i = 0; i < static_cast<s32>(TipsTutorial1.size()); ++i) {
-			if (!TipsTutorial1[i].b_IsActive) continue;
-
-			TipsTutorial1[i].f_Alpha = TipsTutorial1[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial1[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
-
-			if (TipsTutorial1[i].f_Alpha <= 0.f) {
-				TipsTutorial1[i].f_Alpha = 1.f;
-				TipsTutorial1[i].b_IsActive = false;
-				f_TipsScreenTime = 0.f;
-
-				TipsTutorial1[(i + 1) % TipsTutorial1.size()].b_IsActive = true;
-			}
-		}
-		break;
-	case States::GS_TUTORIAL_LVL2:
-		for (s32 i = 0; i < static_cast<s32>(TipsTutorial2.size()); ++i) {
-			if (!TipsTutorial2[i].b_IsActive) continue;
-
-			TipsTutorial2[i].f_Alpha = TipsTutorial2[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial2[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
-
-			if (TipsTutorial2[i].f_Alpha <= 0.f) {
-				TipsTutorial2[i].f_Alpha = 1.f;
-				TipsTutorial2[i].b_IsActive = false;
-				f_TipsScreenTime = 0.f;
-
-				TipsTutorial2[(i + 1) % TipsTutorial2.size()].b_IsActive = true;
-			}
-		}
-		break;
-
-	case States::GS_TUTORIAL_LVL3:
-		for (s32 i = 0; i < static_cast<s32>(TipsTutorial3.size()); ++i) {
-			if (!TipsTutorial3[i].b_IsActive) continue;
-
-			TipsTutorial3[i].f_Alpha = TipsTutorial3[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial3[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
-
-			if (TipsTutorial3[i].f_Alpha <= 0.f) {
-				TipsTutorial3[i].f_Alpha = 1.f;
-				TipsTutorial3[i].b_IsActive = false;
-				f_TipsScreenTime = 0.f;
-
-				TipsTutorial3[(i + 1) % TipsTutorial3.size()].b_IsActive = true;
-			}
-		}
-		break;
-
-	case States::GS_PLATFORM_LVL1:
-	case States::GS_PLATFORM_LVL2:
-	case States::GS_PLATFORM_LVL3:
-		if (b_TipActive) {
-			for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {
-				if (!Tips[i].b_IsActive) continue;
-
-				Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-				Render::RenderFont(Tips[i].s_Text, 1.f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
-
-				if (Tips[i].f_Alpha <= 0.f) {
-					Tips[i].f_Alpha = 1.f;
-					Tips[i].b_IsActive = false;
-					f_TipsScreenTime = 0.f;
-
-					Tips[(i + 1) % Tips.size()].b_IsActive = true;
-				}
-			}
-		}
-		break;
-	}
-
 	//Render wall last to hide objects in the scene
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < i_BINARY_MAP_HEIGHT; ++j) {
@@ -1722,6 +1653,93 @@ void GameStateLevelDraw(void) {
 		}
 	}
 
+	switch (GameStateManager::g_GameStateCurr) {
+	case States::GS_TUTORIAL_LVL1:
+	case States::GS_TUTORIAL_LVL2:
+	case States::GS_TUTORIAL_LVL3:
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[3], Render::TEXTURE::UI_TIPS, 0, 0, 0, 1);
+		break;
+	}
+
+	f_TipsScreenTime += g_dt;
+	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
+	
+	// TODO: Render text for each levels if needed
+	switch (GameStateManager::g_GameStateCurr) {
+	case States::GS_TUTORIAL_LVL1:
+		for (s32 i = 0; i < static_cast<s32>(TipsTutorial1.size()); ++i) {
+			if (!TipsTutorial1[i].b_IsActive) continue;
+
+			TipsTutorial1[i].f_Alpha = TipsTutorial1[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(TipsTutorial1[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+			if (TipsTutorial1[i].f_Alpha <= 0.f) {
+				TipsTutorial1[i].f_Alpha = 1.f;
+				TipsTutorial1[i].b_IsActive = false;
+				f_TipsScreenTime = 0.f;
+
+				TipsTutorial1[(i + 1) % TipsTutorial1.size()].b_IsActive = true;
+			}
+		}
+		break;
+	case States::GS_TUTORIAL_LVL2:
+		for (s32 i = 0; i < static_cast<s32>(TipsTutorial2.size()); ++i) {
+			if (!TipsTutorial2[i].b_IsActive) continue;
+
+			TipsTutorial2[i].f_Alpha = TipsTutorial2[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(TipsTutorial2[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+			if (TipsTutorial2[i].f_Alpha <= 0.f) {
+				TipsTutorial2[i].f_Alpha = 1.f;
+				TipsTutorial2[i].b_IsActive = false;
+				f_TipsScreenTime = 0.f;
+
+				TipsTutorial2[(i + 1) % TipsTutorial2.size()].b_IsActive = true;
+			}
+		}
+		break;
+
+	case States::GS_TUTORIAL_LVL3:
+		for (s32 i = 0; i < static_cast<s32>(TipsTutorial3.size()); ++i) {
+			if (!TipsTutorial3[i].b_IsActive) continue;
+
+			TipsTutorial3[i].f_Alpha = TipsTutorial3[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+			Render::RenderFont(TipsTutorial3[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+			if (TipsTutorial3[i].f_Alpha <= 0.f) {
+				TipsTutorial3[i].f_Alpha = 1.f;
+				TipsTutorial3[i].b_IsActive = false;
+				f_TipsScreenTime = 0.f;
+
+				TipsTutorial3[(i + 1) % TipsTutorial3.size()].b_IsActive = true;
+			}
+		}
+		break;
+
+	case States::GS_PLATFORM_LVL1:
+	case States::GS_PLATFORM_LVL2:
+	case States::GS_PLATFORM_LVL3:
+		if (b_TipActive) {
+			for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {
+				if (!Tips[i].b_IsActive) continue;
+
+				Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
+				Render::RenderFont(Tips[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+
+				if (Tips[i].f_Alpha <= 0.f) {
+					Tips[i].f_Alpha = 1.f;
+					Tips[i].b_IsActive = false;
+					f_TipsScreenTime = 0.f;
+
+					Tips[(i + 1) % Tips.size()].b_IsActive = true;
+				}
+			}
+		}
+		break;
+	}
+
+	
+
 	//const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
 	//const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
 	
@@ -1739,10 +1757,13 @@ void GameStateLevelDraw(void) {
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[1], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
 
-	if (saveprevlevel >= 3) {
+	switch (GameStateManager::g_GameStateCurr) {
+	case States::GS_TUTORIAL_LVL3:
 		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
 		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+		break;
 	}
+
 
 	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
 	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);

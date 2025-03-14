@@ -83,6 +83,7 @@ void GameStateMainMenuInit(void) {
 	AEMtx33Trans(&translateBG, 0.f, 0.f);
 	AEMtx33Concat(&transformBG, &rotateBG, &scaleBG);
 	AEMtx33Concat(&transformBG, &translateBG, &transformBG);
+
 }
 
 /******************************************************************************/
@@ -150,7 +151,7 @@ void GameStateMainMenuUpdate(void) {
 
 			case 1:
 				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
-					switch (saveprevlevel) {
+					switch (saveprevtut) {
 					default:
 					case -1:
 						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;

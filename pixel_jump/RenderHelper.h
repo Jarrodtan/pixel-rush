@@ -43,6 +43,7 @@ namespace Render {
 		TITLE_WIN,
 		TITLE_LOSE,
 		UI_BASIC,
+		UI_TIPS,
 		UI_PLives,
 		UI_SFrag,
 		UI_LShard,

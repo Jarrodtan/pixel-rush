@@ -114,13 +114,13 @@ void GameStateWinUpdate(void) {
 		saveprevlevel = 1;
 		break;
 	case States::GS_TUTORIAL_LVL1:
-		saveprevlevel = -2;
+		saveprevtut = -2;
 		break;
 	case States::GS_TUTORIAL_LVL2:
-		saveprevlevel = -3;
+		saveprevtut = -3;
 		break;
 	case States::GS_TUTORIAL_LVL3:
-		saveprevlevel = -1;
+		saveprevtut = -1;
 		break;
 	}
 
