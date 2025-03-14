@@ -65,11 +65,13 @@ void GameStateWinInit(void) {
 	}
 
 	//background image
-	AEMtx33Scale(&scaleBG4, g_WindowWidth, g_WindowHeight);
+	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG4, rotateBG4, translateBG4, transformBG4);
+
+	/*AEMtx33Scale(&scaleBG4, g_WindowWidth, g_WindowHeight);
 	AEMtx33Rot(&rotateBG4, 0);
 	AEMtx33Trans(&translateBG4, 0.f, 0.f);
 	AEMtx33Concat(&transformBG4, &rotateBG4, &scaleBG4);
-	AEMtx33Concat(&transformBG4, &translateBG4, &transformBG4);
+	AEMtx33Concat(&transformBG4, &translateBG4, &transformBG4);*/
 }
 
 /******************************************************************************/

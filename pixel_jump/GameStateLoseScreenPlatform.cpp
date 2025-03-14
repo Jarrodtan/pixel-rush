@@ -63,11 +63,13 @@ void GameStateLoseInit(void) {
 	}
 	
 	//background image
-	AEMtx33Scale(&scaleBG3, g_WindowWidth, g_WindowHeight);
+	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG3, rotateBG3, translateBG3, transformBG3);
+
+	/*AEMtx33Scale(&scaleBG3, g_WindowWidth, g_WindowHeight);
 	AEMtx33Rot(&rotateBG3, 0);
 	AEMtx33Trans(&translateBG3, 0.f, 0.f);
 	AEMtx33Concat(&transformBG3, &rotateBG3, &scaleBG3);
-	AEMtx33Concat(&transformBG3, &translateBG3, &transformBG3);
+	AEMtx33Concat(&transformBG3, &translateBG3, &transformBG3);*/
 }
 
 /******************************************************************************/

@@ -4,6 +4,7 @@
 */
 /******************************************************************************/
 #include "main.h"
+#include "hpbar.hpp"
 
 namespace {
 	struct MainMenuText {
@@ -78,11 +79,13 @@ void GameStateMainMenuInit(void) {
 	}
 
 	//background image
-	AEMtx33Scale(&scaleBG, g_WindowWidth, g_WindowHeight);
+	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG, rotateBG, translateBG, transformBG);
+
+	/*AEMtx33Scale(&scaleBG, g_WindowWidth, g_WindowHeight);
 	AEMtx33Rot(&rotateBG, 0);
 	AEMtx33Trans(&translateBG, 0.f, 0.f);
 	AEMtx33Concat(&transformBG, &rotateBG, &scaleBG);
-	AEMtx33Concat(&transformBG, &translateBG, &transformBG);
+	AEMtx33Concat(&transformBG, &translateBG, &transformBG);*/
 
 }
 
