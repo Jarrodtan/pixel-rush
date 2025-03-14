@@ -132,6 +132,9 @@ namespace {
 	static const f32 f_TipsScreenUnchangedTime = 2.f;
 	static const f32 f_MaxTipsSreenTime = 1.5f;
 	bool b_TipActive;
+
+	// health bar
+	int hp_num;
 }
 
 /*AEMtx33 scaleBGL = {0};
@@ -313,18 +316,21 @@ void GameStateLevelLoad(void) {
 void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Pixel Rush");
 
-	for (int n = 0; n < 6; n++) {
+	for (int n = 0; n < 8; n++) {
 
 		f32 posX, posY, sizeX, sizeY, rotation = 0.f;
 
 		switch (n) {
 	    default:
-		case 0: sizeX = g_WindowWidth; sizeY = g_WindowHeight; posX = posY = 0.f; break;
-		case 1: sizeX = 300.f; sizeY = 250.f; posX = -600.f; posY = 300.f; break;
-		case 2: sizeX = sizeY = 50.f; posX = -650.f; posY = 355.f; break;
-		case 3: sizeX = sizeY = 50.f; posX = -650.f; posY = 295.f; break;
-		case 4: sizeX = sizeY = 50.f; posX = -650.f; posY = 235.f; break;
-		case 5: sizeX = g_WindowWidth * 0.75f; sizeY = g_WindowHeight * 0.15f; posX = 0.f; posY = -370.f; break;
+		case 0: sizeX = sizeY = 50.f; posX = -650.f; posY = 355.f; break;
+		case 1: sizeX = sizeY = 50.f; posX = -590.f; posY = 355.f; break;
+		case 2: sizeX = sizeY = 50.f; posX = -530.f; posY = 355.f; break;
+		case 3: sizeX = g_WindowWidth; sizeY = g_WindowHeight; posX = posY = 0.f; break;
+		case 4: sizeX = 300.f; sizeY = 250.f; posX = -600.f; posY = 300.f; break;
+		case 5: sizeX = sizeY = 50.f; posX = -650.f; posY = 295.f; break;
+		case 6: sizeX = sizeY = 50.f; posX = -650.f; posY = 235.f; break;
+		case 7: sizeX = g_WindowWidth * 0.75f; sizeY = g_WindowHeight * 0.15f; posX = 0.f; posY = -370.f; break;
+		
 		}
 		renderUI_transform(posX, posY, sizeX, sizeY, rotation, scaleBGUI[n], rotateBGUI[n], translateBGUI[n], transformBGUI[n]);
 	}
@@ -972,7 +978,7 @@ void GameStateLevelUpdate(void) {
 	}
 
 	//if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
-	if (::i_PlayerLives <= 0 || ::i_Time <= 0) {
+	if (::i_PlayerLives < 0 || ::i_Time <= 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
@@ -1537,7 +1543,7 @@ void GameStateLevelDraw(void) {
 		break;
 	}
 
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[0], bgMain, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[3], bgMain, 0, 0, 0, 1);
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxTextureSet(NULL, 0, 0);
@@ -1715,7 +1721,7 @@ void GameStateLevelDraw(void) {
 	case States::GS_TUTORIAL_LVL1:
 	case States::GS_TUTORIAL_LVL2:
 	case States::GS_TUTORIAL_LVL3:
-		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[5], Render::TEXTURE::UI_TIPS, 0, 0, 0, 1);
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[7], Render::TEXTURE::UI_TIPS, 0, 0, 0, 1);
 		break;
 	}
 
@@ -1817,10 +1823,15 @@ void GameStateLevelDraw(void) {
 
 	
 
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[1], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[3], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
+	//Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[5], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[6], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
+
+
+	for (int b = 0; b < ::i_PlayerLives; b++) {
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[b], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+	}
 
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL3:
@@ -1832,7 +1843,7 @@ void GameStateLevelDraw(void) {
 
 	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
 	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);
-	Render::RenderFont(s_PlayersLives, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.875f, Render::COLOUR::RED);
+	//Render::RenderFont(s_PlayersLives, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.875f, Render::COLOUR::RED);
 
 	//Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
 	//Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
