@@ -1524,7 +1524,20 @@ void GameStateLevelDraw(void) {
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
 	AEGfxSetBackgroundColor(0.1f, 0.1f, 0.4f);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[0], Render::TEXTURE::LEVEL_BASIC, 0, 0, 0, 1);
+
+	Render::TEXTURE bgMain;
+
+	switch (GameStateManager::g_GameStateCurr) {
+	default:
+		bgMain = Render::TEXTURE::LEVEL_BASIC;
+		break;
+	case States::GS_TUTORIAL_LVL3:
+	case States::GS_PLATFORM_LVL1:
+		bgMain = Render::TEXTURE::LEVEL_BASIC2;
+		break;
+	}
+
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[0], bgMain, 0, 0, 0, 1);
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxTextureSet(NULL, 0, 0);
@@ -1547,12 +1560,29 @@ void GameStateLevelDraw(void) {
 
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
-				if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) == j) 
-					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_MIDDLEGROUND);
-				else if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) > j) 
-					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_BACKGROUND);
+
+				Render::TEXTURE Mid, Back, Fore;
+
+				switch (GameStateManager::g_GameStateCurr) {
+				default:
+					Mid = Render::TEXTURE::TILE_MIDDLEGROUND;
+					Back = Render::TEXTURE::TILE_BACKGROUND;
+					Fore = Render::TEXTURE::TILE_FOREGROUND;
+				break;
+				case States::GS_TUTORIAL_LVL3:
+				case States::GS_PLATFORM_LVL1:
+				  Mid = Render::TEXTURE::TILE_MIDDLEGROUND2;
+				  Back = Render::TEXTURE::TILE_BACKGROUND2;
+				  Fore = Render::TEXTURE::TILE_FOREGROUND2;
+				  break;
+				}
+
+				if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) == j)
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Mid);
+				else if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) > j)
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Back);
 				else
-					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_FOREGROUND);
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Fore);
 				break;
 
 			default:
@@ -1661,7 +1691,19 @@ void GameStateLevelDraw(void) {
 			switch (::p_BinaryCollisionArray[i][j]) {
 
 			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
+				Render::TEXTURE Floor;
+
+				switch (GameStateManager::g_GameStateCurr) {
+				default:
+					Floor = Render::TEXTURE::TILE_FLOOR;
+					break;
+				case States::GS_TUTORIAL_LVL3:
+				case States::GS_PLATFORM_LVL1:
+					Floor = Render::TEXTURE::TILE_FLOOR2;
+					break;
+				}
+
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Floor);
 				break;
 			default:
 				break;
@@ -1772,6 +1814,8 @@ void GameStateLevelDraw(void) {
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[0], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[1], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);*/
+
+	
 
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[1], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
