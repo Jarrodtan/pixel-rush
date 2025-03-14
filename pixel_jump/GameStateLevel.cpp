@@ -1735,7 +1735,7 @@ void GameStateLevelDraw(void) {
 			if (!TipsTutorial1[i].b_IsActive) continue;
 
 			TipsTutorial1[i].f_Alpha = TipsTutorial1[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial1[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			Render::RenderFont(TipsTutorial1[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 			if (TipsTutorial1[i].f_Alpha <= 0.f) {
 				TipsTutorial1[i].f_Alpha = 1.f;
@@ -1751,7 +1751,7 @@ void GameStateLevelDraw(void) {
 			if (!TipsTutorial2[i].b_IsActive) continue;
 
 			TipsTutorial2[i].f_Alpha = TipsTutorial2[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial2[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			Render::RenderFont(TipsTutorial2[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 			if (TipsTutorial2[i].f_Alpha <= 0.f) {
 				TipsTutorial2[i].f_Alpha = 1.f;
@@ -1768,7 +1768,7 @@ void GameStateLevelDraw(void) {
 			if (!TipsTutorial3[i].b_IsActive) continue;
 
 			TipsTutorial3[i].f_Alpha = TipsTutorial3[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial3[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			Render::RenderFont(TipsTutorial3[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 			if (TipsTutorial3[i].f_Alpha <= 0.f) {
 				TipsTutorial3[i].f_Alpha = 1.f;
@@ -1788,7 +1788,7 @@ void GameStateLevelDraw(void) {
 				if (!Tips[i].b_IsActive) continue;
 
 				Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-				Render::RenderFont(Tips[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+				Render::RenderFont(Tips[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 				if (Tips[i].f_Alpha <= 0.f) {
 					Tips[i].f_Alpha = 1.f;

@@ -96,14 +96,14 @@ namespace Render {
 		g_Texture[TEXTURE::TITLE_CREDIT] = AEGfxTextureLoad("Assets/Art/creditbg.png");
 		g_Texture[TEXTURE::TITLE_WIN] = AEGfxTextureLoad("Assets/Art/winbg.png");
 		g_Texture[TEXTURE::TITLE_LOSE] = AEGfxTextureLoad("Assets/Art/losebg.png");
-		g_Texture[TEXTURE::LEVEL_BASIC] = AEGfxTextureLoad("Assets/Art/levelbasicbg.png");
+		g_Texture[TEXTURE::LEVEL_BASIC] = AEGfxTextureLoad("Assets/Art/levelbasicbg5.png");
 
 		//UI Textures
 		g_Texture[TEXTURE::UI_BASIC] = AEGfxTextureLoad("Assets/Art/uibasicbg3.png");
 		g_Texture[TEXTURE::UI_PLives] = AEGfxTextureLoad("Assets/Art/uiplives.png");
 		g_Texture[TEXTURE::UI_SFrag] = AEGfxTextureLoad("Assets/Art/uisfrag.png");
 		g_Texture[TEXTURE::UI_LShard] = AEGfxTextureLoad("Assets/Art/uilshard.png");
-		g_Texture[TEXTURE::UI_TIPS] = AEGfxTextureLoad("Assets/Art/uitips3.png");
+		g_Texture[TEXTURE::UI_TIPS] = AEGfxTextureLoad("Assets/Art/uitips5.png");
 		//g_Texture[TEXTURE::GRAVITY_TOKEN]
 	}
 
