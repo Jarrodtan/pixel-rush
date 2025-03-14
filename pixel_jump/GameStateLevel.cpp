@@ -135,6 +135,10 @@ namespace {
 
 	// health bar
 	int hp_num;
+
+	// Bool True for testing levels or switching scenes using button 0 to 9 
+
+	bool enterDebugMode = false;
 }
 
 /*AEMtx33 scaleBGL = {0};
@@ -683,29 +687,31 @@ void GameStateLevelUpdate(void) {
 		//b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
-	else if (AEInputCheckTriggered(AEVK_1)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
-	}
-	else if (AEInputCheckCurr(AEVK_2)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-	}
-	else if (AEInputCheckCurr(AEVK_3)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-	}
-	else if (AEInputCheckCurr(AEVK_4)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-	}
-	else if (AEInputCheckCurr(AEVK_5)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
-	}
-	else if (AEInputCheckCurr(AEVK_F)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
-	}
-	else if (AEInputCheckCurr(AEVK_0)) {
-		GameStateManager::g_GameStateNext = States::GS_LOSE;
-	}
-	else if (AEInputCheckCurr(AEVK_9)) {
-		GameStateManager::g_GameStateNext = States::GS_WIN;
+	if (enterDebugMode) {
+		if (AEInputCheckTriggered(AEVK_1)) {
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+		}
+		else if (AEInputCheckCurr(AEVK_2)) {
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+		}
+		else if (AEInputCheckCurr(AEVK_3)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+		}
+		else if (AEInputCheckCurr(AEVK_4)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+		}
+		else if (AEInputCheckCurr(AEVK_5)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+		}
+		else if (AEInputCheckCurr(AEVK_F)) {
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+		}
+		else if (AEInputCheckCurr(AEVK_0)) {
+			GameStateManager::g_GameStateNext = States::GS_LOSE;
+		}
+		else if (AEInputCheckCurr(AEVK_9)) {
+			GameStateManager::g_GameStateNext = States::GS_WIN;
+		}
 	}
 
 	// Get both players initially xy position from start once only
