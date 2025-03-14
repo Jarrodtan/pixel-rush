@@ -138,6 +138,16 @@ AEMtx33 rotateBGL = { 0 };
 AEMtx33 translateBGL = { 0 };
 AEMtx33 transformBGL = { 0 };
 
+AEMtx33 scaleBGU1 = { 0 };
+AEMtx33 rotateBGU1 = { 0 };
+AEMtx33 translateBGU1 = { 0 };
+AEMtx33 transformBGU1 = { 0 };
+
+AEMtx33 scaleBGUI[999] = {0};
+AEMtx33 rotateBGUI[999] = {0};
+AEMtx33 translateBGUI[999] = {0};
+AEMtx33 transformBGUI[999] = {0};
+
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object
@@ -308,6 +318,34 @@ void GameStateLevelInit(void) {
 	AEMtx33Trans(&translateBGL, 0.f, 0.f);
 	AEMtx33Concat(&transformBGL, &rotateBGL, &scaleBGL);
 	AEMtx33Concat(&transformBGL, &translateBGL, &transformBGL);
+
+	//background UI top image
+	AEMtx33Scale(&scaleBGU1, 300.0f, 250.0f);
+	AEMtx33Rot(&rotateBGU1, 0);
+	AEMtx33Trans(&translateBGU1, -600, 300);
+	AEMtx33Concat(&transformBGU1, &rotateBGU1, &scaleBGU1);
+	AEMtx33Concat(&transformBGU1, &translateBGU1, &transformBGU1);
+
+	//background UI Player Lives
+	AEMtx33Scale(&scaleBGUI[0], 50.0f, 50.0f);
+	AEMtx33Rot(&rotateBGUI[0], 0);
+	AEMtx33Trans(&translateBGUI[0], -650, 355);
+	AEMtx33Concat(&transformBGUI[0], &rotateBGUI[0], &scaleBGUI[0]);
+	AEMtx33Concat(&transformBGUI[0], &translateBGUI[0], &transformBGUI[0]);
+
+	//background UI Shadow Fragment
+	AEMtx33Scale(&scaleBGUI[1], 50.0f, 50.0f);
+	AEMtx33Rot(&rotateBGUI[1], 0);
+	AEMtx33Trans(&translateBGUI[1], -650, 295);
+	AEMtx33Concat(&transformBGUI[1], &rotateBGUI[1], &scaleBGUI[1]);
+	AEMtx33Concat(&transformBGUI[1], &translateBGUI[1], &transformBGUI[1]);
+
+	//background UI Light Fragment
+	AEMtx33Scale(&scaleBGUI[2], 50.0f, 50.0f);
+	AEMtx33Rot(&rotateBGUI[2], 0);
+	AEMtx33Trans(&translateBGUI[2], -650, 235);
+	AEMtx33Concat(&transformBGUI[2], &rotateBGUI[2], &scaleBGUI[2]);
+	AEMtx33Concat(&transformBGUI[2], &translateBGUI[2], &transformBGUI[2]);
 	
 	f_TipsScreenTime = 0.f;
 	b_TipActive = false;
@@ -1684,22 +1722,35 @@ void GameStateLevelDraw(void) {
 		}
 	}
 
-	const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
-	const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
+	//const std::string s_LightShards = "Light Shards: " + std::to_string(::i_TotalLightShard);
+	//const std::string s_ShadowFragments = "Shadow Fragments: " + std::to_string(::i_TotalShadowFragment);
 	
 	//const std::string s_LightPlayerLives = "Light Player Lives: " + std::to_string(::i_LightPlayerLives);
 	//const std::string s_ShadowPlayerLives = "Shadow Player Lives: " + std::to_string(::i_ShadowPlayerLives);
 
-	const std::string s_PlayersLives = "Players Lives: " + std::to_string(::i_PlayerLives);
+	//const std::string s_PlayersLives = "Players Lives: " + std::to_string(::i_PlayerLives);
+
+	const std::string s_PlayersLives = std::to_string(::i_PlayerLives);
+	const std::string s_LightShards = std::to_string(::i_TotalLightShard);
+	const std::string s_ShadowFragments = std::to_string(::i_TotalShadowFragment);
+
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGU1, Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[0], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[1], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
 
 	if (saveprevlevel >= 3) {
 		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
 		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
 	}
 
-	Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
-	Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
-	Render::RenderFont(s_PlayersLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::RED);
+	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
+	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);
+	Render::RenderFont(s_PlayersLives, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.875f, Render::COLOUR::RED);
+
+	//Render::RenderFont(s_LightShards, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.9f, Render::COLOUR::LIGHT_BLUE);
+	//Render::RenderFont(s_ShadowFragments, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.9f, Render::COLOUR::YELLOW);
+	//Render::RenderFont(s_PlayersLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::RED);
 	//Render::RenderFont(s_LightPlayerLives, 0.8f, g_WindowWidth * 0.05f, g_WindowHeight * 0.85f, Render::COLOUR::LIGHT_BLUE);
 	//Render::RenderFont(s_ShadowPlayerLives, 0.8f, g_WindowWidth * 0.8f, g_WindowHeight * 0.85f, Render::COLOUR::YELLOW);
 
