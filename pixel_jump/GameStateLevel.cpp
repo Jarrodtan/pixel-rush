@@ -1692,14 +1692,6 @@ void GameStateLevelDraw(void) {
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[3], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
 
-	switch (GameStateManager::g_GameStateCurr) {
-	case States::GS_TUTORIAL_LVL3:
-		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
-		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
-		break;
-	}
-
-
 	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
 	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);
 	Render::RenderFont(s_PlayersLives, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.875f, Render::COLOUR::RED);
