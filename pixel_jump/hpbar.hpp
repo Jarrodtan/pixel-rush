@@ -13,6 +13,8 @@ AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float
 
 void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform, float r, float g, float b, float e, float a);
 
+void renderUI_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform);
+
 int calculateDistance(float src_posX, float src_posY, float dst_posX, float dst_posY, float distance);
 
 void playerhplock();

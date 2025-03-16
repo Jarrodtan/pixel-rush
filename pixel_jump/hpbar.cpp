@@ -94,6 +94,20 @@ void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32
 
 }
 
+void renderUI_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform)
+{
+	AEMtx33Scale(&scale, sizeX, sizeY);
+
+	AEMtx33Rot(&rotate, rotation);
+
+	AEMtx33Trans(&translate, posX, posY);
+
+	AEMtx33Concat(&transform, &rotate, &scale);
+	AEMtx33Concat(&transform, &translate, &transform);
+
+
+}
+
 void playerhplock()
 {
 	if (currenthealth > maxhealth)

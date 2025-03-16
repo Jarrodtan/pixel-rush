@@ -1,4 +1,5 @@
 #include "main.h"
+#include "hpbar.hpp"
 
 namespace {
 	static f32 f_CreditsScroll;
@@ -67,11 +68,13 @@ void GameStateCreditsInit() {
 	Lines.push_back("Audio Engine: FMOD Studio by Firelight Technologies Pty Ltd.");
 
 	//background image
-	AEMtx33Scale(&scaleBG2, g_WindowWidth, g_WindowHeight);
+	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG2, rotateBG2, translateBG2, transformBG2);
+
+	/*AEMtx33Scale(&scaleBG2, g_WindowWidth, g_WindowHeight);
 	AEMtx33Rot(&rotateBG2, 0);
 	AEMtx33Trans(&translateBG2, 0.f, 0.f);
 	AEMtx33Concat(&transformBG2, &rotateBG2, &scaleBG2);
-	AEMtx33Concat(&transformBG2, &translateBG2, &transformBG2);
+	AEMtx33Concat(&transformBG2, &translateBG2, &transformBG2);*/
 }
 
 void GameStateCreditsUpdate() {
