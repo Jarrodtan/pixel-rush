@@ -45,7 +45,9 @@
 #include "GameObjects.h"
 #include "FileReader.h"
 #include "RenderHelper.h"
+#include "TutorialMenu.h"
 #include "AudioManager.h"
+#include "hpbar.hpp"
 //-------------------------------------------------------------------------/
 
 /**************************************************************************/

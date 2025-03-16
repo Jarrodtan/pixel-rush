@@ -154,19 +154,21 @@ void GameStateMainMenuUpdate(void) {
 
 			case 1:
 				if (button[j].Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased) && ::a >= ::delayduration) {
-					switch (saveprevtut) {
-					default:
-					case -1:
-						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
-						break;
-					case -2:
-						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-						break;
-					case -3:
-						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
-						break;
+					GameStateManager::g_GameStateNext = States::GS_TUTORIAL_MENU;
 
-					}
+					//switch (saveprevtut) {
+					//default:
+					//case -1:
+					//	GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+					//	break;
+					//case -2:
+					//	GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+					//	break;
+					//case -3:
+					//	GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+					//	break;
+
+					//}
 				}
 				break;
 

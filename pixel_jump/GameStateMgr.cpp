@@ -40,6 +40,16 @@ namespace GameStateManager {
 		}
 
 		switch (g_GameStateCurr) {
+		case States::GS_TUTORIAL_MENU:
+		case States::GS_TUTORIAL_TIP:
+			GameStateLoad = GameStateTutorialMenuLoad;
+			GameStateInit = GameStateTutorialMenuInit;
+			GameStateUpdate = GameStateTutorialMenuUpdate;
+			GameStateDraw = GameStateTutorialMenuDraw;
+			GameStateFree = GameStateTutorialMenuFree;
+			GameStateUnload = GameStateTutorialMenuUnload;
+			break;
+
 		case States::GS_PLATFORM_LVL1:
 		case States::GS_PLATFORM_LVL2:
 		case States::GS_PLATFORM_LVL3:

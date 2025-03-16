@@ -94,6 +94,8 @@ namespace Render {
 		g_Texture[TEXTURE::UI_SFrag] = AEGfxTextureLoad("Assets/Art/uisfrag.png");
 		g_Texture[TEXTURE::UI_LShard] = AEGfxTextureLoad("Assets/Art/uilshard.png");
 		g_Texture[TEXTURE::UI_TIPS] = AEGfxTextureLoad("Assets/Art/uitips3.png");
+		g_Texture[TEXTURE::TUTORIAL_INTRO] = AEGfxTextureLoad("Assets/Art/Tutorial_Intro.png");
+		g_Texture[TEXTURE::TUTORIAL_TIPS] = AEGfxTextureLoad("Assets/Art/Tutorial_Tip.png");
 	}
 
 	/******************************************************************************/

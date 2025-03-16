@@ -29,12 +29,14 @@
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
+    <ClCompile Include="TutorialMenu.cpp" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameStateCredits.h" />
     <ClInclude Include="GameStateSplash.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClCompile Include="PowerUpManager.cpp" />
     <ClInclude Include="Sequence.h" />
+    <ClInclude Include="TutorialMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
