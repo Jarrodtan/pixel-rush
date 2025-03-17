@@ -128,22 +128,12 @@ namespace {
 	static const f32 f_TipsScreenUnchangedTime = 2.f;
 	static const f32 f_MaxTipsSreenTime = 1.5f;
 	bool b_TipActive;
+
+	AEMtx33 scaleBGUI[999] = { 0 };
+	AEMtx33 rotateBGUI[999] = { 0 };
+	AEMtx33 translateBGUI[999] = { 0 };
+	AEMtx33 transformBGUI[999] = { 0 };
 }
-
-/*AEMtx33 scaleBGL = {0};
-AEMtx33 rotateBGL = { 0 };
-AEMtx33 translateBGL = { 0 };
-AEMtx33 transformBGL = { 0 };
-
-AEMtx33 scaleBGU1 = { 0 };
-AEMtx33 rotateBGU1 = { 0 };
-AEMtx33 translateBGU1 = { 0 };
-AEMtx33 transformBGU1 = { 0 };*/
-
-AEMtx33 scaleBGUI[999] = {0};
-AEMtx33 rotateBGUI[999] = {0};
-AEMtx33 translateBGUI[999] = {0};
-AEMtx33 transformBGUI[999] = {0};
 
 /******************************************************************************/
 /*!
@@ -332,47 +322,6 @@ void GameStateLevelInit(void) {
 		}
 		renderUI_transform(posX, posY, sizeX, sizeY, rotation, scaleBGUI[n], rotateBGUI[n], translateBGUI[n], transformBGUI[n]);
 	}
-		/*//background level image
-		AEMtx33Scale(&scaleBGL, g_WindowWidth, g_WindowHeight);
-		AEMtx33Rot(&rotateBGL, 0);
-		AEMtx33Trans(&translateBGL, 0.f, 0.f);
-		AEMtx33Concat(&transformBGL, &rotateBGL, &scaleBGL);
-		AEMtx33Concat(&transformBGL, &translateBGL, &transformBGL);
-
-		//background UI player stats container
-		AEMtx33Scale(&scaleBGU1, 300.0f, 250.0f);
-		AEMtx33Rot(&rotateBGU1, 0);
-		AEMtx33Trans(&translateBGU1, -600, 300);
-		AEMtx33Concat(&transformBGU1, &rotateBGU1, &scaleBGU1);
-		AEMtx33Concat(&transformBGU1, &translateBGU1, &transformBGU1);
-
-		//background UI Player Lives
-		AEMtx33Scale(&scaleBGUI[0], 50.0f, 50.0f);
-		AEMtx33Rot(&rotateBGUI[0], 0);
-		AEMtx33Trans(&translateBGUI[0], -650, 355);
-		AEMtx33Concat(&transformBGUI[0], &rotateBGUI[0], &scaleBGUI[0]);
-		AEMtx33Concat(&transformBGUI[0], &translateBGUI[0], &transformBGUI[0]);
-
-		//background UI Shadow Fragment
-		AEMtx33Scale(&scaleBGUI[1], 50.0f, 50.0f);
-		AEMtx33Rot(&rotateBGUI[1], 0);
-		AEMtx33Trans(&translateBGUI[1], -650, 295);
-		AEMtx33Concat(&transformBGUI[1], &rotateBGUI[1], &scaleBGUI[1]);
-		AEMtx33Concat(&transformBGUI[1], &translateBGUI[1], &transformBGUI[1]);
-
-		//background UI Light Fragment
-		AEMtx33Scale(&scaleBGUI[2], 50.0f, 50.0f);
-		AEMtx33Rot(&rotateBGUI[2], 0);
-		AEMtx33Trans(&translateBGUI[2], -650, 235);
-		AEMtx33Concat(&transformBGUI[2], &rotateBGUI[2], &scaleBGUI[2]);
-		AEMtx33Concat(&transformBGUI[2], &translateBGUI[2], &transformBGUI[2]);
-
-		//background UI Tips Container
-		AEMtx33Scale(&scaleBGUI[3], g_WindowWidth * 0.75f, g_WindowHeight * 0.15f);
-		AEMtx33Rot(&rotateBGUI[3], 0);
-		AEMtx33Trans(&translateBGUI[3], 0, -370);
-		AEMtx33Concat(&transformBGUI[3], &rotateBGUI[3], &scaleBGUI[3]);
-		AEMtx33Concat(&transformBGUI[3], &translateBGUI[3], &transformBGUI[3]);*/
 	
 	f_TipsScreenTime = 0.f;
 	b_TipActive = false;
@@ -735,22 +684,6 @@ void GameStateLevelUpdate(void) {
 	else {
 		::p_ShadowPlayer->currVelocity.x = 0;
 	}
-
-	//Power up [increase velocity]
-	//if (AEInputCheckTriggered(AEVK_J) && (powerUpFlag & POWER_PICKEDUP) > 0) {
-	//	powerUpFlag ^= POWER_ACTIVE;
-	//	AEGfxVertexList* staging = p_LightPlayer->p_GameObject->p_Mesh;
-	//	p_LightPlayer->p_GameObject->p_Mesh = p_Effect->p_Mesh;
-	//	p_Effect->p_Mesh = staging;
-
-	//}
-
-	// basic jump
-	/*if (AEInputCheckTriggered(AEVK_W)) {
-		if (p_LightPlayer->currVelocity.y == 0) {
-			p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
-		}
-	}*/
 
 	if (AEInputCheckTriggered(AEVK_UP)) {
 		if (!isGravitySwitch_S) {
@@ -1442,7 +1375,6 @@ void GameStateLevelUpdate(void) {
 		AEMtx33Concat(&p_Instance->transform, &Translate, &p_Instance->transform);
 	}
 
-	//AEGfxSetCamPosition(1, 1);
 }
 
 /******************************************************************************/
