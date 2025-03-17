@@ -84,8 +84,6 @@ namespace Render {
 		g_Texture[TEXTURE::DOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0095.png");
 		g_Texture[TEXTURE::PORTAL] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0181.png");
 		g_Texture[TEXTURE::GRAVITY_TOKEN] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0007.png");
-
-		//Level Environment Art Textures
 		g_Texture[TEXTURE::TILE_FLOOR2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0029.png");
 		g_Texture[TEXTURE::TILE_FOREGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0002.png");
 		g_Texture[TEXTURE::TILE_MIDDLEGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0009.png");
@@ -102,6 +100,7 @@ namespace Render {
 		g_Texture[TEXTURE::UI_LShard] = AEGfxTextureLoad("Assets/Art/uilshard.png");
 		g_Texture[TEXTURE::TUTORIAL_INTRO] = AEGfxTextureLoad("Assets/Art/Tutorial_Intro.png");
 		g_Texture[TEXTURE::TUTORIAL_TIPS] = AEGfxTextureLoad("Assets/Art/Tutorial_Tip.png");
+		g_Texture[TEXTURE::UI_TIPS] = AEGfxTextureLoad("Assets/Art/uitips5.png");
 	}
 
 	/******************************************************************************/
