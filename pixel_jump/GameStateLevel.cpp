@@ -1689,7 +1689,6 @@ void GameStateLevelDraw(void) {
 
 	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
 	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);
-	Render::RenderFont(s_PlayersLives, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.875f, Render::COLOUR::RED);
 }
 
 /******************************************************************************/
