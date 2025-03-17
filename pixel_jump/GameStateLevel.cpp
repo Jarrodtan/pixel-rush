@@ -133,6 +133,12 @@ namespace {
 	AEMtx33 rotateBGUI[999] = { 0 };
 	AEMtx33 translateBGUI[999] = { 0 };
 	AEMtx33 transformBGUI[999] = { 0 };
+
+	// health bar
+	int hp_num;
+
+	// Bool True for testing levels or switching scenes using button 0 to 9 
+	bool enterDebugMode = false;
 }
 
 /******************************************************************************/
@@ -307,18 +313,21 @@ void GameStateLevelLoad(void) {
 void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Pixel Rush");
 
-	for (int n = 0; n < 6; n++) {
+	for (int n = 0; n < 8; n++) {
 
 		f32 posX, posY, sizeX, sizeY, rotation = 0.f;
 
 		switch (n) {
 	    default:
-		case 0: sizeX = g_WindowWidth; sizeY = g_WindowHeight; posX = posY = 0.f; break;
-		case 1: sizeX = 300.f; sizeY = 250.f; posX = -600.f; posY = 300.f; break;
-		case 2: sizeX = sizeY = 50.f; posX = -650.f; posY = 355.f; break;
-		case 3: sizeX = sizeY = 50.f; posX = -650.f; posY = 295.f; break;
-		case 4: sizeX = sizeY = 50.f; posX = -650.f; posY = 235.f; break;
-		case 5: sizeX = g_WindowWidth * 0.75f; sizeY = g_WindowHeight * 0.15f; posX = 0.f; posY = -370.f; break;
+		case 0: sizeX = sizeY = 50.f; posX = -650.f; posY = 355.f; break;
+		case 1: sizeX = sizeY = 50.f; posX = -590.f; posY = 355.f; break;
+		case 2: sizeX = sizeY = 50.f; posX = -530.f; posY = 355.f; break;
+		case 3: sizeX = g_WindowWidth; sizeY = g_WindowHeight; posX = posY = 0.f; break;
+		case 4: sizeX = 300.f; sizeY = 250.f; posX = -600.f; posY = 300.f; break;
+		case 5: sizeX = sizeY = 50.f; posX = -650.f; posY = 295.f; break;
+		case 6: sizeX = sizeY = 50.f; posX = -650.f; posY = 235.f; break;
+		case 7: sizeX = g_WindowWidth * 0.75f; sizeY = g_WindowHeight * 0.15f; posX = 0.f; posY = -370.f; break;
+		
 		}
 		renderUI_transform(posX, posY, sizeX, sizeY, rotation, scaleBGUI[n], rotateBGUI[n], translateBGUI[n], transformBGUI[n]);
 	}
@@ -353,8 +362,6 @@ void GameStateLevelInit(void) {
 	::p_WhiteCell->u_Flag ^= FLAG_VISIBLE;
 	::p_WhiteCell->u_Flag |= FLAG_NON_COLLIDABLE;
 
-	//::i_LightPlayerLives = PLAYER_LIVES;
-	//::i_ShadowPlayerLives = PLAYER_LIVES;
 	::i_PlayerLives = PLAYER_LIVES;
 
 	// reset the total values for both to avoid double count for each of them
@@ -626,31 +633,32 @@ void GameStateLevelUpdate(void) {
 		b_TipActive = !b_TipActive;
 	}
 	// debugging purposes (remove this after testing)
-
-	/*else if (AEInputCheckTriggered(AEVK_1)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+	if (enterDebugMode) {
+		if (AEInputCheckTriggered(AEVK_1)) {
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+		}
+		else if (AEInputCheckCurr(AEVK_2)) {
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+		}
+		else if (AEInputCheckCurr(AEVK_3)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+		}
+		else if (AEInputCheckCurr(AEVK_4)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+		}
+		else if (AEInputCheckCurr(AEVK_5)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+		}
+		else if (AEInputCheckCurr(AEVK_F)) {
+			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+		}
+		else if (AEInputCheckCurr(AEVK_0)) {
+			GameStateManager::g_GameStateNext = States::GS_LOSE;
+		}
+		else if (AEInputCheckCurr(AEVK_9)) {
+			GameStateManager::g_GameStateNext = States::GS_WIN;
+		}
 	}
-	else if (AEInputCheckCurr(AEVK_2)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-	}
-	else if (AEInputCheckCurr(AEVK_3)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-	}
-	else if (AEInputCheckCurr(AEVK_4)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-	}
-	else if (AEInputCheckCurr(AEVK_5)) {
-		GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
-	}
-	else if (AEInputCheckCurr(AEVK_F)) {
-		GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
-	}
-	else if (AEInputCheckCurr(AEVK_0)) {
-		GameStateManager::g_GameStateNext = States::GS_LOSE;
-	}
-	else if (AEInputCheckCurr(AEVK_9)) {
-		GameStateManager::g_GameStateNext = States::GS_WIN;
-	}*/
 
 	// Time counter
 	if (haveTiming) {
@@ -896,8 +904,7 @@ void GameStateLevelUpdate(void) {
 		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
 
-	//if (::i_LightPlayerLives <= 0 || ::i_ShadowPlayerLives <= 0 || ::i_Time == 0) {
-	if (::i_PlayerLives <= 0 || ::i_Time == 0) {
+	if (::i_PlayerLives < 0 || ::i_Time == 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
@@ -1387,7 +1394,20 @@ void GameStateLevelDraw(void) {
 	AEMtx33 CellTranslation{}, FinalCellTransform{};
 
 	AEGfxSetBackgroundColor(0.1f, 0.1f, 0.4f);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[0], Render::TEXTURE::LEVEL_BASIC, 0, 0, 0, 1);
+
+	Render::TEXTURE bgMain;
+
+	switch (GameStateManager::g_GameStateCurr) {
+	default:
+		bgMain = Render::TEXTURE::LEVEL_BASIC;
+		break;
+	case States::GS_TUTORIAL_LVL3:
+	case States::GS_PLATFORM_LVL1:
+		bgMain = Render::TEXTURE::LEVEL_BASIC2;
+		break;
+	}
+
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[3], bgMain, 0, 0, 0, 1);
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxTextureSet(NULL, 0, 0);
@@ -1410,12 +1430,29 @@ void GameStateLevelDraw(void) {
 
 			switch (::p_BinaryCollisionArray[i][j]) {
 			case Objects::TYPE_OBJECT_EMPTY:
-				if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) == j) 
-					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_MIDDLEGROUND);
-				else if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) > j) 
-					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_BACKGROUND);
+
+				Render::TEXTURE Mid, Back, Fore;
+
+				switch (GameStateManager::g_GameStateCurr) {
+				default:
+					Mid = Render::TEXTURE::TILE_MIDDLEGROUND;
+					Back = Render::TEXTURE::TILE_BACKGROUND;
+					Fore = Render::TEXTURE::TILE_FOREGROUND;
+				break;
+				case States::GS_TUTORIAL_LVL3:
+				case States::GS_PLATFORM_LVL1:
+				  Mid = Render::TEXTURE::TILE_MIDDLEGROUND2;
+				  Back = Render::TEXTURE::TILE_BACKGROUND2;
+				  Fore = Render::TEXTURE::TILE_FOREGROUND2;
+				  break;
+				}
+
+				if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) == j)
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Mid);
+				else if (static_cast<s32>(i_BINARY_MAP_HEIGHT * 0.5f) > j)
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Back);
 				else
-					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Render::TEXTURE::TILE_FOREGROUND);
+					Render::RenderShapes(::p_BlackCell, FinalCellTransform, Fore);
 				break;
 			default:
 				break;
@@ -1527,12 +1564,32 @@ void GameStateLevelDraw(void) {
 			switch (::p_BinaryCollisionArray[i][j]) {
 
 			case Objects::TYPE_OBJECT_WALL:
-				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Render::TEXTURE::TILE_FLOOR);
+				Render::TEXTURE Floor;
+
+				switch (GameStateManager::g_GameStateCurr) {
+				default:
+					Floor = Render::TEXTURE::TILE_FLOOR;
+					break;
+				case States::GS_TUTORIAL_LVL3:
+				case States::GS_PLATFORM_LVL1:
+					Floor = Render::TEXTURE::TILE_FLOOR2;
+					break;
+				}
+
+				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Floor);
 				break;
 			default:
 				break;
 			}
 		}
+	}
+
+	switch (GameStateManager::g_GameStateCurr) {
+	case States::GS_TUTORIAL_LVL1:
+	case States::GS_TUTORIAL_LVL2:
+	case States::GS_TUTORIAL_LVL3:
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[7], Render::TEXTURE::UI_TIPS, 0, 0, 0, 1);
+		break;
 	}
 
 	f_TipsScreenTime += g_dt;
@@ -1545,7 +1602,7 @@ void GameStateLevelDraw(void) {
 			if (!TipsTutorial1[i].b_IsActive) continue;
 
 			TipsTutorial1[i].f_Alpha = TipsTutorial1[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial1[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			Render::RenderFont(TipsTutorial1[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial1[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 			if (TipsTutorial1[i].f_Alpha <= 0.f) {
 				TipsTutorial1[i].f_Alpha = 1.f;
@@ -1561,7 +1618,7 @@ void GameStateLevelDraw(void) {
 			if (!TipsTutorial2[i].b_IsActive) continue;
 
 			TipsTutorial2[i].f_Alpha = TipsTutorial2[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial2[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			Render::RenderFont(TipsTutorial2[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial2[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 			if (TipsTutorial2[i].f_Alpha <= 0.f) {
 				TipsTutorial2[i].f_Alpha = 1.f;
@@ -1578,7 +1635,7 @@ void GameStateLevelDraw(void) {
 			if (!TipsTutorial3[i].b_IsActive) continue;
 
 			TipsTutorial3[i].f_Alpha = TipsTutorial3[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-			Render::RenderFont(TipsTutorial3[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+			Render::RenderFont(TipsTutorial3[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, TipsTutorial3[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 			if (TipsTutorial3[i].f_Alpha <= 0.f) {
 				TipsTutorial3[i].f_Alpha = 1.f;
@@ -1601,7 +1658,7 @@ void GameStateLevelDraw(void) {
 				if (!Tips[i].b_IsActive) continue;
 
 				Tips[i].f_Alpha = Tips[i].f_Alpha - f_TipsProgress / f_MaxTipsSreenTime;
-				Render::RenderFont(Tips[i].s_Text, 1.5f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
+				Render::RenderFont(Tips[i].s_Text, 1.25f, g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, 1.f, 0.f, 0.f, Tips[i].f_Alpha, Render::FONT_ALIGN::CENTER);
 
 				if (Tips[i].f_Alpha <= 0.f) {
 					Tips[i].f_Alpha = 1.f;
@@ -1619,10 +1676,16 @@ void GameStateLevelDraw(void) {
 	const std::string s_LightShards = std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = std::to_string(::i_TotalShadowFragment);
 
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[1], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
+
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[3], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[5], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[6], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
+
+
+	for (int b = 0; b < ::i_PlayerLives; b++) {
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[b], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+	}
 
 	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
 	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);

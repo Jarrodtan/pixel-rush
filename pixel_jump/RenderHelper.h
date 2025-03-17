@@ -61,6 +61,12 @@ namespace Render {
 		SPLASHSCREEN,
 		FMODSCREEN,
 
+		TILE_FLOOR2,
+		TILE_FOREGROUND2,
+		TILE_MIDDLEGROUND2,
+		TILE_BACKGROUND2,
+		LEVEL_BASIC2,
+
 		// TODO: Add more textures here as needed
 
 		MAX_TEXTURE

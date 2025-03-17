@@ -84,16 +84,22 @@ namespace Render {
 		g_Texture[TEXTURE::DOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0095.png");
 		g_Texture[TEXTURE::PORTAL] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0181.png");
 		g_Texture[TEXTURE::GRAVITY_TOKEN] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0007.png");
+
+		//Level Environment Art Textures
+		g_Texture[TEXTURE::TILE_FLOOR2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0029.png");
+		g_Texture[TEXTURE::TILE_FOREGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0002.png");
+		g_Texture[TEXTURE::TILE_MIDDLEGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0009.png");
+		g_Texture[TEXTURE::TILE_BACKGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0018.png");
+		g_Texture[TEXTURE::LEVEL_BASIC2] = AEGfxTextureLoad("Assets/Art/levelbasicbg2.png");
 		g_Texture[TEXTURE::TITLE_MAINMENU] = AEGfxTextureLoad("Assets/Art/mainmenubg.png");
 		g_Texture[TEXTURE::TITLE_CREDIT] = AEGfxTextureLoad("Assets/Art/creditbg.png");
 		g_Texture[TEXTURE::TITLE_WIN] = AEGfxTextureLoad("Assets/Art/winbg.png");
 		g_Texture[TEXTURE::TITLE_LOSE] = AEGfxTextureLoad("Assets/Art/losebg.png");
-		g_Texture[TEXTURE::LEVEL_BASIC] = AEGfxTextureLoad("Assets/Art/levelbasicbg.png");
+		g_Texture[TEXTURE::LEVEL_BASIC] = AEGfxTextureLoad("Assets/Art/levelbasicbg5.png");
 		g_Texture[TEXTURE::UI_BASIC] = AEGfxTextureLoad("Assets/Art/uibasicbg3.png");
 		g_Texture[TEXTURE::UI_PLives] = AEGfxTextureLoad("Assets/Art/uiplives.png");
 		g_Texture[TEXTURE::UI_SFrag] = AEGfxTextureLoad("Assets/Art/uisfrag.png");
 		g_Texture[TEXTURE::UI_LShard] = AEGfxTextureLoad("Assets/Art/uilshard.png");
-		g_Texture[TEXTURE::UI_TIPS] = AEGfxTextureLoad("Assets/Art/uitips3.png");
 		g_Texture[TEXTURE::TUTORIAL_INTRO] = AEGfxTextureLoad("Assets/Art/Tutorial_Intro.png");
 		g_Texture[TEXTURE::TUTORIAL_TIPS] = AEGfxTextureLoad("Assets/Art/Tutorial_Tip.png");
 	}
