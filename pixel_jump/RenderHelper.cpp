@@ -88,7 +88,7 @@ namespace Render {
 		g_Texture[TEXTURE::TILE_FOREGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0002.png");
 		g_Texture[TEXTURE::TILE_MIDDLEGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0009.png");
 		g_Texture[TEXTURE::TILE_BACKGROUND2] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0018.png");
-		g_Texture[TEXTURE::LEVEL_BASIC2] = AEGfxTextureLoad("Assets/Art/levelbasicbg2.png");
+		g_Texture[TEXTURE::LEVEL_BASIC2] = AEGfxTextureLoad("Assets/Art/levelbasicbg6.png");
 		g_Texture[TEXTURE::TITLE_MAINMENU] = AEGfxTextureLoad("Assets/Art/mainmenubg.png");
 		g_Texture[TEXTURE::TITLE_CREDIT] = AEGfxTextureLoad("Assets/Art/creditbg.png");
 		g_Texture[TEXTURE::TITLE_WIN] = AEGfxTextureLoad("Assets/Art/winbg.png");

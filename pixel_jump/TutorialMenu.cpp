@@ -31,6 +31,19 @@ void GameStateTutorialMenuUpdate() {
 	if (button.Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
 		if (GameStateManager::g_GameStateCurr == States::GS_TUTORIAL_TIP) {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+			/*switch (saveprevtut) {
+			default:
+			case -1:
+				GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+				break;
+			case -2:
+				GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
+				break;
+			case -3:
+				GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
+				break;
+
+			}*/
 		}
 		else {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_TIP;
