@@ -38,7 +38,7 @@ namespace {
 
 	// Timer Features
 	s32 i_Time;
-	bool haveTiming = false;
+	bool haveTiming = true;
 
 	// List of original objects
 	Objects::GameObject* p_GameObjectList = nullptr;
@@ -313,7 +313,7 @@ void GameStateLevelLoad(void) {
 void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Pixel Rush");
 
-	for (int n = 0; n < 8; n++) {
+	for (int n = 0; n < 10; n++) {
 
 		f32 posX, posY, sizeX, sizeY, rotation = 0.f;
 
@@ -327,7 +327,8 @@ void GameStateLevelInit(void) {
 		case 5: sizeX = sizeY = 50.f; posX = -650.f; posY = 295.f; break;
 		case 6: sizeX = sizeY = 50.f; posX = -650.f; posY = 235.f; break;
 		case 7: sizeX = g_WindowWidth * 0.75f; sizeY = g_WindowHeight * 0.15f; posX = 0.f; posY = -370.f; break;
-		
+		case 8: sizeX = 200.f; sizeY = 100.f; posX = 0.f; posY = 370.f; break;
+		case 9: sizeX = sizeY = 50.f; posX = -50.f; posY = 370.f; break;
 		}
 		renderUI_transform(posX, posY, sizeX, sizeY, rotation, scaleBGUI[n], rotateBGUI[n], translateBGUI[n], transformBGUI[n]);
 	}
@@ -1650,8 +1651,11 @@ void GameStateLevelDraw(void) {
 	case States::GS_PLATFORM_LVL1:
 	case States::GS_PLATFORM_LVL2:
 	case States::GS_PLATFORM_LVL3:
-		const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
-		Render::RenderFont(s_Time, 0.8f, g_WindowWidth * 0.5f, g_WindowHeight * 0.9f, Render::COLOUR::RED, Render::CENTER);
+		//const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[8], Render::TEXTURE::UI_BASIC2, 0, 0, 0, 1);
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[9], Render::TEXTURE::UI_TIMER, 0, 0, 0, 1);
+		const std::string s_Time = std::to_string(::i_Time);
+		Render::RenderFont(s_Time, 1.8f, g_WindowWidth * 0.52f, g_WindowHeight * 0.9125f, Render::COLOUR::RED, Render::CENTER);
 
 		if (b_TipActive) {
 			for (s32 i = 0; i < static_cast<s32>(Tips.size()); ++i) {

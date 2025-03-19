@@ -101,6 +101,8 @@ namespace Render {
 		g_Texture[TEXTURE::TUTORIAL_INTRO] = AEGfxTextureLoad("Assets/Art/Tutorial_Intro.png");
 		g_Texture[TEXTURE::TUTORIAL_TIPS] = AEGfxTextureLoad("Assets/Art/Tutorial_Tip.png");
 		g_Texture[TEXTURE::UI_TIPS] = AEGfxTextureLoad("Assets/Art/uitips5.png");
+		g_Texture[TEXTURE::UI_TIMER] = AEGfxTextureLoad("Assets/Art/uitimer.png");
+		g_Texture[TEXTURE::UI_BASIC2] = AEGfxTextureLoad("Assets/Art/uibasicbg5.png");
 	}
 
 	/******************************************************************************/

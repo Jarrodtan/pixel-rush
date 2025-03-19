@@ -65,6 +65,8 @@ namespace Render {
 		TILE_MIDDLEGROUND2,
 		TILE_BACKGROUND2,
 		LEVEL_BASIC2,
+		UI_BASIC2,
+		UI_TIMER,
 
 		// TODO: Add more textures here as needed
 
