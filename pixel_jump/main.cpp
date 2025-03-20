@@ -52,6 +52,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	// Initialize the system
 	AESysInit(instanceH, show, 1600, 900, 0, 60, false, NULL);
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+	AESysSetWindowIcon("Assets/Art/icon.ico", 10, 10);
 	Render::Load();
 	AudioManager::Init();
 	// TODO: Change this to splash screen when level dev has been completed

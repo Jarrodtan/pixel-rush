@@ -311,7 +311,7 @@ void GameStateLevelLoad(void) {
 */
 /******************************************************************************/
 void GameStateLevelInit(void) {
-	AESysSetWindowTitle("Pixel Rush");
+	AESysSetWindowTitle("Pixel Rush");;
 
 	for (int n = 0; n < 10; n++) {
 
