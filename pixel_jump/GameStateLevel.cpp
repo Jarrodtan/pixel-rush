@@ -129,6 +129,7 @@ namespace {
 	static const f32 f_MaxTipsSreenTime = 1.5f;
 	bool b_TipActive;
 
+	bool b_ToggleUI;
 	AEMtx33 scaleBGUI[999] = { 0 };
 	AEMtx33 rotateBGUI[999] = { 0 };
 	AEMtx33 translateBGUI[999] = { 0 };
@@ -335,6 +336,7 @@ void GameStateLevelInit(void) {
 	
 	f_TipsScreenTime = 0.f;
 	b_TipActive = false;
+	b_ToggleUI = true;
 
 	::p_LightPlayer = 0;
 	::p_ShadowPlayer = 0;
@@ -630,9 +632,13 @@ void GameStateLevelUpdate(void) {
 	{
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
-	else if (AEInputCheckTriggered(AEVK_H)) {
+	
+	if (AEInputCheckTriggered(AEVK_H)) {
 		b_TipActive = !b_TipActive;
 	}
+
+	if (AEInputCheckTriggered(AEVK_T)) b_ToggleUI = !b_ToggleUI;
+
 	// debugging purposes (remove this after testing)
 	if (enterDebugMode) {
 		if (AEInputCheckTriggered(AEVK_1)) {
@@ -1680,19 +1686,20 @@ void GameStateLevelDraw(void) {
 	const std::string s_LightShards = std::to_string(::i_TotalLightShard);
 	const std::string s_ShadowFragments = std::to_string(::i_TotalShadowFragment);
 
+	if (b_ToggleUI) {
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[5], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
+		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[6], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
 
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[2], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[4], Render::TEXTURE::UI_BASIC, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[5], Render::TEXTURE::UI_SFrag, 0, 0, 0, 1);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[6], Render::TEXTURE::UI_LShard, 0, 0, 0, 1);
 
+		for (int b = 0; b < ::i_PlayerLives; b++) {
+			Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[b], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+		}
 
-	for (int b = 0; b < ::i_PlayerLives; b++) {
-		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[b], Render::TEXTURE::UI_PLives, 0, 0, 0, 1);
+		Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
+		Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);
 	}
-
-	Render::RenderFont(s_LightShards, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.740f, Render::COLOUR::WHITE);
-	Render::RenderFont(s_ShadowFragments, 1.8f, g_WindowWidth * 0.125f, g_WindowHeight * 0.81f, Render::COLOUR::BLACK);
 }
 
 /******************************************************************************/
