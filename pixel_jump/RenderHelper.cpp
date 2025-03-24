@@ -72,10 +72,10 @@ namespace Render {
 		g_Texture[TEXTURE::FMODSCREEN] = AEGfxTextureLoad("Assets/Art/FMOD-Logo.png");
 		g_Texture[TEXTURE::LIGHT_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
 		g_Texture[TEXTURE::SHADOW_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
-		g_Texture[TEXTURE::TILE_FLOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0000.png"); // 0026
+		g_Texture[TEXTURE::TILE_FLOOR] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_9999.png"); // 0026
 		g_Texture[TEXTURE::TILE_FOREGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0006.png");
 		g_Texture[TEXTURE::TILE_MIDDLEGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0014.png");
-		g_Texture[TEXTURE::TILE_BACKGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0022.png");
+		g_Texture[TEXTURE::TILE_BACKGROUND] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Backgrounds/tile_0024.png");
 		g_Texture[TEXTURE::SPIKE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0068.png");
 		g_Texture[TEXTURE::MOVEABLE_SPIKE] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0180.png");
 		g_Texture[TEXTURE::TOKEN]= AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/tile_0067.png");

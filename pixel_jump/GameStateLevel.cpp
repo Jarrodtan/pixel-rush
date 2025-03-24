@@ -1731,6 +1731,10 @@ void GameStateLevelFree(void) {
 	for (auto& tip : TipsTutorial2) {
 		tip.b_IsActive = false;
 	}
+
+	for (auto& tip : TipsTutorial3) {
+		tip.b_IsActive = false;
+	}
 }
 
 /******************************************************************************/
