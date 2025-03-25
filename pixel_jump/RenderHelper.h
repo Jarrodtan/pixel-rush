@@ -26,6 +26,7 @@ namespace Render {
 	enum SHAPES {
 		TRIANGLE = 0,
 		SQUARE,
+		INVERTED_SQUARE,
 		CIRCLE,
 
 		MAX_SHAPES
