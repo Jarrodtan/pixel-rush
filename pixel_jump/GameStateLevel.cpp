@@ -246,6 +246,15 @@ void GameStateLevelLoad(void) {
 	p_Object = ::p_GameObjectList + ::u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_GRAVITYSWITCHER;
 
+	p_Object = p_GameObjectList + u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SPIKE_DOWN;
+
+	p_Object = p_GameObjectList + u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_LIGHTSPIKE_DOWN;
+
+	p_Object = p_GameObjectList + u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -421,13 +430,26 @@ void GameStateLevelInit(void) {
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
 			
+			case Objects::TYPE_OBJECT_SPIKE_DOWN:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SPIKE_DOWN, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+
 			case Objects::TYPE_OBJECT_LIGHTSPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_LIGHTSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+
+			case Objects::TYPE_OBJECT_LIGHTSPIKE_DOWN:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_LIGHTSPIKE_DOWN, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
 
 			case Objects::TYPE_OBJECT_SHADOWSPIKE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWSPIKE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
+
+			case Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
+
 			case Objects::TYPE_OBJECT_GATE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
@@ -953,6 +975,7 @@ void GameStateLevelUpdate(void) {
 			}
 			break;
 
+		case Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN:
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				p_LightPlayer->currPosition.x = static_cast<f32>(i_LightPlayerInitialX + 0.5f);
@@ -1179,6 +1202,7 @@ void GameStateLevelUpdate(void) {
 			}
 			break;
 
+		case Objects::TYPE_OBJECT_LIGHTSPIKE_DOWN:
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				p_ShadowPlayer->currPosition.x = static_cast<f32>(i_ShadowPlayerInitialX + 0.5f);
@@ -1211,6 +1235,7 @@ void GameStateLevelUpdate(void) {
 			}
 			break;
 
+		case Objects::TYPE_OBJECT_SPIKE_DOWN:
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 		case Objects::TYPE_OBJECT_SPIKE:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -1490,6 +1515,7 @@ void GameStateLevelDraw(void) {
 			break;
 
 		case Objects::TYPE_OBJECT_SPIKE:
+		case Objects::TYPE_OBJECT_SPIKE_DOWN:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE, 1.f, 0.f, 0.f);
 			break;
 
@@ -1497,6 +1523,7 @@ void GameStateLevelDraw(void) {
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE, 1.f, 0.f, 0.f);
 			break;
 
+		case Objects::TYPE_OBJECT_LIGHTSPIKE_DOWN:
 		case Objects::TYPE_OBJECT_LIGHTSPIKE:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE, 0.5f, 0.5f, 0.5f);
 			break;
@@ -1505,6 +1532,7 @@ void GameStateLevelDraw(void) {
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::MOVEABLE_SPIKE, 0.5f, 0.5f, 0.5f);
 			break;
 
+		case Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN:
 		case Objects::TYPE_OBJECT_SHADOWSPIKE:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SPIKE, -0.6f, -0.6f, -0.6f);
 			break;

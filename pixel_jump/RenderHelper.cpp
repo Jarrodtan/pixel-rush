@@ -45,6 +45,18 @@ namespace Render {
 			-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
 		g_Shapes[SHAPES::SQUARE] = AEGfxMeshEnd();
 
+		AEGfxMeshStart();
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
+			0.5f, -0.5f, 0xFF000000, 1.0f, 0.0f,
+			0.5f, 0.5f, 0xFF000000, 1.0f, 1.0f);
+
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0xFF000000, 0.0f, 1.0f,
+			0.5f, 0.5f, 0xFF000000, 1.0f, 1.0f);
+		g_Shapes[SHAPES::INVERTED_SQUARE] = AEGfxMeshEnd();
+
 		{
 			AEGfxMeshStart();
 			s32 numSlices = 32;
@@ -177,6 +189,12 @@ namespace Render {
 			case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
 			case Objects::TYPE_OBJECT_SHADOWFRAGMENT:
 				p_Object->p_Mesh = g_Shapes[SHAPES::SQUARE];
+				break;
+
+			case Objects::TYPE_OBJECT_LIGHTSPIKE_DOWN:
+			case Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN:
+			case Objects::TYPE_OBJECT_SPIKE_DOWN:
+				p_Object->p_Mesh = g_Shapes[SHAPES::INVERTED_SQUARE];
 				break;
 			}
 		}
