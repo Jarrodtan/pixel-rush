@@ -96,6 +96,7 @@ namespace {
 	bool haveDoubleJump_L = true;
 	bool jumpEnabled_S, jumpEnabled_L;
 
+
 	//PUZZLE FEATURE 1 *(LIGHTPLAYER CANNOT TOUCH SHADOWFRAGMENT, VIA VISA)
 	bool puzzle1 = false;
 
@@ -294,7 +295,10 @@ void GameStateLevelLoad(void) {
 		break;
 
 	case States::GS_PLATFORM_LVL2:
+		::i_Time = 50;
+		haveTiming = true;
 		s_FilePath = "Assets/Maps/Level2.txt";
+		s_metaLoc = "";
 		break;
 		
 	case States::GS_PLATFORM_LVL3:
@@ -650,11 +654,11 @@ void GameStateLevelUpdate(void) {
 		saveprevtut = -3;
 		break;
 	}
-	if (AEInputCheckTriggered(AEVK_ESCAPE)) 
+	if (AEInputCheckTriggered(AEVK_ESCAPE))
 	{
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
-	
+
 	if (AEInputCheckTriggered(AEVK_H)) {
 		b_TipActive = !b_TipActive;
 	}
@@ -749,12 +753,19 @@ void GameStateLevelUpdate(void) {
 		}
 		else {
 			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2 || jumpEnabled_L) {
-				p_LightPlayer->currVelocity.y = JUMP_VELOCITY;
+				p_LightPlayer->currVelocity.y = -JUMP_VELOCITY;
 				++doubleJumpCounter_L;
 				b_IsLightPlayerGrounded = false;
 			}
 		}
 	}
+
+	/*if (b_IsLightPlayerGrounded) {
+		doubleJumpCounter_L = 0;
+	}
+	if (b_IsShadowPlayerGrounded) {
+		doubleJumpCounter_S = 0;
+	}*/
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -879,12 +890,13 @@ void GameStateLevelUpdate(void) {
 		if (p_Instance->i_gridCollisionFlag & COLLISION_BOTTOM) { 
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
-			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER) {
+
+			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER && !isGravitySwitch_L) {
 				doubleJumpCounter_L = 0;
 				b_IsLightPlayerGrounded = true;
 			}
 			
-			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER) {
+			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER && !isGravitySwitch_S) {
 				doubleJumpCounter_S = 0;
 				b_IsShadowPlayerGrounded = true;
 			}
@@ -892,6 +904,15 @@ void GameStateLevelUpdate(void) {
 		if (p_Instance->i_gridCollisionFlag & COLLISION_TOP) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
+			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_LIGHTPLAYER && isGravitySwitch_L) {
+				doubleJumpCounter_L = 0;
+				b_IsLightPlayerGrounded = true;
+			}
+
+			if (p_Instance->p_GameObject->u_Type == Objects::TYPE_OBJECT_SHADOWPLAYER && isGravitySwitch_S) {
+				doubleJumpCounter_S = 0;
+				b_IsShadowPlayerGrounded = true;
+			}
 		}
 
 		switch (p_Instance->p_GameObject->u_Type) {
