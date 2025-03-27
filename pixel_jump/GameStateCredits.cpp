@@ -32,15 +32,15 @@ void GameStateCreditsInit() {
 	button.Init(g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Back", "Main Menu", 0.4f, 0.4f, 1.f);
 
 	Lines.push_back("Credits:");
-	Lines.push_back("All Content (C) 2025 Digipen Institute of Technology Singaporee");
+	Lines.push_back("All Content (C) 2025 Digipen Institute of Technology Singapore");
 	Lines.push_back("All Rights Reserved");
 	Lines.push_back(" ");
 
-	Lines.push_back("A game by Team Pixel Jump");
-	Lines.push_back("Xiang Yang");
-	Lines.push_back("Wei Liang");
-	Lines.push_back("Marco");
-	Lines.push_back("Tristen");
+	Lines.push_back("A 2D platformer game by Team Pixel Jump");
+	Lines.push_back("Lau Xiang Yang");
+	Lines.push_back("Tan Wei Leong");
+	Lines.push_back("Ng Wei Zhen");
+	Lines.push_back("Mira Tristan Dumlao");
 	Lines.push_back(" ");
 
 	Lines.push_back("Faculty & Advisors:");
@@ -98,7 +98,7 @@ void GameStateCreditsUpdate() {
 
 void GameStateCreditsDraw() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
-	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG2, Render::TEXTURE::TITLE_CREDIT, 0, 0, 0, 1);
+	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG2, Render::TEXTURE::TITLE_CREDIT, 0, 0, 0, 0.4);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -106,7 +106,7 @@ void GameStateCreditsDraw() {
 
 	button.Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
 	for (s32 i = 0; i < Lines.size(); ++i) {
-		Render::RenderFont(Lines[i], f_CreditsFontSize, g_WindowWidth * 0.5f, 0.f + (f_CreditsScroll * 50.0f) - (f_CreditsOffset * static_cast<f32>(i)), Render::COLOUR::WHITE, Render::FONT_ALIGN::CENTER);
+		Render::RenderFont(Lines[i], f_CreditsFontSize, g_WindowWidth * 0.5f, 0.f + (f_CreditsScroll * 50.0f) - (f_CreditsOffset * static_cast<f32>(i)), Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
 	}
 }
 

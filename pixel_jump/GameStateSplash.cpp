@@ -8,6 +8,7 @@ namespace {
 }
 
 void GameStateSplashLoad() {
+	AESysSetWindowIcon("Assets/Art/icon.ico", 100, 100);
 
 }
 

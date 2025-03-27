@@ -140,7 +140,11 @@ namespace {
 	int hp_num;
 
 	// Bool True for testing levels or switching scenes using button 0 to 9 
-	bool enterDebugMode = true;
+	bool enterDebugMode = false;
+
+	//cheat codes 
+	bool stoptimer = false;
+	bool unlimitedhp = false;
 }
 
 /******************************************************************************/
@@ -674,17 +678,17 @@ void GameStateLevelUpdate(void) {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
 		}
 		else if (AEInputCheckCurr(AEVK_3)) {
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
-		}
-		else if (AEInputCheckCurr(AEVK_4)) {
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
-		}
-		else if (AEInputCheckCurr(AEVK_5)) {
-			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
-		}
-		else if (AEInputCheckCurr(AEVK_F)) {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
 		}
+		else if (AEInputCheckCurr(AEVK_4)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL1;
+		}
+		else if (AEInputCheckCurr(AEVK_5)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL2;
+		}
+		else if (AEInputCheckCurr(AEVK_6)) {
+			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
+		}		
 		else if (AEInputCheckCurr(AEVK_0)) {
 			GameStateManager::g_GameStateNext = States::GS_LOSE;
 		}
@@ -692,9 +696,26 @@ void GameStateLevelUpdate(void) {
 			GameStateManager::g_GameStateNext = States::GS_WIN;
 		}
 	}
+	
+	// cheat code for stop/resume timer
+	if (AEInputCheckTriggered(AEVK_0)) {
+		stoptimer = !stoptimer;
+	}
+
+	// cheat code for unlimited health
+	if (AEInputCheckTriggered(AEVK_9)) {
+		unlimitedhp = !unlimitedhp;
+	}
+
+	// unlimited health 
+	if (unlimitedhp)
+	{
+		::i_PlayerLives = 3;
+	}
+
 
 	// Time counter
-	if (haveTiming) {
+	if (haveTiming && !stoptimer) {
 		static f32 f_TimeCounter{};
 		f_TimeCounter += g_dt;
 		if (f_TimeCounter >= 1.0f) {

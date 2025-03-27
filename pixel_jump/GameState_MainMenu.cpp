@@ -58,7 +58,6 @@ void GameStateMainMenuLoad(void) {
 */
 /******************************************************************************/
 void GameStateMainMenuInit(void) {
-	AESysSetWindowTitle("Main Menu");
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
 
 	button[0].Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.4f, f_ButtonWidth, f_ButtonHeight, "Play", "Play", 0.4f, 0.4f, 1.f);

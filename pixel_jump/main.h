@@ -1,14 +1,13 @@
-/**********************************************************/
+/*******************************************************************/
 /*!
-	File:	main.h
-	Author:	
-	Email:	
+	File:		main.h
+	Project:	Pixel Rush
+	Author(s):
 
-	Brief:	
-
-	Copyright © 2025 DigiPen, All rights reserved.
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
 */
-/**********************************************************/
+/*******************************************************************/
 
 #ifndef HEADER_MAIN_H
 #define HEADER_MAIN_H
