@@ -2,7 +2,7 @@
 /*!
 	File:		PowerUpManager.h
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Mira Tristan Dumlao
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

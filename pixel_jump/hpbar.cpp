@@ -2,7 +2,7 @@
 /*!
 	File:		hpbar.cpp
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Marco Ng Wei Zhen
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

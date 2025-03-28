@@ -2,7 +2,7 @@
 /*!
 	File:		FileReader.cpp
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang (50% of Code), Mira Tristan Dumlao (50% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -11,13 +11,9 @@
 
 /**********************************************************/
 /*!
-	File:	FileReader.cpp
-	Author:
-	Email:
 
-	Brief:
+	Brief: Read binary text files and convert it into a level design as an output display on the screen
 
-	Copyright © 2025 DigiPen, All rights reserved.
 */
 /**********************************************************/
 

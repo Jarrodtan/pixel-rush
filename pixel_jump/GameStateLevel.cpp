@@ -2,7 +2,7 @@
 /*!
 	File:		GameStateLevel.cpp
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang (40% of Code), Mira Tristan Dumlao (20% of Code), Tan Wei Leong (20% of Code), Marco Ng Wei Zhen (20% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

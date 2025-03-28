@@ -2,7 +2,7 @@
 /*!
 	File:		GameState_MainMenu.cpp
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang (50% of Code), Marco Ng Wei Zhen (50% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

@@ -2,7 +2,7 @@
 /*!
 	File:		GameStateSplash.h
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

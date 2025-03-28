@@ -2,7 +2,7 @@
 /*!
 	File:		GameObjects.h
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang (85% of Code), Mira Tristan Dumlao (5% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

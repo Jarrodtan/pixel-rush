@@ -2,7 +2,7 @@
 /*!
 	File:		GameStateList.h
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang (55% of Code), Mira Tristan Dumlao (15% of Code), Tan Wei Leong (15% of Code), Marco Ng Wei Zhen (15% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

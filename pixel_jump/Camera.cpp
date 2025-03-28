@@ -2,7 +2,7 @@
 /*!
 	File:		Camera.cpp
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Mira Tristan Dumlao (90% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

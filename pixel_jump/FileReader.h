@@ -2,7 +2,7 @@
 /*!
 	File:		FileReader.h
 	Project:	Pixel Rush
-	Author(s):
+	Author(s):  Lau Xiang Yang (50% of Code), Mira Tristan Dumlao (50% of Code)
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
