@@ -1,14 +1,13 @@
-/**********************************************************/
+/*******************************************************************/
 /*!
-	File:	FileReader.h
-	Author:
-	Email:
+	File:		FileReader.h
+	Project:	Pixel Rush
+	Author(s):
 
-	Brief:
-
-	Copyright © 2025 DigiPen, All rights reserved.
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
 */
-/**********************************************************/
+/*******************************************************************/
 
 #ifndef FILE_READER_HEADER
 #define FILE_READER_HEADER

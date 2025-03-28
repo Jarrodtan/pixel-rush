@@ -1,14 +1,13 @@
-/**********************************************************/
+/*******************************************************************/
 /*!
-	File:	AudioManager.h
-	Author:
-	Email:
+	File:		AudioManager.h
+	Project:	Pixel Rush
+	Author(s):
 
-	Brief:
-
-	Copyright © 2025 DigiPen, All rights reserved.
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
 */
-/**********************************************************/
+/*******************************************************************/
 
 #ifndef AUDIO_MANAGER_H
 #define AUDIO_MANAGER_H

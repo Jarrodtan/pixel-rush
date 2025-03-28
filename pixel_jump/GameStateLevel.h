@@ -1,14 +1,13 @@
-/**********************************************************/
+/*******************************************************************/
 /*!
-	File:	GameStateLevel.h
-	Author:
-	Email:
+	File:		GameStateLevel.h
+	Project:	Pixel Rush
+	Author(s):
 
-	Brief:
-
-	Copyright © 2025 DigiPen, All rights reserved.
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
 */
-/**********************************************************/
+/*******************************************************************/
 
 #ifndef GAME_STATE_PLATFORM_LEVEL1_H
 #define GAME_STATE_PLATFORM_LEVEL1_H

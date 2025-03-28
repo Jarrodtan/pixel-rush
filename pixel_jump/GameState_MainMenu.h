@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		GameState_MainMenu.h
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #ifndef MAIN_MENU_HEADER
 #define MAIN_MENU_HEADER
 

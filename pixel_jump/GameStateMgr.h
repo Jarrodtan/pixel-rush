@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		GameStateMgr.h
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #ifndef GAME_STATE_MGR_H
 #define GAME_STATE_MGR_H
 

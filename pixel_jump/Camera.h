@@ -1,14 +1,13 @@
-/**********************************************************/
+/*******************************************************************/
 /*!
-	File:	Camera.h
-	Author:
-	Email:
+	File:		Camera.h
+	Project:	Pixel Rush
+	Author(s):
 
-	Brief:
-
-	Copyright © 2025 DigiPen, All rights reserved.
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
 */
-/**********************************************************/
+/*******************************************************************/
 
 #ifndef CAMERA_H
 #define CAMERA_H

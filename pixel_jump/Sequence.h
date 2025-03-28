@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		Sequence.h
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #ifndef SEQUENCE_H
 #define SEQUENCE_H
 

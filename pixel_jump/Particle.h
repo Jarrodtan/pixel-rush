@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		Particle.h
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #ifndef PARTICLE_HEADER
 #define PARTICLE_HEADER
 

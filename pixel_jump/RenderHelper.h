@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		RenderHelper.h
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #ifndef RENDER_HELPER_HEADER
 #define RENDER_HELPER_HEADER
 #include <string>
