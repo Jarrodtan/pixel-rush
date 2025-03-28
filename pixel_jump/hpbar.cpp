@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		hpbar.cpp
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #include <crtdbg.h> // To check for memory leaks
 #include "AEEngine.h"
 #include "hpbar.hpp"

@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		RenderHelper.cpp
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #include "RenderHelper.h"
 #include "GameObjects.h"
 #include "main.h"

@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		GameStateLoseScreenPlatform.cpp
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 /******************************************************************************/
 /*!
 	Load meshes,particle,font and map. Allocate memory for game object

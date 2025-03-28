@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		GameState_MainMenu.cpp
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 /******************************************************************************/
 /*!
 	Include Files

@@ -1,3 +1,14 @@
+/*******************************************************************/
+/*!
+	File:		GameStateCredits.cpp
+	Project:	Pixel Rush
+	Author(s):
+
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
+*/
+/*******************************************************************/
+
 #include "main.h"
 #include "hpbar.hpp"
 

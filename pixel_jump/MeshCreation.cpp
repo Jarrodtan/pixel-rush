@@ -1,14 +1,13 @@
-/**********************************************************/
+/*******************************************************************/
 /*!
-	File:	MeshCreation.cpp
-	Author:
-	Email:
+	File:		MeshCreation.cpp
+	Project:	Pixel Rush
+	Author(s):	Tan Wei Leong
 
-	Brief:
-
-	Copyright © 2025 DigiPen, All rights reserved.
+	All content © 2025 DigiPen Institute of Technology Singapore.
+	All rights reserved.
 */
-/**********************************************************/
+/*******************************************************************/
 
 /******************************************************************************/
 /*!
