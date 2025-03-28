@@ -3,6 +3,7 @@
 	File:		Collision.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: Game Collision Function to use such as AABB collision and dynamic collision system.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

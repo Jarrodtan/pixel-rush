@@ -3,6 +3,7 @@
 	File:		hpbar.cpp
 	Project:	Pixel Rush
 	Author(s):  Marco Ng Wei Zhen
+	Brief: To use the renderUI transform function for UI placement through their position xy and rendering it on screen.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -35,7 +36,7 @@ float timedelta{ 10 };
 	AEGfxMeshDraw(object[h].pMesh, AE_GFX_MDM_TRIANGLES);
 }*/
 
-
+// create square mesh
 AEGfxVertexList* mesh_create_square(u32 colour)
 {
 
@@ -56,7 +57,7 @@ AEGfxVertexList* mesh_create_square(u32 colour)
 
 	return AEGfxMeshEnd();
 }
-
+// create hp mesh 
 AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float x3, float y3)
 {
 
@@ -78,7 +79,7 @@ AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float
 	return AEGfxMeshEnd();
 
 }
-
+// draw mesh and set their transform position
 void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform, float r, float g, float b, float e, float a)
 {
 	AEMtx33Scale(&scale, sizeX, sizeY);
@@ -104,7 +105,7 @@ void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32
 	AEGfxSetTransparency(a);
 
 }
-
+// rendering UI elements in games and set their transform position on screen too
 void renderUI_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform)
 {
 	AEMtx33Scale(&scale, sizeX, sizeY);
@@ -118,7 +119,7 @@ void renderUI_transform(float posX, float posY, float sizeX, float sizeY, f32 ro
 
 
 }
-
+// lock player hp for max hp and min hp
 void playerhplock()
 {
 	if (currenthealth > maxhealth)
@@ -139,7 +140,7 @@ void playerhplock()
 		currenthp = 0;
 	}
 }
-
+// hp checker to turn it based of percentage
 void hpcheck()
 {
 	if (currenthp >= maxhp)
@@ -187,12 +188,12 @@ void hpcheck()
 		currenthealth = 0;
 	}
 }
-
+// distance calculator based off two 2D xy coordinate points coordinate system
 int calculateDistance(float src_posX, float src_posY, float dst_posX, float dst_posY, float distance)
 {
 	return (sqrt(pow(dst_posX - src_posX, 2) + pow(dst_posY - src_posY, 2)) < distance);
 }
-
+// not used
 s32 GameOver()
 {
 	if (currenthp < 1)
@@ -202,8 +203,4 @@ s32 GameOver()
 	return 0;
 }
 
-s32 Winstate()
-{
-	return 0;
-}
 

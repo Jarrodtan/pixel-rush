@@ -3,19 +3,13 @@
 	File:		FileReader.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (50% of Code), Mira Tristan Dumlao (50% of Code)
+	Brief: Read binary text files and convert it into a level design as an output display on the screen, read metafiles as well 
+	for the position coordinates of the pressure plates too.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
-
-/**********************************************************/
-/*!
-
-	Brief: Read binary text files and convert it into a level design as an output display on the screen
-
-*/
-/**********************************************************/
 
 /******************************************************************************/
 /*!

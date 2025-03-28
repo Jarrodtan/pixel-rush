@@ -3,6 +3,7 @@
 	File:		GameState_MainMenu.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: All Functional Declaration to use for GameState_MainMenu.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

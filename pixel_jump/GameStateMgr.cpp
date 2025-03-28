@@ -3,6 +3,8 @@
 	File:		GameStateMgr.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: Game State Manager to control which scene the player is in and load the require scene which the game is in based
+	off an enum state.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -44,7 +46,7 @@ namespace GameStateManager {
 		// call the update function to set the function pointers
 		GameStateMgrUpdate();
 	}
-
+	// game state manager running different states based off different enum names
 	void GameStateMgrUpdate() {
 		if ((g_GameStateCurr == States::GS_RESTART) || (g_GameStateCurr == States::GS_QUIT)) {
 			return;

@@ -3,6 +3,7 @@
 	File:		GameStateMgr.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: All Functional Declaration to use for GameStateMgr.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -19,6 +20,7 @@
 /******************************************************************************/
 #include "AEEngine.h"
 #include "GameStateList.h"
+
 
 namespace GameStateManager {
 	/******************************************************************************/
@@ -42,7 +44,7 @@ namespace GameStateManager {
 	/*!
 		Function Declarations
 	*/
-	/******************************************************************************/\
+	/******************************************************************************/
 	void GameStateMgrInit(u32 gameStateInit);
 	void GameStateMgrUpdate();
 }

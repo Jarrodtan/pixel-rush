@@ -3,6 +3,7 @@
 	File:		GameStateList.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (55% of Code), Mira Tristan Dumlao (15% of Code), Tan Wei Leong (15% of Code), Marco Ng Wei Zhen (15% of Code)
+	Brief: All Functional Declaration to use for GameStateList.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -11,7 +12,7 @@
 
 #ifndef GAME_STATE_LIST_H
 #define GAME_STATE_LIST_H
-
+// enum names for different game scenes
 namespace States {
 	enum
 	{

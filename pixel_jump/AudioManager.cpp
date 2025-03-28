@@ -3,6 +3,7 @@
 	File:		AudioManager.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: To load and unload game audio such as sounds effects or BGM, to manage all the in-game music.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

@@ -3,6 +3,7 @@
 	File:		AudioManager.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: All Functional Declaration to use for AudioManager.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

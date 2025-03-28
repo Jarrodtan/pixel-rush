@@ -3,6 +3,7 @@
 	File:		Collision.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: All Functional Declaration to use for Collision.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -11,7 +12,7 @@
 
 #ifndef COLLISION_HEADER
 #define COLLISION_HEADER
-
+// namespace used for collision detection feature
 namespace Collision {
 	class AABB {
 	public:

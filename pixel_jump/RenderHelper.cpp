@@ -3,6 +3,8 @@
 	File:		RenderHelper.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (85% of Code), Mira Tristan Dumlao (5% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
+	Brief: Used for rendering UI elements in game such as text fonts, buttons, game background, healthbar, icon, level art, etc. 
+	Can adjust their rpg colours and also load thier respective textures too for the UI game objects.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

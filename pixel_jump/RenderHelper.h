@@ -3,6 +3,7 @@
 	File:		RenderHelper.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (85% of Code), Mira Tristan Dumlao (5% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
+	Brief: All Functional Declaration to use for RenderHelper.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -14,7 +15,7 @@
 #include <string>
 #include "GameObjects.h"
 #include <AEEngine.h>
-
+// render helper namespace for their data container using enum names, can add on easily if needed for more textures or colours rgb
 namespace Render {
 	enum FONT_ALIGN {
 		LEFT = 0,

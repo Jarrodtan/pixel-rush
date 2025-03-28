@@ -3,6 +3,7 @@
 	File:		TutorialMenu.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: Game Tutorial Menu for designing the tutorial scene using button features, audio manager, graphics artwork, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -24,16 +25,16 @@ namespace {
 	AEMtx33 transformBG2 = { 0 };
 }
 
-
+// load tutorial menu data
 void GameStateTutorialMenuLoad() {
 
 }
-
+// initalized tutorial menu data
 void GameStateTutorialMenuInit() {
 	button.Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Next", "Tutorial", 0.4f, 0.4f, 1.f);
 	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG2, rotateBG2, translateBG2, transformBG2);
 }
-
+// update tutorial menu data
 void GameStateTutorialMenuUpdate() {
 	s32 i_MousePosX, i_MousePosY;
 	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
@@ -42,26 +43,14 @@ void GameStateTutorialMenuUpdate() {
 	if (button.Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
 		if (GameStateManager::g_GameStateCurr == States::GS_TUTORIAL_TIP) {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
-			/*switch (saveprevtut) {
-			default:
-			case -1:
-				GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
-				break;
-			case -2:
-				GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
-				break;
-			case -3:
-				GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL3;
-				break;
-
-			}*/
+			
 		}
 		else {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_TIP;
 		}
 	}
 }
-
+// render and draw tutorial menu graphics and art
 void GameStateTutorialMenuDraw() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -81,11 +70,11 @@ void GameStateTutorialMenuDraw() {
 
 	button.Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
 }
-
+// free data from tutorial menu scene
 void GameStateTutorialMenuFree() {
 
 }
-
+// unload whatever data in the tutorial menu scene
 void GameStateTutorialMenuUnload() {
 
 }

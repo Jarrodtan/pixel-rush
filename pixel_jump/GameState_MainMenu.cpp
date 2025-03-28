@@ -3,6 +3,7 @@
 	File:		GameState_MainMenu.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (50% of Code), Marco Ng Wei Zhen (50% of Code)
+	Brief: Game Main Menu State for designing the main menu scene using button features, audio manager, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -91,11 +92,6 @@ void GameStateMainMenuInit(void) {
 	//background image
 	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG, rotateBG, translateBG, transformBG);
 
-	/*AEMtx33Scale(&scaleBG, g_WindowWidth, g_WindowHeight);
-	AEMtx33Rot(&rotateBG, 0);
-	AEMtx33Trans(&translateBG, 0.f, 0.f);
-	AEMtx33Concat(&transformBG, &rotateBG, &scaleBG);
-	AEMtx33Concat(&transformBG, &translateBG, &transformBG);*/
 
 }
 
@@ -170,7 +166,7 @@ void GameStateMainMenuUpdate(void) {
 					default:
 					case -1:
 						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_MENU;
-						//GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
+				
 						break;
 					case -2:
 						GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL2;
@@ -212,7 +208,7 @@ void GameStateMainMenuUpdate(void) {
 void GameStateMainMenuDraw(void) {
 	AEGfxSetBackgroundColor(0.5f, 0.5f, 0.8f);
 	Render::RenderShapes(Render::SHAPES::SQUARE, transformBG, Render::TEXTURE::TITLE_MAINMENU, 0, 0, 0, 1);
-	//RenderShapes(SHAPES shape, AEMtx33 transform, TEXTURE tex, f32 r, f32 g, f32 b, f32 a);
+	
 
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);

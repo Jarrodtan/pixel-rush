@@ -3,6 +3,8 @@
 	File:		GameObjects.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
+	Brief: Game Object instance creation and pointer functions for gameObject use for destroy objects, transform object, position of
+	objects. etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

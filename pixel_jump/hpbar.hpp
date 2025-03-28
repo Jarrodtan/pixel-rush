@@ -3,6 +3,7 @@
 	File:		hpbar.h
 	Project:	Pixel Rush
 	Author(s):  Marco Ng Wei Zhen
+	Brief: All Functional Declaration to use for hpbar.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -17,6 +18,8 @@ extern int currenthealth;
 extern float maxhp;
 extern float currenthp;
 extern float timedelta;
+
+// all mesh and UI creation transform/render functions 
 
 AEGfxVertexList* mesh_create_square(u32 colour);
 
@@ -33,6 +36,4 @@ void playerhplock();
 void hpcheck();
 
 s32 GameOver(); 
-
-s32 WinState();
 

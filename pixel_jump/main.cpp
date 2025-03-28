@@ -3,6 +3,7 @@
 	File:		main.cpp
 	Project:	Pixel Rush
 	Author(s):	Lau Xiang Yang
+	Brief: Game Actual Main to run the entire game using a big while loop
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

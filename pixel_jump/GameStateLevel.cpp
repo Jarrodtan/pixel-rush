@@ -3,6 +3,8 @@
 	File:		GameStateLevel.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (40% of Code), Mira Tristan Dumlao (20% of Code), Tan Wei Leong (20% of Code), Marco Ng Wei Zhen (20% of Code)
+	Brief: This is the long list of code to generate levels based off the binary file reader and does all the collision phyics implementation
+	and gravity implementation, bascially everything needed for the whole game to run in between levels to levels and scene to scene.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -129,6 +131,7 @@ namespace {
 	static const f32 f_MaxTipsSreenTime = 1.5f;
 	bool b_TipActive;
 
+	// UI Elements (HP, Coins Collected, etc.)
 	bool b_ToggleUI;
 	AEMtx33 scaleBGUI[999] = { 0 };
 	AEMtx33 rotateBGUI[999] = { 0 };
@@ -267,7 +270,7 @@ void GameStateLevelLoad(void) {
 	::i_BINARY_MAP_WIDTH = 0;
 	::i_BINARY_MAP_HEIGHT = 0;
 
-
+	// search for file path for binary maps or metamaps and load them in real time
 	std::string s_FilePath{};
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
@@ -331,7 +334,7 @@ void GameStateLevelLoad(void) {
 /******************************************************************************/
 void GameStateLevelInit(void) {
 	AESysSetWindowTitle("Pixel Rush");
-
+	// loop through UI elements to render it on screen based off different xy position on screen
 	for (int n = 0; n < 10; n++) {
 
 		f32 posX, posY, sizeX, sizeY, rotation = 0.f;
@@ -392,7 +395,7 @@ void GameStateLevelInit(void) {
 	AEVec2 Position{}, Velocity{};
 
 	AudioManager::PlayBGM("Assets/AudioBGM/Retro_Funk_20_by_sonically_sound_Id_624874.wav");
-
+	// create all game objects instance based off the binary map text file
 	for (s32 i{}; i < ::i_BINARY_MAP_WIDTH; ++i) {
 		for (s32 j{}; j < ::i_BINARY_MAP_HEIGHT; ++j) {
 			if (::p_MapData[i][j] == 0 || ::p_MapData[i][j] == 1) continue;
@@ -638,6 +641,7 @@ void GameStateLevelInit(void) {
 */
 /******************************************************************************/
 void GameStateLevelUpdate(void) {
+	// check current scene state to save it for save scene feature
 	switch (GameStateManager::g_GameStateCurr) {
 	default:
 	case States::GS_PLATFORM_LVL1:
@@ -727,7 +731,7 @@ void GameStateLevelUpdate(void) {
 
 	s32 i{};
 	Objects::GameObjectInstance* p_Instance{};
-
+	// powerups collection for both player speed increases, had sinced remove the feature so not used 
 	if (AEInputCheckCurr(AEVK_D)) {
 		::p_LightPlayer->currVelocity.x = (powerUpFlag & POWER_ACTIVE) > 0 ? PLAYER_MOVE_VELOCITY + 4.0f : PLAYER_MOVE_VELOCITY;
 	}
@@ -747,7 +751,7 @@ void GameStateLevelUpdate(void) {
 	else {
 		::p_ShadowPlayer->currVelocity.x = 0;
 	}
-
+	// double jump for shadow player
 	if (AEInputCheckTriggered(AEVK_UP)) {
 		if (!isGravitySwitch_S) {
 			if (p_ShadowPlayer->currVelocity.y == 0 || doubleJumpCounter_S < 2 || jumpEnabled_S) {
@@ -764,7 +768,7 @@ void GameStateLevelUpdate(void) {
 			}
 		}
 	}
-
+	// double jump for light player
 	if (AEInputCheckTriggered(AEVK_W)) {
 		if (!isGravitySwitch_L) {
 			if (p_LightPlayer->currVelocity.y == 0 || doubleJumpCounter_L < 2 || jumpEnabled_L) {
@@ -782,12 +786,6 @@ void GameStateLevelUpdate(void) {
 		}
 	}
 
-	/*if (b_IsLightPlayerGrounded) {
-		doubleJumpCounter_L = 0;
-	}
-	if (b_IsShadowPlayerGrounded) {
-		doubleJumpCounter_S = 0;
-	}*/
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -796,7 +794,7 @@ void GameStateLevelUpdate(void) {
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
 
-
+		// check for gravity for both players
 		switch (p_Instance->p_GameObject->u_Type) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			if (!isCollideMovingPlatform_L) {
@@ -840,7 +838,7 @@ void GameStateLevelUpdate(void) {
 		}
 
 	}
-			
+	// camera zoom feature		
 	if (haveCamZoomFeature)
 	{
 		// Calculate zoomOffset (distance between player and enemy)
@@ -870,7 +868,7 @@ void GameStateLevelUpdate(void) {
 		p_Instance->prevPosition.x = p_Instance->currPosition.x;
 		p_Instance->prevPosition.y = p_Instance->currPosition.y;
 	}
-
+	// check for bounding box for colllision
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 
@@ -901,7 +899,7 @@ void GameStateLevelUpdate(void) {
 	}
 
 	
-
+	// collision check for two moving game objects dynamically
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
 
@@ -975,12 +973,12 @@ void GameStateLevelUpdate(void) {
 		// TODO: Go to the next level
 		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
-
+	// check player health is less than 0 or game timer ends
 	if (::i_PlayerLives < 0 || ::i_Time == 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
-
+	// collision mapping for jump and double jump features
 	if (!::isCollideGate_L && !::isCollideDoor_L && !::isCollideSpikes_L && !::isCollideMovingPlatform_L) {
 		::jumpEnabled_L = false;
 	}
@@ -993,7 +991,7 @@ void GameStateLevelUpdate(void) {
 	else {
 		::jumpEnabled_S = true;
 	}
-
+	// collision resolution for objects to objects on screen
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		f32 f_Time = 0.f;
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -1661,7 +1659,7 @@ void GameStateLevelDraw(void) {
 			}
 		}
 	}
-
+	// game tips for tutorial levels
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
 	case States::GS_TUTORIAL_LVL2:

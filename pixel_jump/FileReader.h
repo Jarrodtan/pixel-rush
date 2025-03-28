@@ -3,6 +3,7 @@
 	File:		FileReader.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (50% of Code), Mira Tristan Dumlao (50% of Code)
+	Brief: All Functional Declaration to use for FileReader.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

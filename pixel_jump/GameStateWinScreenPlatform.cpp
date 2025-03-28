@@ -3,6 +3,7 @@
 	File:		GameStateWinScreenPlatform.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang (50% of Code), Marco Ng Wei Zhen (50% of Code)
+	Brief: Game Win State for designing the win scene using button features, audio manager, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
