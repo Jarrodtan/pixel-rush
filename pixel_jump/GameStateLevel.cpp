@@ -139,7 +139,7 @@ namespace {
 	int hp_num;
 
 	// Bool True for testing levels or switching scenes using button 0 to 9 
-	bool enterDebugMode = false;
+	bool enterDebugMode = true;
 
 	//cheat codes 
 	bool stoptimer = false;
@@ -688,10 +688,10 @@ void GameStateLevelUpdate(void) {
 		else if (AEInputCheckCurr(AEVK_6)) {
 			GameStateManager::g_GameStateNext = States::GS_PLATFORM_LVL3;
 		}		
-		else if (AEInputCheckCurr(AEVK_0)) {
+		else if (AEInputCheckCurr(AEVK_O)) {
 			GameStateManager::g_GameStateNext = States::GS_LOSE;
 		}
-		else if (AEInputCheckCurr(AEVK_9)) {
+		else if (AEInputCheckCurr(AEVK_P)) {
 			GameStateManager::g_GameStateNext = States::GS_WIN;
 		}
 	}
