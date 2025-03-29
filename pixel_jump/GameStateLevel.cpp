@@ -303,14 +303,14 @@ void GameStateLevelLoad(void) {
 		break;
 
 	case States::GS_PLATFORM_LVL2:
-		::i_Time = 100;
+		::i_Time = 130;
 		haveTiming = true;
 		s_FilePath = "Assets/Maps/Level2.txt";
 		s_metaLoc = "";
 		break;
 		
 	case States::GS_PLATFORM_LVL3:
-		::i_Time = 80;
+		::i_Time = 100;
 		haveTiming = true;
 		s_FilePath = "Assets/Maps/Level3.txt";
 		s_metaLoc = "Assets/MapMetaData/Level3_Meta.txt";
