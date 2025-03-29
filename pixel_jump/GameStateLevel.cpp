@@ -141,7 +141,7 @@ namespace {
 	int hp_num;
 
 	// Bool True for testing levels or switching scenes using button 0 to 9 
-	bool enterDebugMode = true;
+	bool enterDebugMode = false;
 
 	//cheat codes 
 	bool stoptimer = false;
