@@ -310,6 +310,7 @@ void GameStateLevelLoad(void) {
 		::i_Time = 80;
 		haveTiming = true;
 		s_FilePath = "Assets/Maps/Level3.txt";
+		s_metaLoc = "Assets/MapMetaData/Level3_Meta.txt";
 		break;
 	}
 
