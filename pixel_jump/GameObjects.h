@@ -52,7 +52,7 @@ namespace Objects {
 		TYPE_OBJECT_SPIKE_DOWN,				// used to indicate the enemy object
 		TYPE_OBJECT_LIGHTSPIKE_DOWN,		// used to indicate the enemy object
 		TYPE_OBJECT_SHADOWSPIKE_DOWN,		// used to indicate the enemy object
-
+		TYPE_OBJECT_CHECKPOINT,
 		TYPE_MAX_OBJECT
 	};
 

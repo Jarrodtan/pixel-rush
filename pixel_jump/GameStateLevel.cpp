@@ -261,6 +261,9 @@ void GameStateLevelLoad(void) {
 	p_Object = p_GameObjectList + u_GameObjectNum++;
 	p_Object->u_Type = Objects::TYPE_OBJECT_SHADOWSPIKE_DOWN;
 
+	p_Object = p_GameObjectList + u_GameObjectNum++;
+	p_Object->u_Type = Objects::TYPE_OBJECT_CHECKPOINT;
+
 	Render::InitRender(::p_GameObjectList, u_GameObjectNum);
 
 	// setting initial binary map values
@@ -576,6 +579,10 @@ void GameStateLevelInit(void) {
 				};
 			}
 			break;
+
+			case Objects::TYPE_OBJECT_CHECKPOINT:
+				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_CHECKPOINT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
+				break;
 			}
 		}		
 	}
@@ -1437,6 +1444,16 @@ void GameStateLevelUpdate(void) {
 			Objects::doorResolution(p_Instance, p_ShadowPlayer);
 			Objects::doorExecuteSequence(p_Instance, p_LightPlayer, p_ShadowPlayer);
 			break;
+		case Objects::TYPE_OBJECT_CHECKPOINT:
+			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				i_LightPlayerInitialX = static_cast<s32>(p_Instance->currPosition.x);
+				i_LightPlayerInitialY = static_cast<s32>(p_Instance->currPosition.y);
+			}
+
+			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
+				i_ShadowPlayerInitialX = static_cast<s32>(p_Instance->currPosition.x);
+				i_ShadowPlayerInitialY = static_cast<s32>(p_Instance->currPosition.y);
+			}
 		}
 	}
 

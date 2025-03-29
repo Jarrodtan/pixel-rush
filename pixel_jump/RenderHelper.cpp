@@ -307,6 +307,9 @@ namespace Render {
 		case Objects::TYPE_OBJECT_DOOR:
 			AEGfxSetColorToAdd(0.6f, 0.6f, 0.6f, 1.0f);
 			break;
+
+		case Objects::TYPE_OBJECT_CHECKPOINT:
+			return;
 		}
 
 		AEGfxMeshDraw(p_Object->p_GameObject->p_Mesh, AE_GFX_MDM_TRIANGLES);
