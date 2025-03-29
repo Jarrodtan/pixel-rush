@@ -294,14 +294,14 @@ void GameStateLevelLoad(void) {
 		break;
 
 	case States::GS_PLATFORM_LVL1:
-		::i_Time = 120;
-		haveTiming = true;
+		::i_Time = -120;
+		haveTiming = false;
 		s_FilePath = "Assets/Maps/Level1.txt";
 		s_metaLoc = "";
 		break;
 
 	case States::GS_PLATFORM_LVL2:
-		::i_Time = 90;
+		::i_Time = 100;
 		haveTiming = true;
 		s_FilePath = "Assets/Maps/Level2.txt";
 		s_metaLoc = "";
@@ -1723,7 +1723,7 @@ void GameStateLevelDraw(void) {
 		}
 		break;
 
-	case States::GS_PLATFORM_LVL1:
+	//case States::GS_PLATFORM_LVL1:
 	case States::GS_PLATFORM_LVL2:
 	case States::GS_PLATFORM_LVL3:
 		//const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
