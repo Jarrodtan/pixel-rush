@@ -3,7 +3,9 @@
 	File:		MeshCreation.cpp
 	Project:	Pixel Rush
 	Author(s):	Tan Wei Leong
-	Brief: Mesh Creation for game objects used for rendering their graphics and art on screen.
+
+	Brief:		Mesh Creation for game objects used for rendering
+				their graphics and art on screen.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.

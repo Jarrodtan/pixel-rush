@@ -3,7 +3,8 @@
 	File:		main.cpp
 	Project:	Pixel Rush
 	Author(s):	Lau Xiang Yang
-	Brief: Game Actual Main to run the entire game using a big while loop
+
+	Brief:		Game Actual Main to run the entire game using a big while loop
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -56,7 +57,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AESysSetWindowIcon("Assets/Art/icon.ico", 100, 100);
 	Render::Load();
 	AudioManager::Init();
-	// TODO: Change this to splash screen when level dev has been completed
+
 	GameStateManager::GameStateMgrInit(States::GS_SPLASHSCREEN);
 	g_WindowWidth = static_cast<f32>(AEGfxGetWindowWidth());
 	g_WindowHeight = static_cast<f32>(AEGfxGetWindowHeight());

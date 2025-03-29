@@ -3,7 +3,8 @@
 	File:		main.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: All Functional Declaration to use for main.cpp file
+
+	Brief:		All Functional Declaration to use for main.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -25,6 +26,8 @@
 #include <sstream>
 #include <algorithm>
 #include <memory>
+#include <map>
+#include <fmod.hpp>
 
 #include "AEEngine.h"
 #include "math.h"
@@ -34,12 +37,14 @@
 #include "GameStateCredits.h"
 #include "Camera.h"
 #include "PowerUpManager.h"
+#include "GameStateList.h"
 #include "GameStateMgr.h"
 #include "GameStateLevel.h"
 #include "GameStateWinScreenPlatform.h"
 #include "GameStateLoseScreenPlatform.h"
 #include "Collision.h"
 #include "Particle.h"
+#include "Sequence.h"
 #include "GameState_MainMenu.h"
 #include "MeshCreation.h"
 #include "GameObjects.h"
@@ -47,7 +52,7 @@
 #include "RenderHelper.h"
 #include "TutorialMenu.h"
 #include "AudioManager.h"
-#include "hpbar.hpp"
+#include "HPBar.h"
 //-------------------------------------------------------------------------/
 
 /**************************************************************************/

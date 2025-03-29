@@ -3,7 +3,8 @@
 	File:		Button.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: All Functional Declaration to use for Button.cpp file
+
+	Brief:		All Functional Declaration to use for Button.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -13,9 +14,9 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <AETypes.h>
-#include <string>
-// button class for button function
+#include "main.h"
+
+// Button class for button function
 class Button {
 	enum STATE {
 		STATE_IDLE = 0,

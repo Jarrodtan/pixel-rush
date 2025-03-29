@@ -3,7 +3,8 @@
 	File:		Camera.h
 	Project:	Pixel Rush
 	Author(s):  Mira Tristan Dumlao
-	Brief: All Functional Declaration to use for Camera.cpp file
+
+	Brief:		All Functional Declaration to use for Camera.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -13,13 +14,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-/******************************************************************************/
-/*!
-	Include Files
-*/
-/******************************************************************************/
-#include <AEEngine.h>
-//-------------------------------------------------------------------------/
+#include "main.h"
 
 /******************************************************************************/
 /*!
@@ -41,6 +36,7 @@ private:
 	f32 levelHeight;
 	f32 zoomValue;
 };
+
 //-------------------------------------------------------------------------/
 
 #endif

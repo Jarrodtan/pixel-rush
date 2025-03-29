@@ -2,24 +2,23 @@
 /*!
 	File:		GameStateLevel.cpp
 	Project:	Pixel Rush
-	Author(s):  Lau Xiang Yang (40% of Code), Mira Tristan Dumlao (20% of Code), Tan Wei Leong (20% of Code), Marco Ng Wei Zhen (20% of Code)
-	Brief: This is the long list of code to generate levels based off the binary file reader and does all the collision phyics implementation
-	and gravity implementation, bascially everything needed for the whole game to run in between levels to levels and scene to scene.
+	Author(s):  Lau Xiang Yang			(40% of Code)
+				Mira Tristan Dumlao		(20% of Code)
+				Tan Wei Leong			(20% of Code)
+				Ng Wei Zhen				(20% of Code)
+
+	Brief:		This is the long list of code to generate levels based
+				off the binary file reader and does all the collision
+				phyics implementation and gravity implementation,
+				bascially everything needed for the whole game to run
+				in between levels to levels and scene to scene.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-/******************************************************************************/
-/*!
-	Include Files and static variables
-*/
-/******************************************************************************/
 #include "main.h"
-#include "hpbar.hpp"
-#include <random>
-
 
 namespace {
 	// Player related variables

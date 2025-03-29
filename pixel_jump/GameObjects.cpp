@@ -3,21 +3,17 @@
 	File:		GameObjects.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: Game Object instance creation and pointer functions for gameObject use for destroy objects, transform object, position of
-	objects. etc.
+
+	Brief:		Game Object instance creation and pointer functions
+				for gameObject use for destroy objects, transform object,
+				position of objects. etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-/******************************************************************************/
-/*!
-	Include Files
-*/
-/******************************************************************************/
 #include "main.h"
-
 
 namespace Objects {
 	/******************************************************************************/
@@ -224,9 +220,6 @@ namespace Objects {
 					Collision::SnapToCell(&p_Player->currPosition.x);
 				}
 			}
-			
-
-
 		}
 	}
 
@@ -278,8 +271,6 @@ namespace Objects {
 				}
 			}
 		}
-		
-		
 	}
 
 	void pressurePlateResolution(GameObjectInstance *p_Instance, GameObjectInstance *p_Player, float f_Time, bool interactable) {
@@ -426,7 +417,4 @@ namespace Objects {
 			break;
 		}
 	}
-
 }
-
-

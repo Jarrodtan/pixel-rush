@@ -1,17 +1,20 @@
 /*******************************************************************/
 /*!
-	File:		hpbar.h
+	File:		HPBar.h
 	Project:	Pixel Rush
-	Author(s):  Marco Ng Wei Zhen
-	Brief: All Functional Declaration to use for hpbar.cpp file
+	Author(s):  Ng Wei Zhen
+
+	Brief:		All Functional Declaration to use for HPBar.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-// ---------------------------------------------------------------------------
-// includes
+#ifndef HPBAR_H
+#define HPBAR_H
+
+// Variables
 extern int maxhealth;
 extern int currenthealth;
 
@@ -19,7 +22,8 @@ extern float maxhp;
 extern float currenthp;
 extern float timedelta;
 
-// all mesh and UI creation transform/render functions 
+
+// All mesh and UI creation transform/render functions 
 
 AEGfxVertexList* mesh_create_square(u32 colour);
 
@@ -37,3 +41,4 @@ void hpcheck();
 
 s32 GameOver(); 
 
+#endif

@@ -3,7 +3,9 @@
 	File:		TutorialMenu.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: Game Tutorial Menu for designing the tutorial scene using button features, audio manager, graphics artwork, etc.
+
+	Brief:		Game Tutorial Menu for designing the tutorial scene
+				using button features, audio manager, graphics artwork, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -29,11 +31,13 @@ namespace {
 void GameStateTutorialMenuLoad() {
 
 }
+
 // initalized tutorial menu data
 void GameStateTutorialMenuInit() {
 	button.Init(g_WindowWidth * 0.5f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Next", "Tutorial", 0.4f, 0.4f, 1.f);
 	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG2, rotateBG2, translateBG2, transformBG2);
 }
+
 // update tutorial menu data
 void GameStateTutorialMenuUpdate() {
 	s32 i_MousePosX, i_MousePosY;
@@ -50,6 +54,7 @@ void GameStateTutorialMenuUpdate() {
 		}
 	}
 }
+
 // render and draw tutorial menu graphics and art
 void GameStateTutorialMenuDraw() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
@@ -70,10 +75,12 @@ void GameStateTutorialMenuDraw() {
 
 	button.Render(g_WindowWidth * 0.5f, g_WindowHeight * 0.5f);
 }
+
 // free data from tutorial menu scene
 void GameStateTutorialMenuFree() {
 
 }
+
 // unload whatever data in the tutorial menu scene
 void GameStateTutorialMenuUnload() {
 

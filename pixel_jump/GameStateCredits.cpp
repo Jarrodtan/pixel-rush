@@ -3,7 +3,9 @@
 	File:		GameStateCredits.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: Game Credit State for designing the credit scene using button features, audio manager, etc.
+
+	Brief:		Game Credit State for designing the credit scene using
+				button features, audio manager, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -11,7 +13,6 @@
 /*******************************************************************/
 
 #include "main.h"
-#include "hpbar.hpp"
 
 namespace {
 	static f32 f_CreditsScroll;
@@ -28,17 +29,18 @@ namespace {
 	static Button button;
 	static const s32 i_ButtonWidth = 200;
 	static const s32 i_ButtonHeight = 75;
-
 }
 
 AEMtx33 scaleBG2 = { 0 };
 AEMtx33 rotateBG2 = { 0 };
 AEMtx33 translateBG2 = { 0 };
 AEMtx33 transformBG2 = { 0 };
+
 // load credits data
 void GameStateCreditsLoad() {
 
 }
+
 // initialized credits data
 void GameStateCreditsInit() {
 	button.Init(g_WindowWidth * 0.1f, g_WindowHeight * 0.1f, i_ButtonWidth, i_ButtonHeight, "Back", "Main Menu", 0.4f, 0.4f, 1.f);
@@ -81,9 +83,8 @@ void GameStateCreditsInit() {
 
 	//background image
 	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG2, rotateBG2, translateBG2, transformBG2);
-
-	
 }
+
 // update loop for credits scene
 void GameStateCreditsUpdate() {
 	f_CreditsScroll += g_dt;
@@ -98,11 +99,12 @@ void GameStateCreditsUpdate() {
 	bool b_MouseTriggered = AEInputCheckTriggered(AEVK_LBUTTON), b_MouseReleased = AEInputCheckReleased(AEVK_LBUTTON);
 	AEInputGetCursorPosition(&i_MousePosX, &i_MousePosY);
 	i_MousePosY = static_cast<s32>(g_WindowHeight) - i_MousePosY;
+
 	if (button.Update(static_cast<f32>(i_MousePosX), static_cast<f32>(i_MousePosY), b_MouseTriggered, b_MouseReleased)) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
-
 }
+
 // render and draw out graphics on the credits scene
 void GameStateCreditsDraw() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
@@ -117,10 +119,12 @@ void GameStateCreditsDraw() {
 		Render::RenderFont(Lines[i], f_CreditsFontSize, g_WindowWidth * 0.5f, 0.f + (f_CreditsScroll * 50.0f) - (f_CreditsOffset * static_cast<f32>(i)), Render::COLOUR::YELLOW, Render::FONT_ALIGN::CENTER);
 	}
 }
+
 // free data for the credits scene
 void GameStateCreditsFree() {
 
 }
+
 // unload data for the credits scene
 void GameStateCreditsUnload() {
 	// reset the credits scroll

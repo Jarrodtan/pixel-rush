@@ -2,8 +2,12 @@
 /*!
 	File:		GameObjects.h
 	Project:	Pixel Rush
-	Author(s):  Lau Xiang Yang (85% of Code), Mira Tristan Dumlao (5% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
-	Brief: All Functional Declaration to use for GameObjects.cpp file
+	Author(s):  Lau Xiang Yang		(85% of Code)
+				Mira Tristan Dumlao (5% of Code)
+				Tan Wei Leong		(5% of Code)
+				Ng Wei Zhen			(5% of Code)
+	
+	Brief:		All Functional Declaration to use for GameObjects.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -13,54 +17,46 @@
 #ifndef GAMEOBJECT_HEADER
 #define GAMEOBJECT_HEADER
 
-/******************************************************************************/
-/*!
-	Include Files
-*/
-/******************************************************************************/
-#include "AEEngine.h"
-#include "Collision.h"
-#include "Sequence.h"
+#include "main.h"
 
 namespace Objects {
+
 	/******************************************************************************/
 	/*!
 		Class/Enum Definitions
 	*/
 	/******************************************************************************/
-
 	// Object Type
 	enum TYPE_OBJECT {
-		TYPE_OBJECT_EMPTY,	// used in the map grid to indicate no object
-		TYPE_OBJECT_WALL,	// used in the map grid to indicate a wall or floor
-		TYPE_OBJECT_LIGHTPLAYER, // used to indicate the player object
-		TYPE_OBJECT_SHADOWPLAYER,
-		TYPE_OBJECT_MOVEABLE_SPIKE,	// used to indicate the enemy object
-		TYPE_OBJECT_SPIKE,	// used to indicate the enemy object
-		TYPE_OBJECT_LIGHTSHARD,
-		TYPE_OBJECT_SHADOWFRAGMENT,
-		TYPE_OBJECT_MOVINGPLATFORM,
-		TYPE_OBJECT_LIGHTSPIKE,
-		TYPE_OBJECT_SHADOWSPIKE,
-		TYPE_OBJECT_MOVEABLE_LIGHTSPIKE,
-		TYPE_OBJECT_MOVEABLE_SHADOWSPIKE,
-		TYPE_OBJECT_PRESSURE_PLATE_LIGHT,
-		TYPE_OBJECT_PRESSURE_PLATE_DARK,
-		TYPE_OBJECT_DOOR,
-		TYPE_OBJECT_GATE,
-		TYPE_OBJECT_SHADOW_DOOR,
-		TYPE_OBJECT_LIGHT_DOOR,
-		TYPE_OBJECT_TELEPORTOR,
-		TYPE_OBJECT_GRAVITYSWITCHER,
-		TYPE_OBJECT_SPIKE_DOWN,
-		TYPE_OBJECT_LIGHTSPIKE_DOWN,
-		TYPE_OBJECT_SHADOWSPIKE_DOWN,
+		TYPE_OBJECT_EMPTY,					// used in the map grid to indicate no object
+		TYPE_OBJECT_WALL,					// used in the map grid to indicate a wall or floor
+		TYPE_OBJECT_LIGHTPLAYER,			// used to indicate the player object
+		TYPE_OBJECT_SHADOWPLAYER,			// used to indicate the player object
+		TYPE_OBJECT_MOVEABLE_SPIKE,			// used to indicate the enemy object
+		TYPE_OBJECT_SPIKE,					// used to indicate the enemy object
+		TYPE_OBJECT_LIGHTSHARD,				// used to indicate the collectible object
+		TYPE_OBJECT_SHADOWFRAGMENT,			// used to indicate the collectible object
+		TYPE_OBJECT_MOVINGPLATFORM,			// used in the map grid to indicate a moving floor
+		TYPE_OBJECT_LIGHTSPIKE,				// used to indicate the enemy object
+		TYPE_OBJECT_SHADOWSPIKE,			// used to indicate the enemy object
+		TYPE_OBJECT_MOVEABLE_LIGHTSPIKE,	// used to indicate the enemy object
+		TYPE_OBJECT_MOVEABLE_SHADOWSPIKE,	// used to indicate the enemy object
+		TYPE_OBJECT_PRESSURE_PLATE_LIGHT,	// used to indicate the power up/switch
+		TYPE_OBJECT_PRESSURE_PLATE_DARK,	// used to indicate the power up/switch
+		TYPE_OBJECT_DOOR,					// used to indicate the door object
+		TYPE_OBJECT_GATE,					// used to indicate the gate object
+		TYPE_OBJECT_SHADOW_DOOR,			// used to indicate the door object
+		TYPE_OBJECT_LIGHT_DOOR,				// used to indicate the door object
+		TYPE_OBJECT_TELEPORTOR,				// used to indicate the power up/switch
+		TYPE_OBJECT_GRAVITYSWITCHER,		// used to indicate the power up/switch
+		TYPE_OBJECT_SPIKE_DOWN,				// used to indicate the enemy object
+		TYPE_OBJECT_LIGHTSPIKE_DOWN,		// used to indicate the enemy object
+		TYPE_OBJECT_SHADOWSPIKE_DOWN,		// used to indicate the enemy object
 
 		TYPE_MAX_OBJECT
 	};
 
-
-	// state machine states
+	// State machine states
 	enum STATE {
 		STATE_NONE,
 		STATE_GOING_LEFT,
@@ -71,7 +67,7 @@ namespace Objects {
 		STATE_MAX
 	};
 
-	// inner state machine states
+	// Inner state machine states
 	enum INNER_STATE {
 		INNER_STATE_ON_ENTER,
 		INNER_STATE_ON_UPDATE,
@@ -91,55 +87,54 @@ namespace Objects {
 	};
 
 	struct GameObject {
-		// game object's type
+		// Game object's type
 		u32 u_Type;
-		// pointer to the mesh that represents the object
+
+		// Pointer to the mesh that represents the object
 		AEGfxVertexList* p_Mesh;
 	};
 
 	class GameObjectInstance {
 	public:
-		// pointer to the game object that this instance is based on
+		// Pointer to the game object that this instance is based on
 		GameObject* p_GameObject;
 
-		// determines if the object is active or not
+		// Determines if the object is active or not
 		u32 u_Flag;
-		// scaling value of the object instance
+		// Scaling value of the object instance
 		AEVec2 scale;
-		// object's current position
+		// Object's current position
 		AEVec2 currPosition;
-		// object's previous position
+		// Object's previous position
 		AEVec2 prevPosition;
-		// object's current velocity
+		// Object's current velocity
 		AEVec2 currVelocity;
 
-		// object's current direction
+		// Object's current direction
 		f32 f_currDirection;
 
-		// object's drawing/transformation matrix
+		// Object's drawing/transformation matrix
 		AEMtx33 transform;
-		// bounding box that encapsulates the object for AABB collision detection
+		// Bounding box that encapsulates the object for AABB collision detection
 		Collision::AABB boundingBox;
 
-		// used to hold the collision flag to the map grid
+		// Used to hold the collision flag to the map grid
 		s32 i_gridCollisionFlag;
-		// pointer to custom data specific for each object type
+		// Pointer to custom data specific for each object type
 		void* p_userData;
 
-		// state of the object instance
+		// State of the object instance
 		enum STATE state;
 		enum INNER_STATE innerState;
 
-		// general purpose counter (This variable can be used for the enemy state machine later)
+		// General purpose counter (This variable can be used for the enemy state machine later)
 		f64 f_Counter;
 		SequenceCollection sequenceCollection;
 
 		// FOR GAMEOBJECTS THAT DEPEND ON EACH OTHER
 		GameObjectInstance* otherGameObj;
 		Index idx;
-
 	};
-
 
 
 	/******************************************************************************/
@@ -156,7 +151,5 @@ namespace Objects {
 	void doorResolution(GameObjectInstance* p_Instance, GameObjectInstance* p_Player);
 	void doorExecuteSequence(GameObjectInstance* p_Instance, GameObjectInstance* p_Player1, GameObjectInstance* p_Player2);
 }
-
-
 
 #endif // GAMEOBJECT_HEADER

@@ -47,7 +47,7 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hpbar.cpp">
+    <ClCompile Include="HPBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
@@ -109,7 +109,7 @@
     <ClInclude Include="PowerUpManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hpbar.hpp">
+    <ClInclude Include="HPBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">

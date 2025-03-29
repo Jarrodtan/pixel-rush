@@ -2,21 +2,18 @@
 /*!
 	File:		GameState_MainMenu.cpp
 	Project:	Pixel Rush
-	Author(s):  Lau Xiang Yang (50% of Code), Marco Ng Wei Zhen (50% of Code)
-	Brief: Game Main Menu State for designing the main menu scene using button features, audio manager, etc.
+	Author(s):  Lau Xiang Yang		(50% of Code)
+				Ng Wei Zhen			(50% of Code)
+
+	Brief:		Game Main Menu State for designing the main menu scene
+				using button features, audio manager, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-/******************************************************************************/
-/*!
-	Include Files
-*/
-/******************************************************************************/
 #include "main.h"
-#include "hpbar.hpp"
 
 namespace {
 	struct MainMenuText {
@@ -48,7 +45,6 @@ namespace {
 	static const bool is_animatedTitle = true;
     static f32 a = 0.0f, delayduration = 0.15f;
 }
-
 
 AEMtx33 scaleBG = { 0 };
 AEMtx33 rotateBG = { 0 };
@@ -91,8 +87,6 @@ void GameStateMainMenuInit(void) {
 
 	//background image
 	renderUI_transform(0.f, 0.f, g_WindowWidth, g_WindowHeight, 0.f, scaleBG, rotateBG, translateBG, transformBG);
-
-
 }
 
 /******************************************************************************/
@@ -197,7 +191,6 @@ void GameStateMainMenuUpdate(void) {
 	if (::a < ::delayduration) {
 		::a += 0.01f;
 	}
-	
 }
 
 /******************************************************************************/
@@ -272,4 +265,3 @@ void GameStateMainMenuUnload(void) {
 		TagLine[i].b_Effect = false;
 	}
 }
-
