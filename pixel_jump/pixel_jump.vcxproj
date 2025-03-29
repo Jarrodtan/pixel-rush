@@ -24,7 +24,7 @@
     <ClCompile Include="GameStateSplash.cpp" />
     <ClCompile Include="GameStateWinScreenPlatform.cpp" />
     <ClCompile Include="GameState_MainMenu.cpp" />
-    <ClCompile Include="hpbar.cpp" />
+    <ClCompile Include="HPBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeshCreation.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
@@ -48,7 +48,7 @@
     <ClInclude Include="GameStateMgr.h" />
     <ClInclude Include="GameStateWinScreenPlatform.h" />
     <ClInclude Include="GameState_MainMenu.h" />
-    <ClInclude Include="hpbar.hpp" />
+    <ClInclude Include="HPBar.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MeshCreation.h" />
     <ClInclude Include="Particle.h" />

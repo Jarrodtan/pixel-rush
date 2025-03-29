@@ -3,8 +3,10 @@
 	File:		Sequence.h
 	Project:	Pixel Rush
 	Author(s):  Mira Tristan Dumlao
-	Brief: Pressure Plates function to use for GameStateLevel.cpp file to activate the door based off pressure plates has pressed
-	by either/both players in the game.
+
+	Brief:		Pressure Plates function to use for GameStateLevel.cpp file
+				to activate the door based off pressure plates has pressed
+				by either/both players in the game.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -14,10 +16,10 @@
 #ifndef SEQUENCE_H
 #define SEQUENCE_H
 
-#include "AEEngine.h"
-// check for special sequence using enums names
-enum SpecialSequence { PRESSURE_PLATE_STEPPED, PRESSURE_PLATE_RELEASED, MOVE_LEFT, MOVE_RIGHT, OPEN, CLOSE};
-// activate pressure plates feature using class sequence
+// Check for special sequence using enums names
+enum SpecialSequence { PRESSURE_PLATE_STEPPED, PRESSURE_PLATE_RELEASED, MOVE_LEFT, MOVE_RIGHT, OPEN, CLOSE };
+
+// Activate pressure plates feature using class sequence
 class Sequence {
 public:
 
@@ -64,7 +66,8 @@ public:
 
 
 };
-// special sequence call
+
+// Special sequence call
 struct SequenceCollection {
 	int sequenceCount;
 	Sequence* sequence;
@@ -84,4 +87,3 @@ struct SequenceCollection {
 };
 
 #endif
-	

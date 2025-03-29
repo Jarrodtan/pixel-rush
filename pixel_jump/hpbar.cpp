@@ -1,26 +1,24 @@
 /*******************************************************************/
 /*!
-	File:		hpbar.cpp
+	File:		HPBar.cpp
 	Project:	Pixel Rush
-	Author(s):  Marco Ng Wei Zhen
-	Brief: To use the renderUI transform function for UI placement through their position xy and rendering it on screen.
+	Author(s):  Ng Wei Zhen
+
+	Brief:		To use the renderUI transform function for UI placement
+				through their position xy and rendering it on screen.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-#include <crtdbg.h> // To check for memory leaks
-#include "AEEngine.h"
-#include "hpbar.hpp"
-#include <math.h>
+#include "main.h"
 
 int maxhealth = 10;
 int currenthealth = 10;
 float maxhp{ 1000 };
 float currenthp{ 1000 };
 float timedelta{ 10 };
-
 
 
 //---------------------Use this code in the scene to display the UI health bar by number of hearts--------------//
@@ -35,6 +33,7 @@ float timedelta{ 10 };
 	// Tell Alpha Engine to draw the mesh with the above settings.
 	AEGfxMeshDraw(object[h].pMesh, AE_GFX_MDM_TRIANGLES);
 }*/
+
 
 // create square mesh
 AEGfxVertexList* mesh_create_square(u32 colour)
@@ -57,6 +56,7 @@ AEGfxVertexList* mesh_create_square(u32 colour)
 
 	return AEGfxMeshEnd();
 }
+
 // create hp mesh 
 AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float x3, float y3)
 {
@@ -79,6 +79,7 @@ AEGfxVertexList* mesh_create_hpbar(float x1, float y1, float x2, float y2, float
 	return AEGfxMeshEnd();
 
 }
+
 // draw mesh and set their transform position
 void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform, float r, float g, float b, float e, float a)
 {
@@ -105,6 +106,7 @@ void mesh_square_transform(float posX, float posY, float sizeX, float sizeY, f32
 	AEGfxSetTransparency(a);
 
 }
+
 // rendering UI elements in games and set their transform position on screen too
 void renderUI_transform(float posX, float posY, float sizeX, float sizeY, f32 rotation, AEMtx33& scale, AEMtx33& rotate, AEMtx33& translate, AEMtx33& transform)
 {
@@ -119,6 +121,7 @@ void renderUI_transform(float posX, float posY, float sizeX, float sizeY, f32 ro
 
 
 }
+
 // lock player hp for max hp and min hp
 void playerhplock()
 {
@@ -140,6 +143,7 @@ void playerhplock()
 		currenthp = 0;
 	}
 }
+
 // hp checker to turn it based of percentage
 void hpcheck()
 {
@@ -188,11 +192,13 @@ void hpcheck()
 		currenthealth = 0;
 	}
 }
+
 // distance calculator based off two 2D xy coordinate points coordinate system
 int calculateDistance(float src_posX, float src_posY, float dst_posX, float dst_posY, float distance)
 {
 	return (sqrt(pow(dst_posX - src_posX, 2) + pow(dst_posY - src_posY, 2)) < distance);
 }
+
 // not used
 s32 GameOver()
 {
@@ -202,5 +208,3 @@ s32 GameOver()
 	}
 	return 0;
 }
-
-

@@ -3,7 +3,8 @@
 	File:		Collision.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: All Functional Declaration to use for Collision.cpp file
+
+	Brief:		All Functional Declaration to use for Collision.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -12,7 +13,8 @@
 
 #ifndef COLLISION_HEADER
 #define COLLISION_HEADER
-// namespace used for collision detection feature
+
+// Namespace used for collision detection feature
 namespace Collision {
 	class AABB {
 	public:
@@ -29,6 +31,5 @@ namespace Collision {
 	s32 CheckInstanceBinaryMapCollision(s32**& r_BinaryCollisionArray, f32 f_PosX, f32 f_PosY, f32 f_ScaleX, f32 f_ScaleY);
 	void SnapToCell(f32* p_Coordinate);
 } // Collision
-
 
 #endif // COLLISION_HEADER

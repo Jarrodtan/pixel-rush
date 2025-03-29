@@ -3,7 +3,8 @@
 	File:		GameStateWinScreenPlatform.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: All Functional Declaration to use for GameStateWinScreenPlatform.cpp file
+
+	Brief:		All Functional Declaration to use for GameStateWinScreenPlatform.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -19,30 +20,35 @@
 */
 /******************************************************************************/
 void GameStateWinLoad(void);
+
 /******************************************************************************/
 /*!
 	Initialize all varaibles and funtions
 */
 /******************************************************************************/
 void GameStateWinInit(void);
+
 /******************************************************************************/
 /*!
 	Update function of the state, calculate position and logics for the objects
 */
 /******************************************************************************/
 void GameStateWinUpdate(void);
+
 /******************************************************************************/
 /*!
 	Draws all the objects, particle and text for the game
 */
 /******************************************************************************/
 void GameStateWinDraw(void);
+
 /******************************************************************************/
 /*!
 	Destroy all objects when function is called
 */
 /******************************************************************************/
 void GameStateWinFree(void);
+
 /******************************************************************************/
 /*!
 	Free all memory when function is called
@@ -51,7 +57,5 @@ void GameStateWinFree(void);
 void GameStateWinUnload(void);
 
 // ---------------------------------------------------------------------------
-
-
 
 #endif // GAME_STATE_PLATFORM_LEVEL_WIN_H

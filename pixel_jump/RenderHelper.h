@@ -2,8 +2,12 @@
 /*!
 	File:		RenderHelper.h
 	Project:	Pixel Rush
-	Author(s):  Lau Xiang Yang (85% of Code), Mira Tristan Dumlao (5% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
-	Brief: All Functional Declaration to use for RenderHelper.cpp file
+	Author(s):  Lau Xiang Yang		(85% of Code)
+				Mira Tristan Dumlao (5% of Code)
+				Tan Wei Leong		(5% of Code)
+				Ng Wei Zhen			(5% of Code)
+
+	Brief:		All Functional Declaration to use for RenderHelper.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -12,10 +16,10 @@
 
 #ifndef RENDER_HELPER_HEADER
 #define RENDER_HELPER_HEADER
-#include <string>
-#include "GameObjects.h"
-#include <AEEngine.h>
-// render helper namespace for their data container using enum names, can add on easily if needed for more textures or colours rgb
+
+#include "main.h"
+
+// Render helper namespace for their data container using enum names, can add on easily if needed for more textures or colours rgb
 namespace Render {
 	enum FONT_ALIGN {
 		LEFT = 0,
@@ -81,8 +85,6 @@ namespace Render {
 		UI_BASIC2,
 		UI_TIMER,
 
-		// TODO: Add more textures here as needed
-
 		MAX_TEXTURE
 	};
 
@@ -96,7 +98,6 @@ namespace Render {
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, COLOUR colour, FONT_ALIGN alignment = LEFT);
 	void RenderFont(std::string const& text, f32 size, f32 x, f32 y, f32 r, f32 g, f32 b, f32 a, FONT_ALIGN alignment = CENTER);
 	void Exit();
-
 }
 
 #endif // RENDER_HELPER_HEADER

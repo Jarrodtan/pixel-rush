@@ -3,7 +3,8 @@
 	File:		MeshCreation.h
 	Project:	Pixel Rush
 	Author(s):	Tan Wei Leong
-	Brief: All Functional Declaration to use for MeshCreation.cpp file
+
+	Brief:		All Functional Declaration to use for MeshCreation.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -26,6 +27,7 @@ private:
 	AEGfxVertexList* circleMesh = 0;
 	AEMtx33 squareScale, circleScale;
 	AEMtx33 squareTranslate, circleTranslate;
+
 public:
 	void CreateSquareMesh();
 	void CreateCircleMesh();

@@ -3,15 +3,16 @@
 	File:		Button.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: This is a button function for mouse click and button event systems, used mainly in main menu, win and lose scene.
+
+	Brief:		This is a button function for mouse click and button
+				event systems, used mainly in main menu, win and lose scene.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-#include "Button.h"
-#include "RenderHelper.h"
+#include "main.h"
 
 // Isbuttonclick function for user mouse input detection
 namespace {
@@ -47,6 +48,7 @@ void Button::Init(f32 f_InitPositionX, f32 f_InitPositionY, f32 f_InitWidth, f32
 	f_GreenStroke = f_G;
 	f_BlueStroke = f_B;
 }
+
 // update button
 bool Button::Update(f32 f_MousePositionX, f32 f_MousePositionY, bool b_MouseTriggered, bool b_MouseReleased) {
 	if (state == STATE_PRESSED) {
@@ -66,6 +68,7 @@ bool Button::Update(f32 f_MousePositionX, f32 f_MousePositionY, bool b_MouseTrig
 	}
 	return false;
 }
+
 // render button graphic or draw button
 void Button::Render(f32 f_ScreenOffsetX, f32 f_ScreenOffsetY) const {
 	f32 f_Rfill = 0.f, f_Gfill = 0.f, f_Bfill = 0.f;

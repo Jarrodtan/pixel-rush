@@ -3,7 +3,8 @@
 	File:		AudioManager.h
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: All Functional Declaration to use for AudioManager.cpp file
+
+	Brief:		All Functional Declaration to use for AudioManager.cpp file
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -13,14 +14,7 @@
 #ifndef AUDIO_MANAGER_H
 #define AUDIO_MANAGER_H
 
-/**************************************************************************/
-/*!
-	Include Files
-*/
-/**************************************************************************/
-#include <AETypes.h>
-#include <string>
-//-------------------------------------------------------------------------/
+#include "main.h"
 
 /**************************************************************************/
 /*!
@@ -41,6 +35,7 @@ namespace AudioManager {
 
 	const f32 f_JumpVolume = 0.6f;
 }
+
 //-------------------------------------------------------------------------/
 
 #endif // AUDIO_MANAGER_H

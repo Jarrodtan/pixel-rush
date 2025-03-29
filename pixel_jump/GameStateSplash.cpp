@@ -3,7 +3,9 @@
 	File:		GameStateSplash.cpp
 	Project:	Pixel Rush
 	Author(s):  Lau Xiang Yang
-	Brief: Game Splash Screen for designing the splash screen using button features, audio manager, etc.
+
+	Brief:		Game Splash Screen for designing the splash screen
+				using button features, audio manager, etc.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
@@ -18,21 +20,25 @@ namespace {
 	static const f32 f_MaxSplashScreenTime = 1.5f;
 	static const f32 f_MaxFMODSplashScreenTime = 1.5f;
 }
+
 // load splash icon on load
 void GameStateSplashLoad() {
 	AESysSetWindowIcon("Assets/Art/icon.ico", 100, 100);
 
 }
+
 // initalized splash screen
 void GameStateSplashInit() {
 
 }
+
 // update splash scene
 void GameStateSplashUpdate() {
 	if (AEInputCheckTriggered(AEVK_LBUTTON) || AEInputCheckTriggered(AEVK_SPACE)) {
 		GameStateManager::g_GameStateNext = States::GS_MAINMENU;
 	}
 }
+
 // render and draw graphics on splash sreen
 void GameStateSplashDraw() {
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
@@ -71,10 +77,12 @@ void GameStateSplashDraw() {
 		}
 	}
 }
+
 // free data from splash scene
 void GameStateSplashFree() {
 
 }
+
 // unload data from splash scene
 void GameStateSplashUnload() {
 

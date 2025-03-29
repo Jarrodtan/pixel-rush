@@ -2,23 +2,19 @@
 /*!
 	File:		Camera.cpp
 	Project:	Pixel Rush
-	Author(s):  Mira Tristan Dumlao (90% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
-	Brief: The use of Game Camera Feature functions for both players through the zooming effects
+	Author(s):  Mira Tristan Dumlao		(90% of Code)
+				Tan Wei Leong			(5% of Code)
+				Ng Wei Zhen				(5% of Code)
+
+	Brief:		The use of Game Camera Feature functions for both
+				players through the zooming effects
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
-/**********************************************************/
 
-/******************************************************************************/
-/*!
-	Include Files
-*/
-/******************************************************************************/
-#include "Camera.h"
 #include "main.h"
-//-------------------------------------------------------------------------/
 
 // camera transformation matrix
 void Camera::applyCameraTransform(AEMtx33& concatTo, f32 anchorX, f32 anchorY) {
@@ -35,6 +31,7 @@ void Camera::applyCameraTransform(AEMtx33& concatTo, f32 anchorX, f32 anchorY) {
 	AEMtx33Concat(&concatTo, &zoom, &concatTo);
 
 }
+
 // zoom scaling value for camera
 void Camera::changeZoomVal(s32 zoom) {
 	

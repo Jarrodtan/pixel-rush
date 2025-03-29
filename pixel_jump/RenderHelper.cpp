@@ -2,19 +2,22 @@
 /*!
 	File:		RenderHelper.cpp
 	Project:	Pixel Rush
-	Author(s):  Lau Xiang Yang (85% of Code), Mira Tristan Dumlao (5% of Code), Tan Wei Leong (5% of Code), Marco Ng Wei Zhen (5% of Code)
-	Brief: Used for rendering UI elements in game such as text fonts, buttons, game background, healthbar, icon, level art, etc. 
-	Can adjust their rpg colours and also load thier respective textures too for the UI game objects.
+	Author(s):  Lau Xiang Yang			(85% of Code)
+				Mira Tristan Dumlao		(5% of Code)
+				Tan Wei Leong			(5% of Code)
+				Ng Wei Zhen				(5% of Code)
+
+	Brief:		Used for rendering UI elements in game such as text fonts,
+				buttons, game background, healthbar, icon, level art, etc.
+				Can adjust their rpg colours and also load thier respective
+				textures too for the UI game objects.
 
 	All content © 2025 DigiPen Institute of Technology Singapore.
 	All rights reserved.
 */
 /*******************************************************************/
 
-#include "RenderHelper.h"
-#include "GameObjects.h"
 #include "main.h"
-#include <string>
 
 namespace Render {
 	/******************************************************************************/
@@ -24,7 +27,6 @@ namespace Render {
 
 		\param
 			none
-
 		\return
 			none
 	*/
@@ -92,7 +94,7 @@ namespace Render {
 			g_Texture[i] = nullptr;
 		}
 
-		// TODO: Load all textures here
+		// Load all textures
 		g_Texture[TEXTURE::SPLASHSCREEN] = AEGfxTextureLoad("Assets/Art/DigiPen_Singapore_WEB_WHITE.png");
 		g_Texture[TEXTURE::FMODSCREEN] = AEGfxTextureLoad("Assets/Art/FMOD-Logo.png");
 		g_Texture[TEXTURE::LIGHT_PLAYER] = AEGfxTextureLoad("Assets/Art/kenney_pixel-platformer/Tiles/Characters/tile_0002.png");
@@ -174,8 +176,6 @@ namespace Render {
 	*/
 	/******************************************************************************/
 	void InitRender(Objects::GameObject*& p_GameObjectList, u32 max) {
-
-
 		for (u32 i{}; i < max; ++i) {
 			Objects::GameObject* p_Object = p_GameObjectList + i;
 
