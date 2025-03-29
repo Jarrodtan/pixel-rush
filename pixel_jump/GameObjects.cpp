@@ -57,6 +57,7 @@ namespace Objects {
 
 			// check if the current instance is not active
 			if (p_Instance->u_Flag == 0) {
+
 				// use it to create the new instance
 				p_Instance->p_GameObject = p_GameObjectList + type;
 				p_Instance->u_Flag = FLAG_ACTIVE | FLAG_VISIBLE;
@@ -72,6 +73,7 @@ namespace Objects {
 				p_Instance->sequenceCollection.sequence = nullptr;
 				p_Instance->otherGameObj = nullptr;
 				p_Instance->idx = idx;
+
 				// return the new instance
 				return p_Instance;
 			}
@@ -161,6 +163,7 @@ namespace Objects {
 				p_Instance->currVelocity.x = -ENEMY_MOVE_VELOCITY;
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				break;
+
 			case INNER_STATE_ON_UPDATE:
 				if ((p_Instance->i_gridCollisionFlag & COLLISION_LEFT) ||
 					Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT,
@@ -171,6 +174,7 @@ namespace Objects {
 					Collision::SnapToCell(&p_Instance->currPosition.x);
 				}
 				break;
+
 			case INNER_STATE_ON_EXIT:
 				p_Instance->f_Counter -= g_dt;
 				if (p_Instance->f_Counter < 0) {
@@ -187,6 +191,7 @@ namespace Objects {
 				p_Instance->currVelocity.x = ENEMY_MOVE_VELOCITY;
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				break;
+
 			case INNER_STATE_ON_UPDATE:
 				if ((p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) ||
 					Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT,
@@ -197,6 +202,7 @@ namespace Objects {
 					Collision::SnapToCell(&p_Instance->currPosition.x);
 				}
 				break;
+
 			case INNER_STATE_ON_EXIT:
 				p_Instance->f_Counter -= g_dt;
 				if (p_Instance->f_Counter < 0) {
@@ -275,7 +281,6 @@ namespace Objects {
 
 	void pressurePlateResolution(GameObjectInstance *p_Instance, GameObjectInstance *p_Player, float f_Time, bool interactable) {
 
-
 		if (Collision::CollisionAABB(p_Instance->boundingBox, p_Instance->currVelocity, p_Player->boundingBox, p_Player->currVelocity, f_Time)) {
 			Sequence& sequence = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_STEPPED));
 			Sequence& released = *(p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_RELEASED));
@@ -312,7 +317,7 @@ namespace Objects {
 			
 			if (sequence.targetValue < p_Instance->currPosition.y && sequence.isRunning && interactable) {
 				
-				f32 yVel = g_dt * 5.0f;//HARDCODED VEL;
+				f32 yVel = g_dt * 5.0f; //HARDCODED VEL;
 				p_Instance->currPosition.y -= yVel;
 				p_Player->currPosition.y = p_Instance->currPosition.y + 0.9f;
 				released.isRunning = false;
@@ -323,15 +328,13 @@ namespace Objects {
 				p_Instance->sequenceCollection.finished = true;
 				p_Instance->currPosition.y = sequence.targetValue;
 			}
-
 		}
 		else {
 
 			Sequence* sequence = p_Instance->sequenceCollection.getSequence(SpecialSequence::PRESSURE_PLATE_RELEASED);
 			
-			
 			if (p_Instance->currPosition.y < sequence->targetValue && interactable) {
-				f32 yVel = g_dt * 4.0f;//HARDCODED VEL;
+				f32 yVel = g_dt * 4.0f; //HARDCODED VEL;
 				
 				p_Instance->currPosition.y += yVel;
 				p_Player->currPosition.y += yVel;
@@ -356,6 +359,7 @@ namespace Objects {
 				p_Instance->currVelocity.x = -ENEMY_MOVE_VELOCITY;
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				break;
+
 			case INNER_STATE_ON_UPDATE:
 				if ((p_Instance->i_gridCollisionFlag & COLLISION_LEFT) ||
 					Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT,
@@ -373,6 +377,7 @@ namespace Objects {
 					//Collision::SnapToCell(&r_Instance->currPosition.x);	
 				}
 				break;
+
 			case INNER_STATE_ON_EXIT:
 				p_Instance->f_Counter -= g_dt;
 				if (p_Instance->f_Counter < 0) {
@@ -389,6 +394,7 @@ namespace Objects {
 				p_Instance->currVelocity.x = ENEMY_MOVE_VELOCITY;
 				p_Instance->innerState = INNER_STATE_ON_UPDATE;
 				break;
+
 			case INNER_STATE_ON_UPDATE:
 				if ((p_Instance->i_gridCollisionFlag & COLLISION_RIGHT) ||
 					Collision::GetCellValue(r_BinaryCollisionArray, r_BINARY_MAP_WIDTH, r_BINARY_MAP_HEIGHT,
@@ -406,6 +412,7 @@ namespace Objects {
 					//Collision::SnapToCell(&r_Instance->currPosition.x);
 				}
 				break;
+
 			case INNER_STATE_ON_EXIT:
 				p_Instance->f_Counter -= g_dt;
 				if (p_Instance->f_Counter < 0) {

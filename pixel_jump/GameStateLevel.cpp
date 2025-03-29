@@ -73,17 +73,18 @@ namespace {
 	s32 currentDeltaWheel{};
 	Camera camera;
 
-	//POWERUP VARIABLES - TODO, PUT IN AGGREGATE DATA TYPE
+	//POWERUP VARIABLES
 	int numOfPowerUps{};
 	u32 powerUpFlag{};
 	Objects::GameObject* p_Effect;
 
 	//CAMERA ZOOM IN/OUT - BASED ON DISTANCE BETWEEN PLAYER 1 & PLAYER 2
 	f32 zoomOffset;  // Calculate the distance for camera zoom-in and zoom-out, also to define min/max distances for zoom control.
+	
 	// Define a constant for inverse scaling
-	f32 k = 200.0f;  // Adjust this to control the rate of decrease
-	f32 c = 1.0f;    // Small constant to avoid division by zero
-	f32 inverseValue; // Value to inverse zoomOffset when it increases, this value decreases
+	f32 k = 200.0f;               // Adjust this to control the rate of decrease
+	f32 c = 1.0f;                 // Small constant to avoid division by zero
+	f32 inverseValue;			  // Value to inverse zoomOffset when it increases, this value decreases
 	s32 zoomRangeMultiplier = 32; // To lock the range to zoom in/out
 	f32 camMidpoint_X, camMidpoint_Y;
 	bool haveCamZoomFeature = true;
@@ -95,7 +96,6 @@ namespace {
 	s32 doubleJumpCounter_L = 0;
 	bool haveDoubleJump_L = true;
 	bool jumpEnabled_S, jumpEnabled_L;
-
 
 	//PUZZLE FEATURE 1 *(LIGHTPLAYER CANNOT TOUCH SHADOWFRAGMENT, VIA VISA)
 	bool puzzle1 = false;
@@ -464,6 +464,7 @@ void GameStateLevelInit(void) {
 			case Objects::TYPE_OBJECT_GATE:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GATE, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
+
 			case Objects::TYPE_OBJECT_SHADOW_DOOR:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_SHADOW_DOOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
@@ -475,10 +476,13 @@ void GameStateLevelInit(void) {
 			case Objects::TYPE_OBJECT_TELEPORTOR:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_TELEPORTOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
+
 			case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
 				gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_GRAVITYSWITCHER, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE);
 				break;
-			case Objects::TYPE_OBJECT_MOVINGPLATFORM: {
+
+			case Objects::TYPE_OBJECT_MOVINGPLATFORM:
+			{
 				Objects::GameObjectInstance* platform = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_MOVINGPLATFORM, &Scale, &Position, &Velocity, 0.f, Objects::STATE_GOING_UP);
 				// Add movement sequence
 				platform->sequenceCollection.sequenceCount = 2;
@@ -486,72 +490,68 @@ void GameStateLevelInit(void) {
 					{false, false, Position.x - 5.0f, 0.0f, 2.0f, SpecialSequence::MOVE_LEFT},
 					{false, false, Position.x + 5.0f, 0.0f, 2.0f, SpecialSequence::MOVE_RIGHT}
 				};
-				}
-				break;
+			}
+			break;
+
 			case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT: 
-				{
+			{
+				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
+				p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
+				int count = p_Instance->sequenceCollection.sequenceCount = 2;
 
-					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
-					p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
-					int count = p_Instance->sequenceCollection.sequenceCount = 2;
-
-					p_Instance->sequenceCollection.sequence = new Sequence[count]{
-						Sequence {
-							false,
-							false,
-							Position.y,
-							0.0f,
-							0.0f,
-							SpecialSequence::PRESSURE_PLATE_RELEASED
-						},
-
-						Sequence {
-							false,
-							false,
-							Position.y - (Scale.y - PLAYER_BOUNDINGBOX_TOLERANCE),
-							0.0f,
-							0.0f,
-							SpecialSequence::PRESSURE_PLATE_STEPPED
-						}
-					};
-
-					
-				}
-				break;
-
-			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK: 
-				{
-
-					Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
-					p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
-					
-					int count = p_Instance->sequenceCollection.sequenceCount = 2;
-
-					p_Instance->sequenceCollection.sequence = new Sequence[count];
-
-					p_Instance->sequenceCollection.sequence[0] = Sequence{
+				p_Instance->sequenceCollection.sequence = new Sequence[count]{
+					Sequence {
 						false,
 						false,
 						Position.y,
 						0.0f,
 						0.0f,
 						SpecialSequence::PRESSURE_PLATE_RELEASED
-					};
+					},
 
-					p_Instance->sequenceCollection.sequence[1] = Sequence{
+					Sequence {
 						false,
 						false,
 						Position.y - (Scale.y - PLAYER_BOUNDINGBOX_TOLERANCE),
 						0.0f,
 						0.0f,
 						SpecialSequence::PRESSURE_PLATE_STEPPED
-					};
-				}
+					}
+				};	
+			}
+			break;
 
-				break;
-			case Objects::TYPE_OBJECT_DOOR: {
+			case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK: 
+			{
+				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{ i, j });
+				p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
+					
+				int count = p_Instance->sequenceCollection.sequenceCount = 2;
 
-				
+				p_Instance->sequenceCollection.sequence = new Sequence[count];
+
+				p_Instance->sequenceCollection.sequence[0] = Sequence{
+					false,
+					false,
+					Position.y,
+					0.0f,
+					0.0f,
+					SpecialSequence::PRESSURE_PLATE_RELEASED
+				};
+
+				p_Instance->sequenceCollection.sequence[1] = Sequence{
+					false,
+					false,
+					Position.y - (Scale.y - PLAYER_BOUNDINGBOX_TOLERANCE),
+					0.0f,
+					0.0f,
+					SpecialSequence::PRESSURE_PLATE_STEPPED
+				};
+			}
+			break;
+
+			case Objects::TYPE_OBJECT_DOOR:
+			{
 				Objects::GameObjectInstance* p_Instance = gameObjectInstanceCreate(::p_GameObjectList, ::p_GameObjectInstanceList, Objects::TYPE_OBJECT_DOOR, &Scale, &Position, &Velocity, 0.f, Objects::STATE_NONE, Objects::Index{i, j});
 				p_Instance->u_Flag |= FLAG_NON_COLLIDABLE;
 				p_Instance->sequenceCollection.sequenceCount = 2;
@@ -574,10 +574,9 @@ void GameStateLevelInit(void) {
 					SpecialSequence::CLOSE
 				};
 			}
-			
+			break;
 			}
-		}
-			
+		}		
 	}
 
 	FileReader::readMeta(s_metaLoc, metaContainer);
@@ -597,14 +596,11 @@ void GameStateLevelInit(void) {
 						p_Instance->otherGameObj = p_secondInst;
 						break;
 					}
-
 				}
 			}
-
-
 		}
-
 	}
+
 	TipsTutorial1.push_back({ "Tip: Light player can only touch light fragments", true, 1.0f });
 	TipsTutorial1.push_back({ "Tip: Shadow player can only touch shadow fragments", false, 1.0f });
 	TipsTutorial1.push_back({ "Tip: Light player can safely go through light spikes", false, 1.0f });
@@ -630,9 +626,6 @@ void GameStateLevelInit(void) {
 	Tips.push_back({ "Tip: The portal will teleport you to the other player's position", false, 1.0f });
 	Tips.push_back({ "Tip: You can jump on the pressure plate to open doors", false, 1.f });
 }
-
-
-
 
 /******************************************************************************/
 /*!
@@ -673,7 +666,7 @@ void GameStateLevelUpdate(void) {
 
 	if (AEInputCheckTriggered(AEVK_T)) b_ToggleUI = !b_ToggleUI;
 
-	// debugging purposes (remove this after testing)
+	// debugging purposes
 	if (enterDebugMode) {
 		if (AEInputCheckTriggered(AEVK_1)) {
 			GameStateManager::g_GameStateNext = States::GS_TUTORIAL_LVL1;
@@ -750,6 +743,7 @@ void GameStateLevelUpdate(void) {
 	else {
 		::p_ShadowPlayer->currVelocity.x = 0;
 	}
+
 	// double jump for shadow player
 	if (AEInputCheckTriggered(AEVK_UP)) {
 		if (!isGravitySwitch_S) {
@@ -767,6 +761,7 @@ void GameStateLevelUpdate(void) {
 			}
 		}
 	}
+
 	// double jump for light player
 	if (AEInputCheckTriggered(AEVK_W)) {
 		if (!isGravitySwitch_L) {
@@ -792,7 +787,6 @@ void GameStateLevelUpdate(void) {
 
 		if ((p_Instance->u_Flag & FLAG_ACTIVE) == 0) continue;
 
-
 		// check for gravity for both players
 		switch (p_Instance->p_GameObject->u_Type) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
@@ -805,6 +799,7 @@ void GameStateLevelUpdate(void) {
 				}
 			}
 			break;
+
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			if (!isCollideMovingPlatform_S) {
 				if (!isGravitySwitch_S) {
@@ -814,7 +809,6 @@ void GameStateLevelUpdate(void) {
 					p_Instance->currVelocity.y = -GRAVITY * g_dt + p_Instance->currVelocity.y;
 				}
 			}
-			
 			break;
 
 		case Objects::TYPE_OBJECT_MOVEABLE_SHADOWSPIKE:
@@ -826,6 +820,7 @@ void GameStateLevelUpdate(void) {
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT, ::p_LightPlayer, f_Time);
 			break;
+
 		case Objects::TYPE_OBJECT_MOVEABLE_SPIKE:
 			p_Instance->currVelocity.y = GRAVITY * g_dt + p_Instance->currVelocity.y;
 			Objects::EnemyStateMachine(p_Instance, ::p_BinaryCollisionArray, ::i_BINARY_MAP_WIDTH, ::i_BINARY_MAP_HEIGHT);
@@ -835,8 +830,8 @@ void GameStateLevelUpdate(void) {
 			Objects::MovingPlatformStateMachine(p_Instance);
 			break;
 		}
-
 	}
+
 	// camera zoom feature		
 	if (haveCamZoomFeature)
 	{
@@ -867,6 +862,7 @@ void GameStateLevelUpdate(void) {
 		p_Instance->prevPosition.x = p_Instance->currPosition.x;
 		p_Instance->prevPosition.y = p_Instance->currPosition.y;
 	}
+
 	// check for bounding box for colllision
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -897,7 +893,6 @@ void GameStateLevelUpdate(void) {
 		AEVec2Add(&p_Instance->currPosition, &p_Instance->currPosition, &displacement);
 	}
 
-	
 	// collision check for two moving game objects dynamically
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		p_Instance = ::p_GameObjectInstanceList + i;
@@ -920,6 +915,7 @@ void GameStateLevelUpdate(void) {
 				b_IsShadowPlayerGrounded = true;
 			}
 		}
+
 		if (p_Instance->i_gridCollisionFlag & COLLISION_TOP) {
 			Collision::SnapToCell(&p_Instance->currPosition.y);
 			p_Instance->currVelocity.y = 0;
@@ -972,11 +968,13 @@ void GameStateLevelUpdate(void) {
 		// TODO: Go to the next level
 		GameStateManager::g_GameStateNext = States::GS_WIN;
 	}
+
 	// check player health is less than 0 or game timer ends
 	if (::i_PlayerLives < 0 || ::i_Time == 0) {
 		// TODO: Go to lose state
 		GameStateManager::g_GameStateNext = States::GS_LOSE;
 	}
+
 	// collision mapping for jump and double jump features
 	if (!::isCollideGate_L && !::isCollideDoor_L && !::isCollideSpikes_L && !::isCollideMovingPlatform_L) {
 		::jumpEnabled_L = false;
@@ -990,6 +988,7 @@ void GameStateLevelUpdate(void) {
 	else {
 		::jumpEnabled_S = true;
 	}
+
 	// collision resolution for objects to objects on screen
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		f32 f_Time = 0.f;
@@ -1024,6 +1023,7 @@ void GameStateLevelUpdate(void) {
 
 			}
 			break;
+
 		case Objects::TYPE_OBJECT_SHADOW_DOOR:
 			if (Collision::CollisionAABB(p_LightPlayer->boundingBox, p_LightPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) ) {
 
@@ -1066,6 +1066,7 @@ void GameStateLevelUpdate(void) {
 				isCollideDoor_L = false;
 			}
 			break;
+
 		case Objects::TYPE_OBJECT_LIGHT_DOOR:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time) ) {
 
@@ -1102,6 +1103,7 @@ void GameStateLevelUpdate(void) {
 				isCollideDoor_S = false;
 			}
 			break;
+
 		case Objects::TYPE_OBJECT_GATE:
 			if (!unlockDoor) {
 				if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -1160,8 +1162,7 @@ void GameStateLevelUpdate(void) {
 					isCollideGate_L = false;
 				}
 			}
-			
-		break;
+			break;
 			
 		case Objects::TYPE_OBJECT_MOVEABLE_LIGHTSPIKE:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -1251,6 +1252,7 @@ void GameStateLevelUpdate(void) {
 
 			}
 			break;
+
 		// teleport the respective LIGHT / SHADOW player to be together once again
 		case Objects::TYPE_OBJECT_TELEPORTOR:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
@@ -1262,6 +1264,7 @@ void GameStateLevelUpdate(void) {
 				p_LightPlayer->currPosition.y = p_ShadowPlayer->currPosition.y;
 			}
 			break;
+
 		case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
 			if (Collision::CollisionAABB(p_ShadowPlayer->boundingBox, p_ShadowPlayer->currVelocity, p_Instance->boundingBox, p_Instance->currVelocity, f_Time)) {
 				gameObjectInstanceDestroy(p_Instance);
@@ -1391,7 +1394,6 @@ void GameStateLevelUpdate(void) {
 							}
 						}
 					}
-
 				}
 				else {
 					if (p_ShadowPlayer->currPosition.y < p_Instance->currPosition.y && fabs(p_ShadowPlayer->prevPosition.y - p_Instance->prevPosition.y) >= (1.f - PLATFORM_SNAPPING_TOLERANCE)) {
@@ -1417,29 +1419,25 @@ void GameStateLevelUpdate(void) {
 			else {
 				isCollideMovingPlatform_S = false;
 			}
-
 			break;
 
-		
 		case Objects::TYPE_OBJECT_PRESSURE_PLATE_DARK:
 			Objects::pressurePlateResolution(p_Instance, p_ShadowPlayer, f_Time, true);
 			Objects::pressurePlateResolution(p_Instance, p_LightPlayer, f_Time, false);
 			break;
+
 		case Objects::TYPE_OBJECT_PRESSURE_PLATE_LIGHT:
 			Objects::pressurePlateResolution(p_Instance, p_LightPlayer, f_Time, true);
 			Objects::pressurePlateResolution(p_Instance, p_ShadowPlayer, f_Time, false);
 			break;
+
 		case Objects::TYPE_OBJECT_DOOR:
 			Objects::doorResolution(p_Instance, p_LightPlayer);
 			Objects::doorResolution(p_Instance, p_ShadowPlayer);
 			Objects::doorExecuteSequence(p_Instance, p_LightPlayer, p_ShadowPlayer);
-
-			
 			break;
-
 		}
 	}
-
 
 	for (i = 0; i < GAME_OBJECT_INST_NUM_MAX; ++i) {
 		AEMtx33 Scale{}, Rotate{}, Translate{};
@@ -1453,7 +1451,6 @@ void GameStateLevelUpdate(void) {
 		AEMtx33Concat(&p_Instance->transform, &Rotate, &Scale);
 		AEMtx33Concat(&p_Instance->transform, &Translate, &p_Instance->transform);
 	}
-
 }
 
 /******************************************************************************/
@@ -1473,6 +1470,7 @@ void GameStateLevelDraw(void) {
 	default:
 		bgMain = Render::TEXTURE::LEVEL_BASIC;
 		break;
+
 	case States::GS_TUTORIAL_LVL3:
 	case States::GS_PLATFORM_LVL1:
 		bgMain = Render::TEXTURE::LEVEL_BASIC2;
@@ -1550,6 +1548,7 @@ void GameStateLevelDraw(void) {
 		case Objects::TYPE_OBJECT_LIGHTPLAYER:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::LIGHT_PLAYER, 0.5f, 0.5f, 0.5f);
 			break;
+
 		case Objects::TYPE_OBJECT_SHADOWPLAYER:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::SHADOW_PLAYER, -0.6f, -0.6f, -0.6f);
 			break;
@@ -1620,6 +1619,7 @@ void GameStateLevelDraw(void) {
 		case Objects::TYPE_OBJECT_GRAVITYSWITCHER:
 			Render::RenderShapes(p_Instance, FinalTransform, Render::TEXTURE::GRAVITY_TOKEN);
 			break;
+
 		default:
 			Render::RenderShapes(p_Instance, FinalTransform);
 			break;
@@ -1645,6 +1645,7 @@ void GameStateLevelDraw(void) {
 				default:
 					Floor = Render::TEXTURE::TILE_FLOOR;
 					break;
+
 				case States::GS_TUTORIAL_LVL3:
 				case States::GS_PLATFORM_LVL1:
 					Floor = Render::TEXTURE::TILE_FLOOR2;
@@ -1653,6 +1654,7 @@ void GameStateLevelDraw(void) {
 
 				Render::RenderShapes(::p_WhiteCell, FinalCellTransform, Floor);
 				break;
+
 			default:
 				break;
 			}
@@ -1670,7 +1672,7 @@ void GameStateLevelDraw(void) {
 	f_TipsScreenTime += g_dt;
 	f32 f_TipsProgress = max(0, f_TipsScreenTime - f_TipsScreenUnchangedTime);
 	
-	// TODO: Render text for each levels if needed
+	// Render text for each levels
 	switch (GameStateManager::g_GameStateCurr) {
 	case States::GS_TUTORIAL_LVL1:
 		for (s32 i = 0; i < static_cast<s32>(TipsTutorial1.size()); ++i) {
@@ -1688,6 +1690,7 @@ void GameStateLevelDraw(void) {
 			}
 		}
 		break;
+
 	case States::GS_TUTORIAL_LVL2:
 		for (s32 i = 0; i < static_cast<s32>(TipsTutorial2.size()); ++i) {
 			if (!TipsTutorial2[i].b_IsActive) continue;
@@ -1725,6 +1728,7 @@ void GameStateLevelDraw(void) {
 	case States::GS_PLATFORM_LVL1:
 	case States::GS_PLATFORM_LVL2:
 	case States::GS_PLATFORM_LVL3:
+
 		//const std::string s_Time = "Time Remaining: " + std::to_string(::i_Time);
 		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[8], Render::TEXTURE::UI_BASIC2, 0, 0, 0, 1);
 		Render::RenderShapes(Render::SHAPES::SQUARE, transformBGUI[9], Render::TEXTURE::UI_TIMER, 0, 0, 0, 1);
@@ -1816,4 +1820,3 @@ void GameStateLevelUnload(void) {
 
 	FileReader::FreeMapData(::i_BINARY_MAP_WIDTH, ::p_MapData, ::p_BinaryCollisionArray);
 }
-
