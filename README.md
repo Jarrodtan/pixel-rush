@@ -1,6 +1,6 @@
 # Pixel Rush
 
-A 2-player local co-op 2D platformer made by team *Pixel Jump* for CSD1451 at DigiPen Institute of Technology Singapore (SIT-DigiPen), built in C++ on DigiPen's Alpha Engine.
+A 2-player local co-op 2D platformer made by team *Pixel Jump* for GAM150 at DigiPen Institute of Technology Singapore (SIT-DigiPen), built in C++ on DigiPen's Alpha Engine.
 
 One player controls the **Light** character and the other controls the **Shadow** character. Each player has to collect their own shards (light shards or shadow fragments) scattered around the level, and both have to finish to clear the stage.
 
