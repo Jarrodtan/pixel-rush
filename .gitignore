@@ -1,4 +1,4 @@
-﻿*.ipch
+*.ipch
 *.suo
 *.db
 *.pdb
@@ -16,3 +16,7 @@
 bin
 Debug
 Release
+x64/
+x86/
+*.user
+*.ipch
